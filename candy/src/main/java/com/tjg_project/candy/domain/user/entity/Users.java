@@ -29,4 +29,6 @@ public class Users {
     private String birthday;
 
     private String recommendation;
+
+    private String provider;
 }

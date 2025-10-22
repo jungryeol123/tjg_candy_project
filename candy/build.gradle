@@ -45,6 +45,9 @@ dependencies {
 // ✅ MySQL 데이터베이스와 연결하기 위한 JDBC 드라이버
     implementation 'mysql:mysql-connector-java:8.0.33'
 
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+
 
 //    developmentOnly 'org.springframework.boot:spring-boot-devtools'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
