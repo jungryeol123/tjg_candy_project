@@ -21,8 +21,10 @@ set new.pid = concat('P',lpad((max_code+1),4,'0'));
 end$$
 delimiter ;
 DROP TRIGGER IF EXISTS before_insert_product;
-
-INSERT INTO product(brand_name, dc, description, image_url, image_url_name, is_hot_deal, is_member_special, origin, price, product_date, product_description_image,
+desc products;
+SHOW TABLES;
+drop table product;
+INSERT INTO PRODUCT(brand_name, dc, description, image_url, image_url_name, is_hot_deal, is_member_special, origin, price, product_date, product_description_image,
 product_information_image, product_name)
 SELECT 
     jt.brandName,
@@ -43,7 +45,7 @@ FROM JSON_TABLE(
         LOAD_FILE('C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/foodData.json')
         AS CHAR CHARACTER SET utf8mb4
     ),
-    '$.foodData[*]' COLUMNS (
+    '$[*]' COLUMNS (
         brandName VARCHAR(100) PATH '$.brandName',
         dc INT PATH '$.dc',
         description VARCHAR(255) PATH '$.description',
@@ -65,13 +67,13 @@ select * from product;
 show tables;
 
 
-
-INSERT INTO orders ( pid, user_id, qty, order_date)
+desc orders;
+INSERT INTO orders ( ppk, order_date, qty, upk)
 SELECT 
-  jt.pid,
-  jt.user_id,
+  jt.ppk,
+  jt.order_date,
   jt.qty,
-  jt.order_date
+  jt.upk
 FROM JSON_TABLE(
   CAST(
     LOAD_FILE('C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/purchase.json')
@@ -79,11 +81,10 @@ FROM JSON_TABLE(
   ),
   '$[*]'
   COLUMNS (
-    id INT PATH '$.id',
-    pid VARCHAR(10) PATH '$.pid',
-    user_id VARCHAR(50) PATH '$.user_id',
+    ppk VARCHAR(10) PATH '$.ppk',
     qty INT PATH '$.qty',
-    order_date DATETIME PATH '$.order_date'
+    order_date DATETIME PATH '$.order_date',
+    upk INT PATH '$.upk'
   )
 ) AS jt;
 
@@ -145,62 +146,66 @@ FROM JSON_TABLE(
 
 SHOW CREATE TABLE orders;
 SELECT * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS where table_schema = 'candy';
-ALTER TABLE orders DROP FOREIGN KEY fk_orders_product;
-ALTER TABLE orders DROP FOREIGN KEY fk_orders_user;
-DROP TABLE orders;
+ALTER TABLE orders DROP FOREIGN KEY fk_orders_products;
+ALTER TABLE product_qna DROP FOREIGN KEY fk_product_qna_products;
+ALTER TABLE reviews DROP FOREIGN KEY fk_reviews_products;
+ALTER TABLE products DROP FOREIGN KEY fk_orders_products;
 DROP TABLE product;
-DROP TABLE users;
+DROP TABLE orders;
+DROP TABLE product_qna;
+DROP TABLE reviews;
+show tables;
 select * from users;
-
+select * from orders;
 
 ALTER TABLE orders
 ADD CONSTRAINT fk_orders_user
 FOREIGN KEY (user_Id) 
-REFERENCES users(user_Id) 
+REFERENCES users(id) 
 ON UPDATE CASCADE
 ON DELETE CASCADE;
 
 
 ALTER TABLE orders
 ADD CONSTRAINT fk_orders_product
-FOREIGN KEY (pid)
-REFERENCES product(pid)
+FOREIGN KEY (ppk)
+REFERENCES product(id)
 ON UPDATE CASCADE
 ON DELETE CASCADE;
 
-desc review;
-
-ALTER TABLE review
-ADD CONSTRAINT fk_review_product
-FOREIGN KEY (pid)
-REFERENCES product(pid)
+show tables;
+ALTER TABLE orders DROP COLUMN user_id;
+select * from product;
+ALTER TABLE reviews
+ADD CONSTRAINT fk_reviews_users
+FOREIGN KEY (upk)
+REFERENCES users(id)
 ON UPDATE CASCADE
 ON DELETE CASCADE;
 
-ALTER TABLE review
-ADD CONSTRAINT fk_review_product
-FOREIGN KEY (pid)
-REFERENCES product(pid)
+ALTER TABLE product_qna
+ADD CONSTRAINT fk_product_qna_product
+FOREIGN KEY (ppk)
+REFERENCES product(id)
 ON UPDATE CASCADE
 ON DELETE CASCADE;
 
-
-
--- INSERT INTO review (
---   pid,
---   user_id,
---   product_name,
---   title,
---   content,
---   date,
---   is_best,
---   likes,
---   images,
---   tags
--- )
+show tables;
+desc reviews;
+INSERT INTO reviews (
+  ppk,
+  product_name,
+  title,
+  content,
+  date,
+  is_best,
+  likes,
+  images,
+  tags,
+  upk
+)
 SELECT
-  jt.pid,
-  jt.user_id,
+  jt.ppk,
   jt.product_name,
   jt.title,
   jt.content,
@@ -208,7 +213,8 @@ SELECT
   jt.is_best,
   jt.likes,
   jt.images,
-  jt.tags
+  jt.tags,
+  jt.upk
 FROM JSON_TABLE(
   CAST(
     LOAD_FILE('C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/reviews.json')
@@ -217,8 +223,7 @@ FROM JSON_TABLE(
   '$.reviews[*]'
   COLUMNS (
     id INT PATH '$.id',
-    pid VARCHAR(10) PATH '$.pid',
-    user_id VARCHAR(50) PATH '$.userId',
+    ppk INT PATH '$.ppk',
     product_name VARCHAR(255) PATH '$.productName',
     title VARCHAR(255) PATH '$.title',
     content TEXT PATH '$.content',
@@ -226,8 +231,52 @@ FROM JSON_TABLE(
     is_best BOOLEAN PATH '$.isBest',
     likes INT PATH '$.likes',
     images JSON PATH '$.images',
-    tags JSON PATH '$.tags'
+    tags JSON PATH '$.tags',
+    upk Int PATH '$.upk'
   )
 ) AS jt;
+delete from review;
+select * from reviews;
+select * from orders;
+select * from product_qna;
 
-
+desc product_qna;
+INSERT INTO product_qna (
+  ppk,
+  title,
+  date,
+  status,
+  is_private,
+  upk
+)
+SELECT
+  jt.ppk,
+  jt.title,
+  jt.date,
+  jt.status,
+  jt.is_private,
+  jt.upk
+FROM JSON_TABLE(
+  CAST(
+    LOAD_FILE('C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/productQnA.json')
+    AS CHAR CHARACTER SET utf8mb4
+  ),
+  '$.qnaList[*]'
+  COLUMNS (
+    id INT PATH '$.id',
+    ppk INT PATH '$.ppk',
+    title VARCHAR(255) PATH '$.title',
+    date VARCHAR(20) PATH '$.date',
+    status VARCHAR(50) PATH '$.status',
+    is_private BOOLEAN PATH '$.isPrivate',
+    upk INT PATH '$.upk'
+  )
+) AS jt;
+show tables;
+desc reviews;
+desc product;
+select * from reviews;
+desc users;
+desc product_qna;
+select r.id, r.content, r.date, r.images, r.is_best, r.likes, r.ppk, r.product_name, r.tags, r.title, r.upk, u.name from reviews r, users u where r.upk = u.id;
+select pq.id,  pq.date, pq.is_private, pq.ppk, pq.status, pq.title, pq.upk, u.name as writer from  product_qna pq, users u where pq.upk = u.id;

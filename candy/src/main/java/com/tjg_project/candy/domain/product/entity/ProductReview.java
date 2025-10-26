@@ -5,38 +5,39 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "review")
+@Table(name = "reviews")
 public class ProductReview {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 10, nullable = false)
-    private String pid; // 상품 ID
+    @Column(nullable = false)
+    private Long ppk; // Product.id 참조
 
-    @Column(length = 50, nullable = false)
-    private String userId; // 작성자 ID
-
-    @Column(length = 255)
-    private String productName; // 상품명
+    // 유저 테이블의 id (User.id)
+    @Column(nullable = false)
+    private Long upk; // User.id 참조
 
     @Column(length = 200)
-    private String title; // 리뷰 제목
+    private String productName;
 
-    @Column(length = 2000)
-    private String content; // 리뷰 본문
+    @Column(length = 255)
+    private String title;
+
+    @Column(columnDefinition = "TEXT")
+    private String content;
 
     @Column(length = 20)
-    private String date; // 작성 날짜
+    private String date;
 
-    private boolean isBest; // 베스트 리뷰 여부
+    private boolean isBest;
 
-    private int likes; // 좋아요 수
+    private int likes;
 
-    @Column(length = 1000)
-    private String images; // 이미지 경로들 (JSON 문자열 형태로 저장)
+    @Column(columnDefinition = "JSON")
+    private String tags; // JSON 문자열 형태 ["매콤달콤","밥도둑"]
 
-    @Column(length = 500)
-    private String tags; // 태그 문자열 (콤마로 구분하거나 JSON 배열로 저장)
+    @Column(columnDefinition = "JSON")
+    private String images; // JSON 문자열 형태 ["/img1.png", "/img2.png"]
 }

@@ -12,11 +12,13 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 10, nullable = false)
-    private String pid; // product.pid 참조
+    // 상품 테이블의 id (Product.id)
+    @Column(nullable = false)
+    private Long ppk;
 
-    @Column(length = 50, nullable = false)
-    private String userId; // users.userId 참조
+    // 유저 테이블의 id (User.id)
+    @Column(nullable = false)
+    private Long upk;
 
     private int qty;
 
