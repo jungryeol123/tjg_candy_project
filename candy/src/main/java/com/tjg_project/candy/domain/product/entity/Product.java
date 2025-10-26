@@ -9,13 +9,16 @@ import lombok.Data;
 public class Product {
 
     @Id
-    @Column(length = 10, nullable = false)
-    private String pid; // 예: "P0002"
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id; // PK
+
+    @Column(length = 20, nullable = false, unique = true)
+    private String pid; // 상품 코드
 
     @Column(length = 255)
     private String imageUrl;
 
-    @Column(name = "imageUrl_name", length = 100)
+    @Column(name = "image_url_name", length = 100)
     private String imageUrlName;
 
     @Column(length = 100)
@@ -26,10 +29,10 @@ public class Product {
 
     private int price;
 
-    @Column(length = 50)
+    @Column(length = 100)
     private String origin;
 
-    private int dc;
+    private int dc; // 할인율
 
     @Column(length = 500)
     private String description;
@@ -44,6 +47,6 @@ public class Product {
     @Column(length = 255)
     private String productInformationImage;
 
-    @Column(length = 20)
+    @Column(length = 30)
     private String productDate;
 }
