@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface ProductService {
+    List<Product> getProductProductBestList();
     List<Map<String, Object>> getProductProductQnAList();
     List<Map<String, Object>> getProductReviewList();
     List<Product> getProductList();

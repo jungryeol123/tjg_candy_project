@@ -35,6 +35,11 @@ public class ProductController {
         return productService.getProductProductQnAList();
     }
 
+    @GetMapping("/productBestList")
+    public List<Product>  getProductProductBestList() {
+        return productService.getProductProductBestList();
+    }
+
 //    @GetMapping("/productList/time")
 //    public List<Product>  getProductListTime(@RequestParam(required = false, defaultValue = "time") String keyword) {
 //        return productService.getProductList(keyword);

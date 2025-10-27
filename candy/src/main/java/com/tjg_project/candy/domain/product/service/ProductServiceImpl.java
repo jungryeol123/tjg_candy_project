@@ -39,4 +39,8 @@ public class ProductServiceImpl implements ProductService {
         return productQnARepository.findAllProductQnAWithUserName();
     }
 
+    @Override
+    public List<Product> getProductProductBestList() {
+        return productRepository.findProductBestList();
+    }
 }

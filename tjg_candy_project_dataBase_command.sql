@@ -4,7 +4,7 @@ use candy;
 show tables;
 desc product;
     
-    
+    CREATE DATABASE candy CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 show variables like 'secure_file_priv';
 
 
@@ -24,6 +24,8 @@ DROP TRIGGER IF EXISTS before_insert_product;
 desc products;
 SHOW TABLES;
 drop table product;
+
+
 INSERT INTO PRODUCT(brand_name, dc, description, image_url, image_url_name, is_hot_deal, is_member_special, origin, price, product_date, product_description_image,
 product_information_image, product_name)
 SELECT 
@@ -160,7 +162,7 @@ select * from orders;
 
 ALTER TABLE orders
 ADD CONSTRAINT fk_orders_user
-FOREIGN KEY (user_Id) 
+FOREIGN KEY (upk) 
 REFERENCES users(id) 
 ON UPDATE CASCADE
 ON DELETE CASCADE;
@@ -176,6 +178,7 @@ ON DELETE CASCADE;
 show tables;
 ALTER TABLE orders DROP COLUMN user_id;
 select * from product;
+select * from reviews;
 ALTER TABLE reviews
 ADD CONSTRAINT fk_reviews_users
 FOREIGN KEY (upk)
@@ -183,10 +186,25 @@ REFERENCES users(id)
 ON UPDATE CASCADE
 ON DELETE CASCADE;
 
+ALTER TABLE reviews
+ADD CONSTRAINT fk_reviews_product
+FOREIGN KEY (ppk)
+REFERENCES product(id)
+ON UPDATE CASCADE
+ON DELETE CASCADE;
+
+
 ALTER TABLE product_qna
 ADD CONSTRAINT fk_product_qna_product
 FOREIGN KEY (ppk)
 REFERENCES product(id)
+ON UPDATE CASCADE
+ON DELETE CASCADE;
+
+ALTER TABLE product_qna
+ADD CONSTRAINT fk_product_qna_users
+FOREIGN KEY (upk)
+REFERENCES users(id)
 ON UPDATE CASCADE
 ON DELETE CASCADE;
 
@@ -275,8 +293,92 @@ FROM JSON_TABLE(
 show tables;
 desc reviews;
 desc product;
+select * from product;
+select * from orders;
 select * from reviews;
 desc users;
 desc product_qna;
 select r.id, r.content, r.date, r.images, r.is_best, r.likes, r.ppk, r.product_name, r.tags, r.title, r.upk, u.name from reviews r, users u where r.upk = u.id;
 select pq.id,  pq.date, pq.is_private, pq.ppk, pq.status, pq.title, pq.upk, u.name as writer from  product_qna pq, users u where pq.upk = u.id;
+select p.id,o.qty, p.brand_name, p.dc, p.description, p.image_url, p.image_url_name, p.is_hot_deal, p.is_member_special, p.origin, p.pid, p.price, p.product_date, p.product_description_image, p.product_information_image, p.product_name  from orders o, product p where o.ppk = p.id;
+ SELECT 
+        p.id AS id,
+        p.brand_name AS brandName,
+        p.dc AS dc,
+        p.description AS description,
+        p.image_url AS imageUrl,
+        p.image_url_name AS imageUrlName,
+        p.is_hot_deal AS isHotDeal,
+        p.is_member_special AS isMemberSpecial,
+        p.origin AS origin,
+        p.pid AS pid,
+        p.price AS price,
+        p.product_date AS productDate,
+        p.product_description_image AS productDescriptionImage,
+        p.product_information_image AS productInformationImage,
+        p.product_name AS productName
+    FROM orders o
+    JOIN product p ON o.ppk = p.id
+    GROUP BY p.id
+    ORDER BY SUM(o.qty) DESC
+    LIMIT 10;
+
+SELECT
+                        p.id AS id,
+                        p.brand_name AS brandName,
+                        p.dc AS dc,
+                        p.description AS description,
+                        p.image_url AS imageUrl,
+                        p.image_url_name AS imageUrlName,
+                        p.is_hot_deal AS isHotDeal,
+                        p.is_member_special AS isMemberSpecial,
+                        p.origin AS origin,
+                        p.pid AS pid,
+                        p.price AS price,
+                        p.product_date AS productDate,
+                        p.product_description_image AS productDescriptionImage,
+                        p.product_information_image AS productInformationImage,
+                        p.product_name AS productName
+                    FROM orders o
+                    JOIN product p ON o.ppk = p.id
+                    GROUP BY p.id
+                    ORDER BY SUM(o.qty) DESC
+                    LIMIT 10;
+                    
+                    
+show tables;
+desc notice;
+
+
+
+
+
+
+
+INSERT INTO notice (
+  content,
+  is_pinned,
+  title,
+  writer
+)
+SELECT
+  jt.content,
+  jt.is_pinned,
+  jt.title,
+  jt.writer
+FROM JSON_TABLE(
+  CAST(
+    LOAD_FILE('C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/notice.json')
+    AS CHAR CHARACTER SET utf8mb4
+  ),
+  '$.qnaList[*]'
+  COLUMNS (
+    content VARCHAR(300) PATH '$.content',
+    is_pinned INT PATH '$.is',
+    title  PATH '$.title',
+    date VARCHAR(20) PATH '$.date',
+    status VARCHAR(50) PATH '$.status',
+    is_private BOOLEAN PATH '$.isPrivate',
+    upk INT PATH '$.upk'
+  )
+) AS jt;
