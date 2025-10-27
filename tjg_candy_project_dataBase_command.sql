@@ -352,33 +352,33 @@ desc notice;
 
 
 
-
-
-
-INSERT INTO notice (
-  content,
-  is_pinned,
-  title,
-  writer
-)
+select * from notice; 
+-- INSERT INTO notice (
+--   title,
+--   content,
+--   writer,
+--   is_pinned,
+--   created_at
+-- )
 SELECT
-  jt.content,
-  jt.is_pinned,
   jt.title,
-  jt.writer
+  jt.content,
+  jt.writer,
+  jt.isPinned,
+  jt.createdAt
 FROM JSON_TABLE(
   CAST(
-    LOAD_FILE('C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/notice.json')
+    LOAD_FILE('C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/notices.json')
     AS CHAR CHARACTER SET utf8mb4
   ),
-  '$.qnaList[*]'
+  '$.noticeList[*]'
   COLUMNS (
-    content VARCHAR(300) PATH '$.content',
-    is_pinned INT PATH '$.is',
-    title  PATH '$.title',
-    date VARCHAR(20) PATH '$.date',
-    status VARCHAR(50) PATH '$.status',
-    is_private BOOLEAN PATH '$.isPrivate',
-    upk INT PATH '$.upk'
+    id INT PATH '$.id',
+    title VARCHAR(255) PATH '$.title',
+    content TEXT PATH '$.content',
+    writer VARCHAR(100) PATH '$.writer',
+    isPinned BOOLEAN PATH '$.isPinned',
+    createdAt DATETIME PATH '$.createdAt'
   )
 ) AS jt;
+
