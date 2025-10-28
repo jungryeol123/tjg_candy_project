@@ -1,13 +1,22 @@
+-- sql실행전 candy 서버를 기동 시키고 할것!!!!!!
+SHOW DATABASES; -- 데이터 베이스 확인
+use candy; -- candy 데이터 베이스 사용
+show tables; -- 테이블 확인
+desc product; -- product 테이블 구조 확인
 
-SHOW DATABASES;
-use candy;
-show tables;
-desc product;
-    
-    CREATE DATABASE candy CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+select * from product;
+select * from users;
+select * from orders;
+select * from reviews;
+
+-- sql 변경시 설정
+SET SQL_SAFE_UPDATES = 0;
+
+-- candy라는 이름의 데이터 베이스가 없을 경우 실행
+CREATE DATABASE candy CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 show variables like 'secure_file_priv';
 
-
+-- product 테이블에 Pid 설정 트리거(P0001)
 delimiter $$
 create trigger  before_insert_product
 before insert on product
@@ -20,13 +29,13 @@ select ifnull(max(cast(right(pid,4) as unsigned)),0) into max_code from product;
 set new.pid = concat('P',lpad((max_code+1),4,'0'));
 end$$
 delimiter ;
+
+-- 트리거 삭제 명령어(존재할경우 삭제)
 DROP TRIGGER IF EXISTS before_insert_product;
-desc products;
-SHOW TABLES;
-drop table product;
 
-
-INSERT INTO PRODUCT(brand_name, dc, description, image_url, image_url_name, is_hot_deal, is_member_special, origin, price, product_date, product_description_image,
+-- product 테이블에 데이터 insert ( json파일을 꼭 경로에 넣고 실행할것!)
+desc product; -- 테이블 확인용
+INSERT INTO product(brand_name, dc, description, image_url, image_url_name, is_hot_deal, is_member_special, origin, price, product_date, product_description_image,
 product_information_image, product_name)
 SELECT 
     jt.brandName,
@@ -44,7 +53,7 @@ SELECT
     jt.productName
 FROM JSON_TABLE(
     CAST(
-        LOAD_FILE('C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/foodData.json')
+        LOAD_FILE('C://ProgramData//MySQL//MySQL Server 8.0//Uploads//foodData.json')
         AS CHAR CHARACTER SET utf8mb4
     ),
     '$[*]' COLUMNS (
@@ -64,12 +73,8 @@ FROM JSON_TABLE(
     )
 ) AS jt;
 
-select * from users;
-select * from product;
-show tables;
-
-
-desc orders;
+-- orders 테이블에 데이터 insert ( json파일을 꼭 경로에 넣고 실행할것!)
+desc orders; -- 테이블 확인용
 INSERT INTO orders ( ppk, order_date, qty, upk)
 SELECT 
   jt.ppk,
@@ -78,7 +83,7 @@ SELECT
   jt.upk
 FROM JSON_TABLE(
   CAST(
-    LOAD_FILE('C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/purchase.json')
+    LOAD_FILE('C://ProgramData//MySQL//MySQL Server 8.0//Uploads//purchase.json')
     AS CHAR CHARACTER SET utf8mb4
   ),
   '$[*]'
@@ -90,17 +95,8 @@ FROM JSON_TABLE(
   )
 ) AS jt;
 
-
-
-SET SQL_SAFE_UPDATES = 0;
-delete from product;
-select * from product;
-select * from users;
-select * from orders;
-select * from orders o, product p where o.pid = p.pid;
-
-ALTER TABLE orders DROP FOREIGN KEY fk_orders_product;
-
+-- users 테이블에 데이터 insert ( json파일을 꼭 경로에 넣고 실행할것!)
+desc users; -- 테이블 확인용
 INSERT INTO users (
   address,
   birthday,
@@ -126,7 +122,7 @@ SELECT
   jt.user_id
 FROM JSON_TABLE(
   CAST(
-    LOAD_FILE('C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/users.json')
+    LOAD_FILE('C://ProgramData//MySQL//MySQL Server 8.0//Uploads//users.json')
     AS CHAR CHARACTER SET utf8mb4
   ),
   '$[*]'
@@ -145,71 +141,8 @@ FROM JSON_TABLE(
   )
 ) AS jt;
 
-
-SHOW CREATE TABLE orders;
-SELECT * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS where table_schema = 'candy';
-ALTER TABLE orders DROP FOREIGN KEY fk_orders_products;
-ALTER TABLE product_qna DROP FOREIGN KEY fk_product_qna_products;
-ALTER TABLE reviews DROP FOREIGN KEY fk_reviews_products;
-ALTER TABLE products DROP FOREIGN KEY fk_orders_products;
-DROP TABLE product;
-DROP TABLE orders;
-DROP TABLE product_qna;
-DROP TABLE reviews;
-show tables;
-select * from users;
-select * from orders;
-
-ALTER TABLE orders
-ADD CONSTRAINT fk_orders_user
-FOREIGN KEY (upk) 
-REFERENCES users(id) 
-ON UPDATE CASCADE
-ON DELETE CASCADE;
-
-
-ALTER TABLE orders
-ADD CONSTRAINT fk_orders_product
-FOREIGN KEY (ppk)
-REFERENCES product(id)
-ON UPDATE CASCADE
-ON DELETE CASCADE;
-
-show tables;
-ALTER TABLE orders DROP COLUMN user_id;
-select * from product;
-select * from reviews;
-ALTER TABLE reviews
-ADD CONSTRAINT fk_reviews_users
-FOREIGN KEY (upk)
-REFERENCES users(id)
-ON UPDATE CASCADE
-ON DELETE CASCADE;
-
-ALTER TABLE reviews
-ADD CONSTRAINT fk_reviews_product
-FOREIGN KEY (ppk)
-REFERENCES product(id)
-ON UPDATE CASCADE
-ON DELETE CASCADE;
-
-
-ALTER TABLE product_qna
-ADD CONSTRAINT fk_product_qna_product
-FOREIGN KEY (ppk)
-REFERENCES product(id)
-ON UPDATE CASCADE
-ON DELETE CASCADE;
-
-ALTER TABLE product_qna
-ADD CONSTRAINT fk_product_qna_users
-FOREIGN KEY (upk)
-REFERENCES users(id)
-ON UPDATE CASCADE
-ON DELETE CASCADE;
-
-show tables;
-desc reviews;
+-- reviews 테이블에 데이터 insert ( json파일을 꼭 경로에 넣고 실행할것! )
+desc reviews; -- 테이블 확인용
 INSERT INTO reviews (
   ppk,
   product_name,
@@ -235,7 +168,7 @@ SELECT
   jt.upk
 FROM JSON_TABLE(
   CAST(
-    LOAD_FILE('C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/reviews.json')
+    LOAD_FILE('C://ProgramData//MySQL//MySQL Server 8.0//Uploads//reviews.json')
     AS CHAR CHARACTER SET utf8mb4
   ),
   '$.reviews[*]'
@@ -253,12 +186,9 @@ FROM JSON_TABLE(
     upk Int PATH '$.upk'
   )
 ) AS jt;
-delete from review;
-select * from reviews;
-select * from orders;
-select * from product_qna;
 
-desc product_qna;
+-- product_qna 테이블에 데이터 insert ( json파일을 꼭 경로에 넣고 실행할것! )
+desc product_qna; -- 테이블 확인용
 INSERT INTO product_qna (
   ppk,
   title,
@@ -290,76 +220,18 @@ FROM JSON_TABLE(
     upk INT PATH '$.upk'
   )
 ) AS jt;
-show tables;
-desc reviews;
-desc product;
-select * from product;
-select * from orders;
-select * from reviews;
-desc users;
-desc product_qna;
-select r.id, r.content, r.date, r.images, r.is_best, r.likes, r.ppk, r.product_name, r.tags, r.title, r.upk, u.name from reviews r, users u where r.upk = u.id;
-select pq.id,  pq.date, pq.is_private, pq.ppk, pq.status, pq.title, pq.upk, u.name as writer from  product_qna pq, users u where pq.upk = u.id;
-select p.id,o.qty, p.brand_name, p.dc, p.description, p.image_url, p.image_url_name, p.is_hot_deal, p.is_member_special, p.origin, p.pid, p.price, p.product_date, p.product_description_image, p.product_information_image, p.product_name  from orders o, product p where o.ppk = p.id;
- SELECT 
-        p.id AS id,
-        p.brand_name AS brandName,
-        p.dc AS dc,
-        p.description AS description,
-        p.image_url AS imageUrl,
-        p.image_url_name AS imageUrlName,
-        p.is_hot_deal AS isHotDeal,
-        p.is_member_special AS isMemberSpecial,
-        p.origin AS origin,
-        p.pid AS pid,
-        p.price AS price,
-        p.product_date AS productDate,
-        p.product_description_image AS productDescriptionImage,
-        p.product_information_image AS productInformationImage,
-        p.product_name AS productName
-    FROM orders o
-    JOIN product p ON o.ppk = p.id
-    GROUP BY p.id
-    ORDER BY SUM(o.qty) DESC
-    LIMIT 10;
-
-SELECT
-                        p.id AS id,
-                        p.brand_name AS brandName,
-                        p.dc AS dc,
-                        p.description AS description,
-                        p.image_url AS imageUrl,
-                        p.image_url_name AS imageUrlName,
-                        p.is_hot_deal AS isHotDeal,
-                        p.is_member_special AS isMemberSpecial,
-                        p.origin AS origin,
-                        p.pid AS pid,
-                        p.price AS price,
-                        p.product_date AS productDate,
-                        p.product_description_image AS productDescriptionImage,
-                        p.product_information_image AS productInformationImage,
-                        p.product_name AS productName
-                    FROM orders o
-                    JOIN product p ON o.ppk = p.id
-                    GROUP BY p.id
-                    ORDER BY SUM(o.qty) DESC
-                    LIMIT 10;
-                    
-                    
-show tables;
+                
 desc notice;
 
-
-
-
-select * from notice; 
--- INSERT INTO notice (
---   title,
---   content,
---   writer,
---   is_pinned,
---   created_at
--- )
+-- notice 테이블에 데이터 insert ( json파일을 꼭 경로에 넣고 실행할것! )
+desc notice; -- 테이블 확인용
+INSERT INTO notice (
+  title,
+  content,
+  writer,
+  is_pinned,
+  created_at
+)
 SELECT
   jt.title,
   jt.content,
@@ -368,7 +240,7 @@ SELECT
   jt.createdAt
 FROM JSON_TABLE(
   CAST(
-    LOAD_FILE('C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/notices.json')
+    LOAD_FILE('C://ProgramData//MySQL//MySQL Server 8.0//Uploads//notices.json')
     AS CHAR CHARACTER SET utf8mb4
   ),
   '$.noticeList[*]'
@@ -381,4 +253,76 @@ FROM JSON_TABLE(
     createdAt DATETIME PATH '$.createdAt'
   )
 ) AS jt;
+
+-- foreign key 설정 가장 마지막에 할것.
+-- 테이블 확인
+SELECT * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS where table_schema = 'candy';
+-- FOREIGN KEY 해제 ( 삭제전에 해둬야 다른 테이블 지울때 에러가 안남)
+-- FOREIGN KEY를 설정 안했다면 패스
+ALTER TABLE orders DROP FOREIGN KEY fk_orders_product;
+ALTER TABLE orders DROP FOREIGN KEY fk_orders_user;
+ALTER TABLE product_qna DROP FOREIGN KEY fk_product_qna_product;
+ALTER TABLE product_qna DROP FOREIGN KEY fk_product_qna_users;
+ALTER TABLE reviews DROP FOREIGN KEY fk_reviews_product;
+ALTER TABLE reviews DROP FOREIGN KEY fk_reviews_users;
+
+-- orders테이블 foreign key 설정 ( users테이블의 id )
+ALTER TABLE orders
+ADD CONSTRAINT fk_orders_user
+FOREIGN KEY (upk) 
+REFERENCES users(id) 
+ON UPDATE CASCADE
+ON DELETE CASCADE;
+
+-- orders테이블 foreign key 설정( product테이블의 id )
+ALTER TABLE orders
+ADD CONSTRAINT fk_orders_product
+FOREIGN KEY (ppk)
+REFERENCES product(id)
+ON UPDATE CASCADE
+ON DELETE CASCADE;
+
+-- reviews foreign key 설정 ( users테이블의 id )
+ALTER TABLE reviews
+ADD CONSTRAINT fk_reviews_users
+FOREIGN KEY (upk)
+REFERENCES users(id)
+ON UPDATE CASCADE
+ON DELETE CASCADE;
+
+-- reviews테이블 foreign key 설정( product테이블의 id )
+ALTER TABLE reviews
+ADD CONSTRAINT fk_reviews_product
+FOREIGN KEY (ppk)
+REFERENCES product(id)
+ON UPDATE CASCADE
+ON DELETE CASCADE;
+
+
+-- product_qna테이블 foreign key 설정( product테이블의 id )
+ALTER TABLE product_qna
+ADD CONSTRAINT fk_product_qna_product
+FOREIGN KEY (ppk)
+REFERENCES product(id)
+ON UPDATE CASCADE
+ON DELETE CASCADE;
+
+-- product_qna테이블 foreign key 설정( users테이블의 id )
+ALTER TABLE product_qna
+ADD CONSTRAINT fk_product_qna_users
+FOREIGN KEY (upk)
+REFERENCES users(id)
+ON UPDATE CASCADE
+ON DELETE CASCADE;
+
+
+
+
+
+
+
+
+
+
+
 
