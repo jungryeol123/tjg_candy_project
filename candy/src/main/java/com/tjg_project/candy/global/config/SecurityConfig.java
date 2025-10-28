@@ -16,8 +16,6 @@ import java.util.List;
 
 @Configuration
 public class SecurityConfig {
-
-
     private final JwtFilter jwtFilter;
     private final CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
 
@@ -40,9 +38,7 @@ public class SecurityConfig {
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
-
     }
-
 
     // ✅ CORS 허용 설정
     @Bean
@@ -57,6 +53,4 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-
-
 }

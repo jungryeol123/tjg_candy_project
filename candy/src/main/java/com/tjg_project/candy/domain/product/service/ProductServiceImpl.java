@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -42,5 +43,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getProductProductBestList() {
         return productRepository.findProductBestList();
+    }
+
+    @Override
+    public Optional<Product> getProductDetail(Long id) {
+        return productRepository.findById(id);
     }
 }

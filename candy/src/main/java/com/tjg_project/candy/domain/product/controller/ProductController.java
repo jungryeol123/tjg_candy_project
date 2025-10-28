@@ -10,15 +10,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/product")
 public class ProductController {
 
-
     @Autowired
     private ProductService productService;
-
 
     @GetMapping("/productList")
     public List<Product>  getProductList() {
@@ -38,6 +37,12 @@ public class ProductController {
     @GetMapping("/productBestList")
     public List<Product>  getProductProductBestList() {
         return productService.getProductProductBestList();
+    }
+
+    // 상품 정보 취득
+    @GetMapping("/productDetail")
+    public Optional<Product> getProductDetail(@RequestParam("id") Long id) {
+        return productService.getProductDetail(id);
     }
 
 //    @GetMapping("/productList/time")

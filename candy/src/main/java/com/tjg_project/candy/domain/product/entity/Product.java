@@ -32,6 +32,8 @@ public class Product {
     @Column(length = 100)
     private String origin;
 
+    private int count; // 재고 수량
+
     private int dc; // 할인율
 
     @Column(length = 500)
