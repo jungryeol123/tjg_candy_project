@@ -2,6 +2,7 @@ package com.tjg_project.candy.domain.order.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -10,18 +11,44 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id; // PK
 
-    // 상품 테이블의 id (Product.id)
-    @Column(nullable = false)
-    private Long ppk;
+    @Column(name = "order_code", unique = true, nullable = false, length = 50)
+    private String orderCode; // 주문 코드
 
-    // 유저 테이블의 id (User.id)
-    @Column(nullable = false)
-    private Long upk;
+    @Column(name = "upk", nullable = false)
+    private Long upk; // users.id 참조
 
-    private int qty;
+    @Column(name = "total_amount", nullable = false)
+    private int totalAmount; // 총 결제금액
 
-    @Column(name = "order_date", length = 30)
-    private String orderDate;
+    @Column(name = "shipping_fee")
+    private int shippingFee;
+
+    @Column(name = "discount_amount")
+    private int discountAmount;
+
+    @Column(name = "receiver_name", length = 50)
+    private String receiverName;
+
+    @Column(name = "receiver_phone", length = 20)
+    private String receiverPhone;
+
+    @Column(length = 10)
+    private String zipcode;
+
+    @Column(length = 100)
+    private String address1;
+
+    @Column(length = 100)
+    private String address2;
+
+    @Column(length = 200)
+    private String memo;
+
+    @Column(name = "odate")
+    private LocalDateTime odate = LocalDateTime.now();
+
+    @Column(length = 50)
+    private String tid; // 카카오페이 TID
 }
