@@ -1,54 +1,49 @@
 package com.tjg_project.candy.domain.order.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import java.time.LocalDateTime;
+import lombok.*;
 
-@Data
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
+@Getter @Setter
+@NoArgsConstructor @AllArgsConstructor @Builder
 @Table(name = "orders")
 public class Order {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // PK
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Column(name = "order_code", unique = true, nullable = false, length = 50)
-    private String orderCode; // 주문 코드
+    @Column(name = "order_code", nullable = false, unique = true, length = 50)
+    private String orderCode; // UUID
 
-    @Column(name = "upk", nullable = false)
-    private Long upk; // users.id 참조
+    @Column(nullable = false)
+    private String userId;
 
-    @Column(name = "total_amount", nullable = false)
-    private int totalAmount; // 총 결제금액
-
-    @Column(name = "shipping_fee")
+    private int totalAmount;
     private int shippingFee;
-
-    @Column(name = "discount_amount")
     private int discountAmount;
 
-    @Column(name = "receiver_name", length = 50)
     private String receiverName;
-
-    @Column(name = "receiver_phone", length = 20)
     private String receiverPhone;
-
-    @Column(length = 10)
     private String zipcode;
-
-    @Column(length = 100)
     private String address1;
-
-    @Column(length = 100)
     private String address2;
-
-    @Column(length = 200)
     private String memo;
 
-    @Column(name = "odate")
     private LocalDateTime odate = LocalDateTime.now();
 
     @Column(length = 50)
-    private String tid; // 카카오페이 TID
+    private String tid; // 카카오 TID
+
+    // ✅ 주문 상세 리스트
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderDetail> orderDetails = new ArrayList<>();
+
+    public void addOrderDetail(OrderDetail detail) {
+        orderDetails.add(detail);
+        detail.setOrder(this);
+    }
 }

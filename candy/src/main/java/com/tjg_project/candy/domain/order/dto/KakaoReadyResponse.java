@@ -1,4 +1,4 @@
-package com.tjg_project.candy.domain.order.entity;
+package com.tjg_project.candy.domain.order.dto;
 
 import lombok.Data;
 
