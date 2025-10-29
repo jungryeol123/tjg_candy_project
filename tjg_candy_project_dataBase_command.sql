@@ -331,3 +331,11 @@ ADD CONSTRAINT fk_product_del_type
 FOREIGN KEY (del_type)
 REFERENCES delivery(del_type);
 
+-- product detail용 view
+create view view_proudct_detail
+as 
+SELECT p.*, d.del_name, d.del_description
+FROM product p, delivery d
+WHERE p.del_type = d.del_type;
+
+select * from view_proudct_detail;
