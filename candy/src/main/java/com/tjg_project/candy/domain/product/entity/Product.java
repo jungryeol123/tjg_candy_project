@@ -43,6 +43,8 @@ public class Product {
 
     private boolean isMemberSpecial;
 
+    private int delType;
+
     @Column(length = 255)
     private String productDescriptionImage;
 
