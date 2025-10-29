@@ -19,6 +19,9 @@ repositories {
 }
 
 dependencies {
+    //spring security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
     //기본기능
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
