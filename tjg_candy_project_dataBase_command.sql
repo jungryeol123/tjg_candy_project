@@ -298,7 +298,6 @@ REFERENCES product(id)
 ON UPDATE CASCADE
 ON DELETE CASCADE;
 
-
 -- product_qna테이블 foreign key 설정( product테이블의 id )
 ALTER TABLE product_qna
 ADD CONSTRAINT fk_product_qna_product
@@ -315,14 +314,20 @@ REFERENCES users(id)
 ON UPDATE CASCADE
 ON DELETE CASCADE;
 
+-- delivery 테이블 생성
+CREATE TABLE delivery (
+    del_type int PRIMARY KEY,       -- 배송 타입 코드
+    del_name VARCHAR(50) NOT NULL,          -- 배송명
+    del_description TEXT NOT NULL           -- 배송 설명
+);
+-- deliverey 데이터
+INSERT INTO delivery(del_type, del_name, del_description) VALUES
+(1, '샛별배송', '23시 전 주문 시 수도권/충청 내일 아침 7시 전 도착\n그 외 지역 아침 8시 전 도착'),
+(2, '일반배송', '주문일로부터 2~3일 내 도착');
 
-
-
-
-
-
-
-
-
-
+-- product테이블 foreign key 설정 ( delivery테이블의 del_type )
+ALTER TABLE product
+ADD CONSTRAINT fk_product_del_type
+FOREIGN KEY (del_type)
+REFERENCES delivery(del_type);
 
