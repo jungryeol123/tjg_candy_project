@@ -26,4 +26,31 @@ public class UsersServiceImpl implements UsersService {
         usersRepository.signup(users);
         return false;
     }
+    @Override
+    public Users login(String id, String password) {
+        Users users = usersRepository.findById(id);
+        System.out.println("users---------" + users);
+        if (users != null && passwordEncoder.matches(password, users.getPassword())) {
+            return users;
+        }
+        return null;
+    }
+
+    @Override
+    public String findUserId(String query) {
+        Users member = usersRepository.findByEmailOrPhone(query);
+        if (member != null) {
+            return member.getUserId();
+        }
+        return null;
+    }
+
+    @Override
+    public String findPassword(String id, String query) {
+        Users member = usersRepository.findByIdAndEmailOrPhone(id, query);
+        if (member != null) {
+            return member.getPassword();
+        }
+        return null;
+    }
 }

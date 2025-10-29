@@ -1,6 +1,7 @@
 package com.tjg_project.candy.domain.user.repository;
 
 import com.tjg_project.candy.domain.user.entity.Users;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -25,4 +26,37 @@ public class JdbcTemplateUsersRepository implements UsersRepository{
         int rows = jdbcTemplate.update(sql, param);
         return false;
     }
+    @Override
+    public Users findById(String id) {
+        String sql = "SELECT * FROM users WHERE user_id = ?";
+        try {
+            Users a =  jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Users.class), id);
+            System.out.println("a ----" + a);
+            return a;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    @Override
+    public Users findByEmailOrPhone(String query) {
+        String sql = "SELECT * FROM users WHERE email = ? OR phone = ?";
+        try {
+            return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Users.class), query, query);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    @Override
+    public Users findByIdAndEmailOrPhone(String id, String query) {
+        String sql = "SELECT * FROM users WHERE user_id = ? AND (email = ? OR phone = ?)";
+        try {
+            return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Users.class), id, query, query);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+
 }
