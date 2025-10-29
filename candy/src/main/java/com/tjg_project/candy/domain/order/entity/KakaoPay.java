@@ -16,7 +16,7 @@ public class KakaoPay {
     private String totalAmount;
     private Receiver receiver;
     private PaymentInfo paymentInfo;
-    private List<Integer> cidList;
+    private List<Long> cidList;
 
     @Data
     public static class Receiver {
