@@ -1,9 +1,19 @@
 package com.tjg_project.candy.domain.product.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Value;
+import net.jcip.annotations.Immutable;
 
-@Value
+
+
+
+@Entity
+@Getter // getter생성
+@NoArgsConstructor // 기본 생성자 생성
+@Immutable // 뷰 전용(읽기만 가능, update, insert 불가)
+@Table(name = "view_product_detail")
 public class ProductDetailView {
 
     // product table
