@@ -23,8 +23,7 @@ public class UsersServiceImpl implements UsersService {
     public boolean signup (Users users) {
         String encodePwd = passwordEncoder.encode(users.getPassword());   //UUID 타입으로 생성됨
         users.setPassword(encodePwd);
-        usersRepository.signup(users);
-        return false;
+        return usersRepository.signup(users);
     }
     @Override
     public Users login(String id, String password) {

@@ -17,8 +17,7 @@ public class UserController {
 
     @PostMapping("/signup")
     public boolean signup (@RequestBody Users users) {
-        usersService.signup(users);
-        return false;
+        return usersService.signup(users);
     }
     // 로그인
     @PostMapping("/login")
