@@ -23,7 +23,7 @@ public class KakaoPayService {
 
     private final RestTemplate restTemplate = new RestTemplate();
     private final ConcurrentHashMap<String, String> tidStore = new ConcurrentHashMap<>();
-
+    String user_id = "test";
     private HttpHeaders getHeaders() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -35,7 +35,7 @@ public class KakaoPayService {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("cid", CID);
         params.add("partner_order_id", kakaoPay.getOrderId());
-        params.add("partner_user_id", kakaoPay.getUserId());
+        params.add("partner_user_id", user_id);
         params.add("item_name", kakaoPay.getItemName());
         params.add("quantity", String.valueOf(kakaoPay.getQty()));
         params.add("total_amount", String.valueOf(kakaoPay.getTotalAmount()));
@@ -53,14 +53,13 @@ public class KakaoPayService {
         return res;
     }
 
-    public KakaoApproveResponse approve(String orderId, String userId, String pgToken) {
+    public KakaoApproveResponse approve(String orderId, String pgToken) {
         String tid = tidStore.get(orderId);
-
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("cid", CID);
         params.add("tid", tid);
         params.add("partner_order_id", orderId);
-        params.add("partner_user_id", userId);
+        params.add("partner_user_id", user_id);
         params.add("pg_token", pgToken);
 
         HttpEntity<MultiValueMap<String, String>> body = new HttpEntity<>(params, getHeaders());

@@ -1,5 +1,7 @@
 package com.tjg_project.candy.domain.order.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.tjg_project.candy.domain.user.entity.Users;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,7 +11,8 @@ import java.util.List;
 
 @Entity
 @Getter @Setter
-@NoArgsConstructor @AllArgsConstructor @Builder
+@NoArgsConstructor @AllArgsConstructor
+@Builder
 @Table(name = "orders")
 public class Order {
 
@@ -19,8 +22,15 @@ public class Order {
     @Column(name = "order_code", nullable = false, unique = true, length = 50)
     private String orderCode; // UUID
 
-    @Column(nullable = false)
-    private String userId;
+//    @Column(nullable = false)
+//    private String userId;
+
+//    // ✅ 수정 후
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "upk", nullable = false)
+//    private Users user;
+
+    private Long upk;
 
     private int totalAmount;
     private int shippingFee;
@@ -40,6 +50,8 @@ public class Order {
 
     // ✅ 주문 상세 리스트
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    @JsonManagedReference
     private List<OrderDetail> orderDetails = new ArrayList<>();
 
     public void addOrderDetail(OrderDetail detail) {
