@@ -2,15 +2,14 @@ package com.tjg_project.candy.domain.product.service;
 
 
 import com.tjg_project.candy.domain.product.entity.Product;
-import com.tjg_project.candy.domain.product.entity.ProductQnA;
-import com.tjg_project.candy.domain.product.entity.ProductReview;
+import com.tjg_project.candy.domain.product.entity.ProductDetailView;
+import com.tjg_project.candy.domain.product.repository.ProductDetailViewRepository;
 import com.tjg_project.candy.domain.product.repository.ProductQnARepository;
 import com.tjg_project.candy.domain.product.repository.ProductRepository;
 import com.tjg_project.candy.domain.product.repository.ProductReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -24,6 +23,8 @@ public class ProductServiceImpl implements ProductService {
     private ProductReviewRepository productReviewRepository;
     @Autowired
     private ProductQnARepository productQnARepository;
+    @Autowired
+    private ProductDetailViewRepository productDetailViewRepository;
 
     @Override
     public List<Product> getProductList() {
@@ -46,7 +47,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Optional<Product> getProductDetail(Long id) {
-        return productRepository.findById(id);
+    public Optional<ProductDetailView> getProductDetail(Long id) {
+        return productDetailViewRepository.findById(id);
     }
 }
