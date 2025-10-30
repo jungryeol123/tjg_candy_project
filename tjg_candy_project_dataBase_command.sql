@@ -340,3 +340,6 @@ WHERE p.del_type = d.del_type;
 
 
 drop view view_prouduct_detail;
+
+
+select * from users;

@@ -22,9 +22,14 @@ public class JdbcTemplateUsersRepository implements UsersRepository{
                 users.getBirthday(), users.getEmail(), users.getGender(), users.getName(), users.getPassword(),
                 users.getPhone(), users.getProvider(), users.getUserId()
         };
+        boolean result = false;
 
         int rows = jdbcTemplate.update(sql, param);
-        return false;
+//        System.out.println(rows);
+        if(rows == 1) {
+            result = true;
+        }
+        return result;
     }
     @Override
     public Users findById(String id) {
