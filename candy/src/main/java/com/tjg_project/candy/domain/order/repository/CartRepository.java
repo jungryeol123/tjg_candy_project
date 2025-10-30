@@ -2,12 +2,18 @@ package com.tjg_project.candy.domain.order.repository;
 
 import com.tjg_project.candy.domain.order.entity.Cart;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
 public interface CartRepository extends JpaRepository<Cart, Long> {
+
+    // ✅ fetch join으로 Cart + Product를 한 번에 가져오기
+    @Query("SELECT c FROM Cart c JOIN FETCH c.product WHERE c.cid IN :cidList")
+    List<Cart> findAllWithProductByCidIn(@Param("cidList") List<Long> cidList);
 
     // ✅ 선택된 장바구니 항목 조회 (결제용)
     List<Cart> findByCidIn(List<Long> cidList);

@@ -22,8 +22,14 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public Order saveOrder(KakaoPay kakaoPay) {
 
-        // ✅ 1. cidList로 cart 항목 조회
-        List<Cart> cartItems = cartRepository.findByCidIn(kakaoPay.getCidList());
+//        // ✅ 1. cidList로 cart 항목 조회
+//        List<Cart> cartItems = cartRepository.findByCidIn(kakaoPay.getCidList());
+//        if (cartItems.isEmpty()) {
+//            throw new IllegalArgumentException("결제할 장바구니 항목이 없습니다.");
+//        }
+
+        // ✅ 1. Cart + Product 함께 조회 (N+1 방지)
+        List<Cart> cartItems = cartRepository.findAllWithProductByCidIn(kakaoPay.getCidList());
         if (cartItems.isEmpty()) {
             throw new IllegalArgumentException("결제할 장바구니 항목이 없습니다.");
         }
@@ -31,7 +37,8 @@ public class OrderServiceImpl implements OrderService {
         // ✅ 2. Order 엔티티 생성
         Order order = Order.builder()
                 .orderCode(kakaoPay.getOrderId())
-                .userId(kakaoPay.getUserId())
+//                .userId(kakaoPay.getUserId())
+                .upk(kakaoPay.getId())
                 .totalAmount(kakaoPay.getPaymentInfo().getTotalAmount())
                 .shippingFee(kakaoPay.getPaymentInfo().getShippingFee())
                 .discountAmount(kakaoPay.getPaymentInfo().getDiscountAmount())
@@ -63,5 +70,11 @@ public class OrderServiceImpl implements OrderService {
         cartRepository.deleteAll(cartItems);
 
         return savedOrder;
+    }
+
+    @Override
+    public List<Order> getOrdersByUser(Long userId) {
+        // ✅ 주문 + 상세정보 함께 조회
+        return orderRepository.findAllWithDetailsByUpk(userId);
     }
 }

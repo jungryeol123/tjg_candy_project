@@ -10,7 +10,8 @@ import java.util.List;
 @Data
 public class KakaoPay {
     private String orderId;
-    private String userId;
+    //    private String userId;
+    private Long id;
     private String itemName;
     private String qty;
     private String totalAmount;
