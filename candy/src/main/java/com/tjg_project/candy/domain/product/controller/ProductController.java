@@ -2,6 +2,7 @@ package com.tjg_project.candy.domain.product.controller;
 
 
 import com.tjg_project.candy.domain.product.entity.Product;
+import com.tjg_project.candy.domain.product.entity.ProductDetailView;
 import com.tjg_project.candy.domain.product.entity.ProductQnA;
 import com.tjg_project.candy.domain.product.entity.ProductReview;
 import com.tjg_project.candy.domain.product.service.ProductService;
@@ -41,7 +42,7 @@ public class ProductController {
 
     // 상품 정보 취득
     @GetMapping("/productDetail")
-    public Optional<Product> getProductDetail(@RequestParam("id") Long id) {
+    public Optional<ProductDetailView> getProductDetail(@RequestParam("id") Long id) {
         return productService.getProductDetail(id);
     }
 

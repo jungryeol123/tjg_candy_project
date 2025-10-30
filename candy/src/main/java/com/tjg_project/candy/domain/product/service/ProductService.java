@@ -1,6 +1,7 @@
 package com.tjg_project.candy.domain.product.service;
 
 import com.tjg_project.candy.domain.product.entity.Product;
+import com.tjg_project.candy.domain.product.entity.ProductDetailView;
 import com.tjg_project.candy.domain.product.entity.ProductQnA;
 import com.tjg_project.candy.domain.product.entity.ProductReview;
 
@@ -13,5 +14,5 @@ public interface ProductService {
     List<Map<String, Object>> getProductProductQnAList();
     List<Map<String, Object>> getProductReviewList();
     List<Product> getProductList();
-    Optional<Product> getProductDetail(Long id);
+    Optional<ProductDetailView> getProductDetail(Long id);
 }
