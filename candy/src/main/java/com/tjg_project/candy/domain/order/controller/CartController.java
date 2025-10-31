@@ -34,4 +34,9 @@ public class CartController {
         return result;
     }
 
+    // qty 업데이트
+    @PostMapping("/updateQty")
+    public int updateQty(@RequestBody Cart cart) {
+        return cartService.updateQty(cart);
+    }
 }

@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface CartService {
     CartDTO addToCart(Cart cart);
     List<Cart> cartList(Long upk);
+    int updateQty(Cart cart);
 }
