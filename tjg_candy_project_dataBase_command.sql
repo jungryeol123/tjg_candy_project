@@ -332,7 +332,7 @@ FOREIGN KEY (del_type)
 REFERENCES delivery(del_type);
 
 -- product detail용 view
-create view view_product_detailid
+create view view_product_detail
 as 
 SELECT p.*, d.del_name, d.del_description
 FROM product p, delivery d
