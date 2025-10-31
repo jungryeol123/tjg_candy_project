@@ -84,7 +84,7 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 //        response.setContentType("application/json; charset=UTF-8");
 //        response.getWriter().write("{\"success\":200, \"provider\":\"" + provider);
 
-        response.sendRedirect("http://localhost:3000/oauth/success?provider=" + provider);
+        response.sendRedirect("http://localhost:3000/oauth/success?success=200&provider=" + provider);
     }
 }
 
