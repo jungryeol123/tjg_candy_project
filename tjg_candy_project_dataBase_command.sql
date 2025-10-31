@@ -418,7 +418,7 @@ desc cart;
 INSERT INTO cart ( added_at, qty, ppk, upk) VALUES("2025-10-10", 2, 2,7);
 
 
--- delivery 테이블 생성
+-- delivery 테이블 생성ppkadded_at
 CREATE TABLE delivery (
     del_type int PRIMARY KEY,       -- 배송 타입 코드
     del_name VARCHAR(50) NOT NULL,          -- 배송명
@@ -436,14 +436,13 @@ FOREIGN KEY (del_type)
 REFERENCES delivery(del_type);
 
 -- product detail용 view
-create view view_proudct_detail
+create view view_product_detail
 as 
 SELECT p.*, d.del_name, d.del_description
 FROM product p, delivery d
 WHERE p.del_type = d.del_type;
 
-select * from view_proudct_detail;
-
+select * from view_product_detail;
 
 
 
