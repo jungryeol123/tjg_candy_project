@@ -10,15 +10,15 @@ import java.time.LocalDateTime;
 public class CartDTO {
     private Long cid;
     private int qty;
-    private Long userId;
-    private Long productId;
+    private Long upk;
+    private Long ppk;
     private LocalDateTime addedAt;
 
-    public CartDTO(Long cid, int qty, Long userId, Long productId, LocalDateTime addedAt) {
+    public CartDTO(Long cid, int qty, Long upk, Long ppk, LocalDateTime addedAt) {
         this.cid = cid;
         this.qty = qty;
-        this.userId = userId;
-        this.productId = productId;
+        this.upk = upk;
+        this.ppk = ppk;
         this.addedAt = addedAt;
     }
 }
