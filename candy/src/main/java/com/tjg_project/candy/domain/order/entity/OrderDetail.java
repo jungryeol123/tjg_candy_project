@@ -19,7 +19,7 @@ public class OrderDetail {
     @JsonBackReference
     private Order order;
 
-    private Long productId;
+    private Long ppk;
     private String productName;
     private int qty;
     private int price;
