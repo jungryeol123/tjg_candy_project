@@ -416,3 +416,43 @@ select * from users;
 select * from cart;
 desc cart;
 INSERT INTO cart ( added_at, qty, ppk, upk) VALUES("2025-10-10", 2, 2,7);
+
+
+-- delivery 테이블 생성
+CREATE TABLE delivery (
+    del_type int PRIMARY KEY,       -- 배송 타입 코드
+    del_name VARCHAR(50) NOT NULL,          -- 배송명
+    del_description TEXT NOT NULL           -- 배송 설명
+);
+-- deliverey 데이터
+INSERT INTO delivery(del_type, del_name, del_description) VALUES
+(1, '샛별배송', '23시 전 주문 시 수도권/충청 내일 아침 7시 전 도착\n그 외 지역 아침 8시 전 도착'),
+(2, '일반배송', '주문일로부터 2~3일 내 도착');
+
+-- product테이블 foreign key 설정 ( delivery테이블의 del_type )
+ALTER TABLE product
+ADD CONSTRAINT fk_product_del_type
+FOREIGN KEY (del_type)
+REFERENCES delivery(del_type);
+
+-- product detail용 view
+create view view_proudct_detail
+as 
+SELECT p.*, d.del_name, d.del_description
+FROM product p, delivery d
+WHERE p.del_type = d.del_type;
+
+select * from view_proudct_detail;
+
+
+
+
+
+
+
+
+
+
+
+
+
