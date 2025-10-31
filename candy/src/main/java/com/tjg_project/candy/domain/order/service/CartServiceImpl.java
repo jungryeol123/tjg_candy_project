@@ -60,4 +60,21 @@ public class CartServiceImpl  implements CartService {
         System.out.println(result);
         return result;
     }
+
+    @Override
+    @Transactional
+    public int updateQty(Cart cart) {
+        // 1️⃣ cid로 기존 cart 찾기
+        Cart findCart = cartRepository.findById(cart.getCid())
+                .orElseThrow(() -> new RuntimeException("Cart not found: " + cart.getCid()));
+
+        // 2️⃣ qty 수정
+        findCart.setQty(cart.getQty());
+
+        // 3️⃣ JPA가 더티체킹으로 자동 UPDATE 수행
+        // 굳이 save() 호출 안 해도 됨 (하지만 해도 무방)
+        // cartRepository.save(findCart);
+
+        return 1; // 성공 시 1 반환 (혹은 void도 OK)
+    }
 }
