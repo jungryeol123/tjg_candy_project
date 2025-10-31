@@ -20,7 +20,7 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
     List<Cart> findByCidIn(List<Long> cidList);
 
     // ✅ 특정 사용자(upk)의 장바구니 조회
-    Optional<List<Cart>> findByUser_Id(Long upk);
+    List<Cart> findByUser_Id(Long upk);
 
     // ✅ 결제 완료 후 장바구니 비우기
     void deleteByUser_Id(Long upk);
