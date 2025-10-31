@@ -18,6 +18,7 @@ public class CartController {
     // 장바구니 등록
     @PostMapping("/add")
     public Cart addToCart(@RequestBody Cart cart) {
+        System.out.println("cart : " + cart);
         return cartService.addToCart(cart);
     }
 }
