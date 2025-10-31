@@ -53,7 +53,7 @@ public class OrderServiceImpl implements OrderService {
         // ✅ 3. cart → OrderDetail 변환
         for (Cart cart : cartItems) {
             OrderDetail detail = OrderDetail.builder()
-                    .productId(cart.getProduct().getId())          // ✅ product 외래키 참조
+                    .ppk(cart.getProduct().getId())          // ✅ product 외래키 참조
                     .productName(cart.getProduct().getProductName())     // ✅ 상품명
                     .qty(cart.getQty())                           // ✅ 수량
                     .price(cart.getProduct().getPrice())          // ✅ 단가

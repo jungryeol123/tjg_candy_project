@@ -1,6 +1,7 @@
 package com.tjg_project.candy.domain.product.service;
 
 
+import com.tjg_project.candy.domain.order.repository.OrderDetailRepository;
 import com.tjg_project.candy.domain.product.entity.Product;
 import com.tjg_project.candy.domain.product.entity.ProductDetailView;
 import com.tjg_project.candy.domain.product.repository.ProductDetailViewRepository;
@@ -25,6 +26,8 @@ public class ProductServiceImpl implements ProductService {
     private ProductQnARepository productQnARepository;
     @Autowired
     private ProductDetailViewRepository productDetailViewRepository;
+    @Autowired
+    private OrderDetailRepository orderDetailRepository;
 
     @Override
     public List<Product> getProductList() {
@@ -43,7 +46,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getProductProductBestList() {
-        return productRepository.findProductBestList();
+        return orderDetailRepository.findBestSellingProducts();
     }
 
     @Override
