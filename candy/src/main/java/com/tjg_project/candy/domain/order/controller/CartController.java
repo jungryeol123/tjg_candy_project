@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/cart")
 public class CartController {
@@ -22,4 +24,13 @@ public class CartController {
         System.out.println("cart : " + cart);
         return cartService.addToCart(cart);
     }
+
+    // 장바구니 가져오기
+    @PostMapping("/cartList")
+    public List<CartDTO> cartList(@RequestBody Cart cart) {
+        System.out.println(cart.getUser().getId());
+//        return null;
+        return cartService.cartList(cart.getUser().getId());
+    }
+
 }
