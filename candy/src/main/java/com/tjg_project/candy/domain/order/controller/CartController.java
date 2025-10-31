@@ -27,10 +27,11 @@ public class CartController {
 
     // 장바구니 가져오기
     @PostMapping("/cartList")
-    public List<CartDTO> cartList(@RequestBody Cart cart) {
+    public List<Cart> cartList(@RequestBody Cart cart) {
         System.out.println(cart.getUser().getId());
 //        return null;
-        return cartService.cartList(cart.getUser().getId());
+        List<Cart> result = cartService.cartList(cart.getUser().getId());
+        return result;
     }
 
 }

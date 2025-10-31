@@ -1,5 +1,6 @@
 package com.tjg_project.candy.domain.order.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tjg_project.candy.domain.product.entity.Product;
 import com.tjg_project.candy.domain.user.entity.Users;
 import jakarta.persistence.*;
@@ -23,11 +24,13 @@ public class Cart {
     // ✅ 사용자 (users.id = upk)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "upk", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Users user;
 
     // ✅ 상품 (product.id = ppk)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ppk", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Product product;
 
     @Column(nullable = false)

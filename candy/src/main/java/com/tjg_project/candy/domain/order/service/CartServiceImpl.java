@@ -55,19 +55,9 @@ public class CartServiceImpl  implements CartService {
     }
 
     @Override
-    public List<CartDTO> cartList (Long upk) {
-        Optional<List<Cart>> result = cartRepository.findByUser_Id(upk);
-        List<CartDTO> cartDTOList;
-
-        if(result.isPresent()){
-            List<Cart> cartList = result.get();
-            for(Cart cart : cartList){
-                CartDTO cartDTO;
-                cartDTOList.add(cartDTO);
-            }
-        }
-
-
-        return result.get();
+    public List<Cart> cartList (Long upk) {
+        List<Cart> result = cartRepository.findByUser_Id(upk);
+        System.out.println(result);
+        return result;
     }
 }

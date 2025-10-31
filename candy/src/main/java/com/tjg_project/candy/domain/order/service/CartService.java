@@ -8,5 +8,5 @@ import java.util.Optional;
 
 public interface CartService {
     CartDTO addToCart(Cart cart);
-    List<CartDTO> cartList(Long upk);
+    List<Cart> cartList(Long upk);
 }
