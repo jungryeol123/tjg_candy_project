@@ -8,6 +8,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -51,5 +52,22 @@ public class CartServiceImpl  implements CartService {
                 savedCart.getProduct().getId(),
                 savedCart.getAddedAt()
         );
+    }
+
+    @Override
+    public List<CartDTO> cartList (Long upk) {
+        Optional<List<Cart>> result = cartRepository.findByUser_Id(upk);
+        List<CartDTO> cartDTOList;
+
+        if(result.isPresent()){
+            List<Cart> cartList = result.get();
+            for(Cart cart : cartList){
+                CartDTO cartDTO;
+                cartDTOList.add(cartDTO);
+            }
+        }
+
+
+        return result.get();
     }
 }
