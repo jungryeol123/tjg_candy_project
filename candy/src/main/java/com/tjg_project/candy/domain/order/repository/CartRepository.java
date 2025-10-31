@@ -26,5 +26,5 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
     void deleteByUser_Id(Long upk);
 
     // 장바구니에 존재 유무 확인
-    Optional<Cart> findByUsers_IdAndProduct_Id(Long uid, Long pid);
+    Optional<Cart> findByUser_IdAndProduct_Id(Long uid, Long pid);
 }

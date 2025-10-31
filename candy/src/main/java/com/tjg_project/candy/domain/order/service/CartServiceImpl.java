@@ -26,7 +26,7 @@ public class CartServiceImpl  implements CartService {
         // 수량
         int qty = cart.getQty();
         // 장바구니 존재 유무 체크
-        Optional<Cart> optionalCart = cartRepository.findByUsers_IdAndProduct_Id(uid,pid);
+        Optional<Cart> optionalCart = cartRepository.findByUser_IdAndProduct_Id(uid,pid);
 
         // 장바구니에 이미 존재할 경우
         if(optionalCart.isPresent()){
