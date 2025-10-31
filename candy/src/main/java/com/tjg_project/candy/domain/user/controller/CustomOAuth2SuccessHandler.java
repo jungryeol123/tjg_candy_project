@@ -108,10 +108,10 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 
         // ✅ Service 계층에 위임
         Users user = oAuth2Service.saveOrUpdate(responseMap);
-
-        // ✅ JWT 발급 및 리다이렉트
-        String token = jwtUtil.generateToken(user.getId());
-        response.sendRedirect("http://127.0.0.1:3000/oauth2/success?token=" + token);
+        System.out.println("responseMap" + responseMap);
+//        // ✅ JWT 발급 및 리다이렉트
+//        String token = jwtUtil.generateToken(user.getId());
+        response.sendRedirect("http://localhost:3000/success?success=200");
     }
 }
 

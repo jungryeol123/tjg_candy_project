@@ -1,5 +1,6 @@
 package com.tjg_project.candy.domain.order.service;
 
+import com.tjg_project.candy.domain.order.dto.KakaoApproveResponse;
 import com.tjg_project.candy.domain.order.entity.Cart;
 import com.tjg_project.candy.domain.order.entity.KakaoPay;
 import com.tjg_project.candy.domain.order.entity.Order;
@@ -20,7 +21,7 @@ public class OrderServiceImpl implements OrderService {
     private final CartRepository cartRepository;
 
     @Transactional
-    public Order saveOrder(KakaoPay kakaoPay) {
+    public Order saveOrder(KakaoApproveResponse approve, KakaoPay kakaoPay) {
 
 //        // ✅ 1. cidList로 cart 항목 조회
 //        List<Cart> cartItems = cartRepository.findByCidIn(kakaoPay.getCidList());
@@ -47,6 +48,7 @@ public class OrderServiceImpl implements OrderService {
                 .zipcode(kakaoPay.getReceiver().getZipcode())
                 .address1(kakaoPay.getReceiver().getAddress1())
                 .address2(kakaoPay.getReceiver().getAddress2())
+                .tid(approve.getTid())
                 .memo(kakaoPay.getReceiver().getMemo())
                 .build();
 
