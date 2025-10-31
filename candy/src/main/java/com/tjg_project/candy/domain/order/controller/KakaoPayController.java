@@ -41,7 +41,7 @@ public class KakaoPayController {
     @GetMapping("/qr/success")
     public ResponseEntity<Void> success(@RequestParam String orderId, @RequestParam("pg_token") String pgToken) {
         KakaoApproveResponse approve = kakaoPayService.approve(orderId, pgToken);
-        orderService.saveOrder(payInfo);
+        orderService.saveOrder(approve,payInfo);
 
         URI redirect = URI.create("http://localhost:3000/payResult?orderId=" + orderId + "&status=success");
         HttpHeaders headers = new HttpHeaders();
