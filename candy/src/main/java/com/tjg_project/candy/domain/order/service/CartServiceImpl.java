@@ -19,6 +19,7 @@ public class CartServiceImpl  implements CartService {
 
     @Override
     @Transactional // 중복 방지 Transaction
+    // 장바구니 추가
     public CartDTO addToCart(Cart cart) {
         // 상품 id
         Long pid = cart.getProduct().getId();
@@ -34,9 +35,10 @@ public class CartServiceImpl  implements CartService {
         if(optionalCart.isPresent()){
             // 기존 장바구니 수량 증가
             Cart existingCart = optionalCart.get();
+            // 기존 qty + 추가된 qty
             existingCart.setQty(existingCart.getQty() + qty);
 
-            // 프록시 초기화 없이 그대로 save
+            // 기존 장바구니 테이블의 qty값 갱신
             savedCart = cartRepository.save(existingCart);
         } else {
             // 없을경우 레코드 추가
