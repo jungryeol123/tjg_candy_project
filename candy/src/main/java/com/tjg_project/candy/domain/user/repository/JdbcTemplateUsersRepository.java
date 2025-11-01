@@ -63,5 +63,15 @@ public class JdbcTemplateUsersRepository implements UsersRepository{
         }
     }
 
+    @Override
+    public Users findByName(String name) {
+        String sql = "SELECT * FROM users WHERE name = ?";
+        try {
+            return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Users.class), name);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
 
 }

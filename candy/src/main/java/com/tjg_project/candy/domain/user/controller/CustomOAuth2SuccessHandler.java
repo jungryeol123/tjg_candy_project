@@ -74,7 +74,7 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
         String provider = token.getAuthorizedClientRegistrationId(); // "naver" or "kakao"
 
         // ✅ 서비스 계층으로 위임 (provider에 따라 파싱 다르게)
-        Users user = oAuth2Service.saveOrUpdate(oAuth2User.getAttributes(), provider);
+        Long userId = oAuth2Service.saveOrUpdate(oAuth2User.getAttributes(), provider);
 
         // ✅ JWT 발급
 //        String jwt = jwtUtil.generateToken(user.getEmail());
@@ -84,7 +84,8 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 //        response.setContentType("application/json; charset=UTF-8");
 //        response.getWriter().write("{\"success\":200, \"provider\":\"" + provider);
 
-        response.sendRedirect("http://localhost:3000/oauth/success?success=200&provider=" + provider);
+        response.sendRedirect("http://localhost:3000/oauth/success?success=200&provider="
+                + provider + "&userId=" + userId);
     }
 }
 
