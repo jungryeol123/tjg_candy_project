@@ -27,6 +27,7 @@ public class NaverPayController {
     /** ✅ 프론트에서 주문 생성 요청 시 merchantPayKey 발급 */
     @PostMapping("/order")
     public Map<String, String> createOrder(@RequestBody NaverPay naverPay) {
+        System.out.println("naver" + naverPay);
         String merchantPayKey = UUID.randomUUID().toString();
         System.out.println("🧾 네이버페이 주문 생성 완료 - merchantPayKey: " + merchantPayKey);
         System.out.println("📦 받은 주문 정보: " + naverPay);
