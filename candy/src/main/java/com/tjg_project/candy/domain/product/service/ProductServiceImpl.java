@@ -19,7 +19,7 @@ import java.util.Optional;
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
-    private ProductRepository productRepository;
+    private ProductRepository   productRepository;
     @Autowired
     private ProductReviewRepository productReviewRepository;
     @Autowired
