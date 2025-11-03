@@ -447,13 +447,9 @@ WHERE p.del_type = d.del_type;
 select * from view_product_detail;
 drop  table view_product_detail;
 
-
-
-
-
-
-
-
-
-
-
+create table product_recipe(
+	id 		int		auto_increment primary key,
+    ppk 	Long	not null,
+    description	text,
+    added_at	timestamp
+);
