@@ -34,4 +34,8 @@ public class CartController {
     public int updateQty(@RequestBody Cart cart) {
         return cartService.updateQty(cart);
     }
+
+    // 장바구니 물품 삭제
+    @PostMapping("/deleteItem")
+    public int deleteItem(@RequestBody Cart cart) { return cartService.deleteItem(cart.getCid()); }
 }
