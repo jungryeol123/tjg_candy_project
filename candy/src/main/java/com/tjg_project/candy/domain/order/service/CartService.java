@@ -9,4 +9,5 @@ public interface CartService {
     Cart addToCart(Cart cart);
     List<Cart> cartList(Long upk);
     int updateQty(Cart cart);
+    int deleteItem(Long cid);
 }

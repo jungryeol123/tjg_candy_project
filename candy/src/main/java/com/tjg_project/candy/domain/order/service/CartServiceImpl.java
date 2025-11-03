@@ -69,4 +69,14 @@ public class CartServiceImpl  implements CartService {
 
         return 1; // 성공 시 1 반환 (혹은 void도 OK)
     }
+
+    @Override
+    public int deleteItem(Long cid) {
+        if (cartRepository.existsById(cid)) {
+            cartRepository.deleteById(cid);
+            return 1; // 삭제 성공
+        } else {
+            return 0; // cid 없음
+        }
+    }
 }
