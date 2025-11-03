@@ -415,8 +415,8 @@ select * from product;
 select * from users;
 select * from cart;
 desc cart;
-INSERT INTO cart ( added_at, qty, ppk, upk) VALUES("2025-10-10", 2, 2,7);
-
+INSERT INTO cart ( added_at, qty, ppk, upk) VALUES("2025-10-10", 2, 2,1);
+select * from delivery;
 
 -- delivery 테이블 생성ppkadded_at
 CREATE TABLE delivery (
@@ -434,7 +434,9 @@ ALTER TABLE product
 ADD CONSTRAINT fk_product_del_type
 FOREIGN KEY (del_type)
 REFERENCES delivery(del_type);
+select * from product;
 
+update product set del_type = 1 ;
 -- product detail용 view
 create view view_product_detail
 as 
@@ -443,6 +445,7 @@ FROM product p, delivery d
 WHERE p.del_type = d.del_type;
 
 select * from view_product_detail;
+drop  table view_product_detail;
 
 create table product_recipe(
 	id 		int		auto_increment primary key,
