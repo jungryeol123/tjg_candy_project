@@ -453,9 +453,3 @@ create table product_recipe(
     description	text,
     added_at	timestamp
 );
-
-
-
-
-
-

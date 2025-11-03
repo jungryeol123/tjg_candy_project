@@ -14,3 +14,12 @@ kakao:
     cid: TC0ONETIME                   #가맹점 코드 (테스트용), 코드작성 ❌
     ready-path: /payment/ready        #카카오페이 호출 주소, 코드작성 ❌
     approve-path: /payment/approve    #카카오페이 인증 주소, 코드작성 ❌
+
+
+naver:
+  pay:
+    host: https://sandbox-nsp.pay.naver.com  # 테스트용 호스트
+    merchant-id: np_odjni544553          # 가맹점 ID
+    client-id: HN3GGCMDdTgGUfl0kFCo      # 클라이언트 ID
+    client-secret: ftZjkkRNMR            # 클라이언트 시크릿
+    chain-id: MG5ZbE9ZaXRrZE4            # 체인 ID

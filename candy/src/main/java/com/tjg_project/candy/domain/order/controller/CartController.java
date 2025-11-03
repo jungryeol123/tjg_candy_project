@@ -29,4 +29,9 @@ public class CartController {
         return cartService.cartList(cart.getUser().getId());
     }
 
+    // qty 업데이트
+    @PostMapping("/updateQty")
+    public int updateQty(@RequestBody Cart cart) {
+        return cartService.updateQty(cart);
+    }
 }
