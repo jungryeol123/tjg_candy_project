@@ -4,6 +4,7 @@ import com.tjg_project.candy.domain.product.entity.Product;
 import com.tjg_project.candy.domain.product.entity.ProductDetailView;
 import com.tjg_project.candy.domain.product.entity.ProductQnA;
 import com.tjg_project.candy.domain.product.entity.ProductReview;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -15,4 +16,5 @@ public interface ProductService {
     List<Map<String, Object>> getProductReviewList();
     List<Product> getProductList();
     Optional<ProductDetailView> getProductDetail(Long id);
+    Product saveProduct(Product product, MultipartFile file);
 }

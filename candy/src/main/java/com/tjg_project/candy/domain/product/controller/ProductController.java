@@ -1,6 +1,9 @@
 package com.tjg_project.candy.domain.product.controller;
 
 
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tjg_project.candy.domain.product.entity.Product;
 import com.tjg_project.candy.domain.product.entity.ProductDetailView;
 import com.tjg_project.candy.domain.product.entity.ProductQnA;
@@ -8,6 +11,7 @@ import com.tjg_project.candy.domain.product.entity.ProductReview;
 import com.tjg_project.candy.domain.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -45,11 +49,21 @@ public class ProductController {
     public Optional<ProductDetailView> getProductDetail(@RequestParam("id") Long id) {
         return productService.getProductDetail(id);
     }
+    
+    // 상품 정보 등록
+    @PostMapping("/productAdd")
+    public Product saveProduct(@RequestParam("product") String productJson,
+                               @RequestPart("file") MultipartFile file) throws JsonProcessingException {
+        // product JSON 데이터 매핑작업
+        ObjectMapper mapper = new ObjectMapper();
+        Product product = mapper.readValue(productJson, Product.class);
+
+        return productService.saveProduct(product, file);
+    }
 
 //    @GetMapping("/productList/time")
 //    public List<Product>  getProductListTime(@RequestParam(required = false, defaultValue = "time") String keyword) {
 //        return productService.getProductList(keyword);
 //    }
-
 
 }

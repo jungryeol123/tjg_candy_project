@@ -1,10 +1,20 @@
 package com.tjg_project.candy.domain.product.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GenerationTime;
+
+import java.time.LocalDate;
 
 @Data
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true) // JSON데이터에 product클래스에 없는 항목은 무시하고 존재하는 항목들만 설정
 @Table(name = "product")
 public class Product {
 
@@ -13,6 +23,7 @@ public class Product {
     private Long id; // PK
 
     @Column(length = 20, nullable = false, unique = true)
+    @Generated(GenerationTime.INSERT)
     private String pid; // 상품 코드
 
     @Column(length = 255)
@@ -30,14 +41,18 @@ public class Product {
     private int price;
 
     @Column(length = 100)
-    private String origin;
+    private String origin; // 원산지
+
+    private String unit; // 판매단위
+
+    private String weight; // 중량/용량
 
     private int count; // 재고 수량
 
     private int dc; // 할인율
 
     @Column(length = 500)
-    private String description;
+    private String description; // 상품 설명
 
     private boolean isHotDeal;
 
@@ -52,5 +67,11 @@ public class Product {
     private String productInformationImage;
 
     @Column(length = 30)
-    private String productDate;
+    private LocalDate productDate;
+
+    private String seller; // 판매자 정보
+
+    private String allergyInfo; // 알레르기 정보
+
+    private String notes; // 안내 사항
 }
