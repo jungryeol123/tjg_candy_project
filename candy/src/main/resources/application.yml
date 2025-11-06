@@ -90,7 +90,7 @@ spring:
   # ✅ 파일 업로드 경로
   # ===============================
   file:
-    upload-dir: C:\dev\tjg_project\agromarket\public\images\productImages
+    upload-dir: C:/dev/tjg_project/agromarket/public/images
 
 # ===============================
 # ✅ 카카오페이 결제 설정

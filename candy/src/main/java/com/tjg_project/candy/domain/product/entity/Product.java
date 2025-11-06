@@ -1,6 +1,7 @@
 package com.tjg_project.candy.domain.product.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.tjg_project.candy.domain.user.entity.Users;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -74,4 +75,10 @@ public class Product {
     private String allergyInfo; // 알레르기 정보
 
     private String notes; // 안내 사항
+
+    // ✅ 사용자 (users.id = upk)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "upk", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private Users user;
 }
