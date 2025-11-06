@@ -3,9 +3,12 @@ package com.tjg_project.candy.domain.user.service;
 import com.tjg_project.candy.domain.user.entity.Users;
 import com.tjg_project.candy.domain.user.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Map;
 
 @Service
 @Transactional
@@ -28,7 +31,6 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public Users login(String id, String password) {
         Users users = usersRepository.findById(id);
-        System.out.println("users---------" + users);
         if (users != null && passwordEncoder.matches(password, users.getPassword())) {
             return users;
         }
