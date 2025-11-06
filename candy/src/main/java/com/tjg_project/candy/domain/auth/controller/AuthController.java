@@ -48,14 +48,14 @@ public class AuthController {
         ResponseCookie cookie = ResponseCookie.from("refresh_token", refresh.getToken())
                 .httpOnly(true)
                 .secure(false) // 배포 시 true
-                .path("/auth/refresh")
+                .path("/")
                 .maxAge(7 * 24 * 60 * 60)
-                .sameSite("Strict")
+                .sameSite("None")
                 .build();
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .body(Map.of("accessToken", accessToken, "userId", user.getUserId()));
+                .body(Map.of("accessToken", accessToken));
     }
 
     /**
@@ -81,14 +81,15 @@ public class AuthController {
      */
     @PostMapping("/logout")
     public ResponseEntity<?> logout(@CookieValue(value = "refresh_token", required = false) String token) {
+        System.out.println("✅ verifyToken() token = " + token);
         if (token != null) {
             authService.verifyToken(token).ifPresent(t -> authService.deleteByUserId(t.getUserId()));
         }
-
         ResponseCookie expiredCookie = ResponseCookie.from("refresh_token", "")
                 .httpOnly(true)
                 .secure(false)
-                .path("/auth/refresh")
+                .path("/")
+                .sameSite("None")
                 .maxAge(0)
                 .build();
 

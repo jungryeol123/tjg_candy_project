@@ -34,7 +34,7 @@ public class SecurityConfig {
                 .formLogin(form -> form.disable())   // ✅ 기본 폼 로그인 끄기
                 .httpBasic(basic -> basic.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/","/login","/product/**", "/notice/**", "/member/**", "/cart/**", "/orders/**", "/payment/**", "/delivery/**","/auth/**").permitAll().anyRequest().authenticated())
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/","/login","/product/**", "/notice/**", "/member/**", "/cart/**", "/orders/**", "/payment/**", "/delivery/**","/auth/**", "/oauth2/**").permitAll().anyRequest().authenticated())
                 .oauth2Login(oauth -> oauth     // ✅ OAuth2 로그인 활성화
                         .successHandler(customOAuth2SuccessHandler)// 로그인 성공 후 리다이렉트 URL
                 )
@@ -46,11 +46,11 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:3000","http://127.0.0.1:3000")); // 프론트 도메인
+        configuration.setAllowedOrigins(List.of("http://localhost:3000","https://localhost:3000","http://127.0.0.1:3000")); // 프론트 도메인
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true); // 쿠키/헤더 인증 허용
-
+        configuration.setExposedHeaders(List.of("Authorization"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

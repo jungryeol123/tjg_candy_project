@@ -28,7 +28,7 @@ import static com.tjg_project.candy.global.common.Constants.*;
 public class ProductServiceImpl implements ProductService {
 
     // 파일 업로드(application.yml의 file)
-    @Value("${spring.file.upload-dir}")
+    @Value("${file.upload-dir}")
     private String uploadDir;
 
     @Autowired
