@@ -16,5 +16,5 @@ public interface ProductService {
     List<Map<String, Object>> getProductReviewList();
     List<Product> getProductList();
     Optional<ProductDetailView> getProductDetail(Long id);
-    Product saveProduct(Product product, MultipartFile file);
+    Product saveProduct(Product product, List<MultipartFile> files);
 }

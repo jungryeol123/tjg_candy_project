@@ -1,11 +1,7 @@
 package com.tjg_project.candy.domain.delivery.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.tjg_project.candy.domain.product.entity.Product;
 import jakarta.persistence.*;
 import lombok.Data;
-
-import java.time.LocalDateTime;
 
 @Data
 @Entity

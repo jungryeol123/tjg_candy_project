@@ -22,6 +22,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.tjg_project.candy.global.common.Constants.*;
+
 @Service
 public class ProductServiceImpl implements ProductService {
 
@@ -67,30 +69,55 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     // 상품 정보 등록
-    public Product saveProduct(Product product, MultipartFile file){
-        // 파일명 취득(업로드시 파일명)
-        String originalFilename = file.getOriginalFilename();
-        // 파일명 중복방지 UUID_기존파일명
-        String filename = UUID.randomUUID() + "_" + originalFilename;
+    public Product saveProduct(Product product, List<MultipartFile> files){
 
-        // 파일을 저장할 디렉토리 취득
-        Path path = Paths.get(uploadDir, filename);
+        for(int i = 0; i < files.size(); i++){
+            // 파일명 취득(업로드시 파일명)
+            String originalFilename = files.get(i).getOriginalFilename();
+            // 파일명 중복방지 UUID_기존파일명
+            String filename = UUID.randomUUID() + "_" + originalFilename;
+            // 파일명 변경
+            String uploadFileDir = uploadDir;
+            
+            // 상품, 속성, 이미지 구분
+            switch (i){
+                case PRODUCT_IMAGES:
+                    // 상품 이미지 저장 장소
+                    uploadFileDir += "/productImages";
+                    // 상품 이미지 정보 설정
+                    product.setImageUrl(filename);
+                    product.setImageUrlName(originalFilename);
+                    break;
+                case PRODUCT_INFORMATION:
+                    // 속성 이미지 저장 장소
+                    uploadFileDir += "/productInformation";
+                    // 속성 이미지 정보 설정
+                    product.setProductInformationImage(filename);
+                    break;
+                case PRODUCT_DESCRIPTION:
+                    // 상세 이미지 저장 장소
+                    uploadFileDir += "/productDescription";
+                    // 상세 이미지 정보 설정
+                    product.setProductDescriptionImage(filename);
+                    break;
+            }
 
-        // 파일을 저장할 디렉토리가 없으면 생성 후 저장
-        try {
-            Files.createDirectories(path.getParent());
-            Files.write(path, file.getBytes());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            // 파일을 저장할 디렉토리 취득
+            Path path = Paths.get(uploadFileDir, filename);
+
+            // 파일을 저장할 디렉토리가 없으면 생성 후 저장
+            try {
+                Files.createDirectories(path.getParent());
+                Files.write(path, files.get(i).getBytes());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
 
         // 핫딜 정보 설정(DC값이 설정되있으면 true 아니면 false)
         product.setHotDeal(product.getDc() != 0);
         // 등록 날짜
         product.setProductDate(LocalDate.now());
-        // 이미지 정보 설정
-        product.setImageUrl(filename);
-        product.setImageUrlName(originalFilename);
 
         // product테이블에 등록
         return productRepository.save(product);

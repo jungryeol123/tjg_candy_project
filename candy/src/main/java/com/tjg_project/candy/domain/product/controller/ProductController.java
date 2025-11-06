@@ -53,12 +53,12 @@ public class ProductController {
     // 상품 정보 등록
     @PostMapping("/productAdd")
     public Product saveProduct(@RequestParam("product") String productJson,
-                               @RequestPart("file") MultipartFile file) throws JsonProcessingException {
+                               @RequestPart("files") List<MultipartFile> files) throws JsonProcessingException {
         // product JSON 데이터 매핑작업
         ObjectMapper mapper = new ObjectMapper();
         Product product = mapper.readValue(productJson, Product.class);
 
-        return productService.saveProduct(product, file);
+        return productService.saveProduct(product, files);
     }
 
 //    @GetMapping("/productList/time")

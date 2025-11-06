@@ -1,12 +1,9 @@
-
 SHOW DATABASES;
 use candy;
 show tables;
-desc product;
-    
-    CREATE DATABASE candy CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-show variables like 'secure_file_priv';
 
+CREATE DATABASE candy CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+show variables like 'secure_file_priv';
 
 delimiter $$
 create trigger  before_insert_product
@@ -92,7 +89,7 @@ FROM JSON_TABLE(
 
 
 
-SET SQL_SAFE_UPDATES = 0;
+
 delete from product;
 select * from product;
 select * from users;
@@ -445,7 +442,10 @@ FROM product p, delivery d
 WHERE p.del_type = d.del_type;
 
 select * from view_product_detail;
-drop  table view_product_detail;
+drop view view_product_detail;
+
+select * from product;
+desc product;
 
 create table product_recipe(
 	id 		int		auto_increment primary key,
@@ -453,3 +453,7 @@ create table product_recipe(
     description	text,
     added_at	timestamp
 );
+
+-- 20251106 이승수 추가 : product의 upk 항목 추가로 인한 설정.(users id를 외래키로 사용)
+update product set upk = 1;
+
