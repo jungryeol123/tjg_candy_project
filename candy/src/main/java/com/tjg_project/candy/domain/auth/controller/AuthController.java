@@ -45,7 +45,7 @@ public class AuthController {
         RefreshToken refresh = authService.createRefreshToken(userId);
 
         // ✅ HttpOnly 쿠키에 RefreshToken 저장
-        ResponseCookie cookie = ResponseCookie.from("JSESSIONID", refresh.getToken())
+        ResponseCookie cookie = ResponseCookie.from("refresh_token", refresh.getToken())
                 .httpOnly(true)
                 .secure(false) // 배포 시 true
                 .path("/")
@@ -80,12 +80,12 @@ public class AuthController {
      * ✅ 로그아웃 처리
      */
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(@CookieValue(value = "JSESSIONID", required = false) String token) {
+    public ResponseEntity<?> logout(@CookieValue(value = "refresh_token", required = false) String token) {
         System.out.println("✅ verifyToken() token = " + token);
         if (token != null) {
             authService.verifyToken(token).ifPresent(t -> authService.deleteByUserId(t.getUserId()));
         }
-        ResponseCookie expiredCookie = ResponseCookie.from("JSESSIONID", "")
+        ResponseCookie expiredCookie = ResponseCookie.from("refresh_token", "")
                 .httpOnly(true)
                 .secure(false)
                 .path("/")
