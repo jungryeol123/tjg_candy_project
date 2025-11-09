@@ -53,8 +53,8 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
         ResponseCookie cookie = ResponseCookie.from("refresh_token", refresh.getToken())
                 .httpOnly(true)
                 .secure(false) // ⚠️ HTTPS 환경에서는 true로 변경
-                .sameSite("Strict")
-                .path("/auth/refresh")
+                .sameSite("Lax")
+                .path("/")
                 .maxAge(7 * 24 * 60 * 60)
                 .build();
 
