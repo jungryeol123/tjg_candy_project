@@ -57,7 +57,6 @@
 //}
 
 
-
 package com.tjg_project.candy.global.util;
 
 import io.jsonwebtoken.Claims;
@@ -65,6 +64,7 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
@@ -77,11 +77,18 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    private final String secret = "MySuperSecretkeyForJwtGeneration123456";
-    private final Key key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+    private final Key key;
+    //
+//    // ✅ AccessToken: 10분
+//    private final long accessTokenExpiration = 1000 * 60 * 10;
+// ✅ AccessToken: 10분
+    private final long accessTokenExpiration = 1000 * 10;
 
-    // ✅ AccessToken: 10분
-    private final long accessTokenExpiration = 1000 * 60 * 10;
+
+    // ✅ secret이 주입된 뒤 Key 생성
+    public JwtUtil(@Value("${jwt.secret}") String secret) {
+        this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+    }
 
     /**
      * ✅ AccessToken 생성 (10분)
