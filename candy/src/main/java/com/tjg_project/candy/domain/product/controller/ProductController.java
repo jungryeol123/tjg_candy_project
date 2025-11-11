@@ -61,6 +61,17 @@ public class ProductController {
         return productService.saveProduct(product, files);
     }
 
+    // 상품 정보 수정
+    @PostMapping("/productUpdate")
+    public Product updateProduct(@RequestParam("product") String productJson,
+                               @RequestPart("files") List<MultipartFile> files) throws JsonProcessingException {
+        // product JSON 데이터 매핑작업
+        ObjectMapper mapper = new ObjectMapper();
+        Product product = mapper.readValue(productJson, Product.class);
+
+        return productService.updateProduct(product, files);
+    }
+
 //    @GetMapping("/productList/time")
 //    public List<Product>  getProductListTime(@RequestParam(required = false, defaultValue = "time") String keyword) {
 //        return productService.getProductList(keyword);
