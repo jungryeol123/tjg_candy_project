@@ -114,9 +114,21 @@ public class JwtUtil {
         return claims.get("id", Long.class);
     }
 
-    /**
-     * ✅ 토큰 유효성 검증
-     */
+//    /**
+//     * ✅ 토큰 유효성 검증
+//     */
+//    public boolean validateToken(String token) {
+//        try {
+//            Jwts.parserBuilder()
+//                    .setSigningKey(key)
+//                    .build()
+//                    .parseClaimsJws(token);
+//            return true;
+//        } catch (JwtException | IllegalArgumentException e) {
+//            return false;
+//        }
+//    }
+
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder()
@@ -124,8 +136,16 @@ public class JwtUtil {
                     .build()
                     .parseClaimsJws(token);
             return true;
-        } catch (JwtException | IllegalArgumentException e) {
-            return false;
+        } catch (io.jsonwebtoken.ExpiredJwtException e) {
+            System.out.println("❌ JWT expired: " + e.getMessage());
+        } catch (io.jsonwebtoken.MalformedJwtException e) {
+            System.out.println("❌ JWT malformed: " + e.getMessage());
+        } catch (io.jsonwebtoken.SignatureException e) {
+            System.out.println("❌ JWT signature invalid: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("❌ JWT invalid: " + e.getMessage());
         }
+        return false;
     }
+
 }

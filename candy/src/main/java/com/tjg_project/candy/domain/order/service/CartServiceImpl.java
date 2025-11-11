@@ -49,7 +49,7 @@ public class CartServiceImpl  implements CartService {
     @Override
     public List<Cart> cartList (Long upk) {
         List<Cart> result = cartRepository.findByUser_Id(upk);
-        System.out.println(result);
+        System.out.println("result"+result);
         return result;
     }
 
