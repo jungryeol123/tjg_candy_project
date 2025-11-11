@@ -24,7 +24,7 @@ drop table product;
 
 
 INSERT INTO PRODUCT(brand_name, dc, description, image_url, image_url_name, is_hot_deal, is_member_special, origin, price, product_date, product_description_image,
-product_information_image, product_name)
+product_information_image, product_name, count, delType, allergyInfo, seller, unit, weight, notes, upk)
 SELECT 
     jt.brandName,
     jt.dc,
@@ -38,7 +38,15 @@ SELECT
     jt.productDate,
     jt.productDescriptionImage,
     jt.productInformationImage,
-    jt.productName
+    jt.productName,
+    jt.count,
+    jt.delType,
+    jt.allergyInfo,
+    jt.seller,
+    jt.unit,
+    jt.weight,
+    jt.notes,
+    jt.upk
 FROM JSON_TABLE(
     CAST(
         LOAD_FILE('C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/foodData.json')
@@ -57,9 +65,20 @@ FROM JSON_TABLE(
         productDate VARCHAR(20) PATH '$.productDate',
         productDescriptionImage VARCHAR(255) PATH '$.productDescriptionImage',
         productInformationImage VARCHAR(255) PATH '$.productInformationImage',
-        productName VARCHAR(200) PATH '$.productName'
+        productName VARCHAR(200) PATH '$.productName',
+        count int PATH '$.count',
+        delType int PATH '$.delType',
+        allergyInfo VARCHAR(255) PATH '$.allergyInfo',
+        seller VARCHAR(255) PATH '$.seller',
+        unit VARCHAR(255) PATH '$.unit',
+        weight VARCHAR(255) PATH '$.weight',
+        notes VARCHAR(255) PATH '$.notes',
+        upk bigint PATH '$.upk'
     )
 ) AS jt;
+
+desc product;
+
 
 select * from users;
 select * from product;
@@ -453,7 +472,14 @@ create table product_recipe(
     description	text,
     added_at	timestamp
 );
+desc cart;
+
+select * from reviews;
+
+update reviews set images = "[""/images/reviewImages/review1.png"", ""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png""]"
+where id = 1;
 
 -- 20251106 이승수 추가 : product의 upk 항목 추가로 인한 설정.(users id를 외래키로 사용)
 update product set upk = 1;
 
+select * from cart;

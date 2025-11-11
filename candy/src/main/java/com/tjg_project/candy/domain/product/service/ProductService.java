@@ -17,4 +17,5 @@ public interface ProductService {
     List<Product> getProductList();
     Optional<ProductDetailView> getProductDetail(Long id);
     Product saveProduct(Product product, List<MultipartFile> files);
+    Product updateProduct(Product product, List<MultipartFile> files);
 }

@@ -84,4 +84,5 @@ naver:
     client-secret: ftZjkkRNMR
     chain-id: MG5ZbE9ZaXRrZE4
 
-
+jwt:
+  secret: ${JWT_SECRET:MySuperSecretkeyForJwtGeneration123456}
