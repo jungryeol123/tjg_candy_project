@@ -94,13 +94,17 @@ public class AuthController {
     public ResponseEntity<?> refresh(
             @CookieValue(value = "refresh_token", required = false) String token,
             @CookieValue(value = "XSRF-TOKEN", required = false) String csrfCookie,
-            @RequestHeader(value = "X-CSRF-Token", required = false) String csrfHeader,
+            @RequestHeader(value = "X-XSRF-Token", required = false) String csrfHeader,
             HttpServletRequest request
     ) {
+
+        System.out.println("refresh_token" + token);
+        System.out.println("XSRF-TOKEN"+ csrfCookie);
+        System.out.println("X-XSRF-Token"+csrfHeader);
         // ✅ Origin 검증 (CORS 허용 도메인만 통과)
         String origin = request.getHeader("Origin");
         String referer = request.getHeader("Referer");
-        if (origin != null && !origin.equals("http://localhost:3000") && !origin.equals("https://yourdomain.com")) {
+        if (origin == null && !origin.equals("http://localhost:3000")) {
             return ResponseEntity.status(403).body(Map.of("error", "Invalid origin"));
         }
         if (referer == null || allowedOrigins.stream().noneMatch(referer::startsWith)) {

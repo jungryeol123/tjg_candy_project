@@ -22,7 +22,7 @@ public class RefreshToken {
     private Long userId;
 
     // ✅ 토큰 문자열
-    @Column(nullable = false, unique = true)
+    @Column(length = 64, nullable = false, unique = true)
     private String token;
 
     // ✅ 만료 시간
