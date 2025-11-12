@@ -1,9 +1,12 @@
+
 SHOW DATABASES;
 use candy;
 show tables;
-
-CREATE DATABASE candy CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+desc product;
+    
+    CREATE DATABASE candy CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 show variables like 'secure_file_priv';
+
 
 delimiter $$
 create trigger  before_insert_product
@@ -24,7 +27,7 @@ drop table product;
 
 
 INSERT INTO PRODUCT(brand_name, dc, description, image_url, image_url_name, is_hot_deal, is_member_special, origin, price, product_date, product_description_image,
-product_information_image, product_name, count, delType, allergyInfo, seller, unit, weight, notes, upk)
+product_information_image, product_name)
 SELECT 
     jt.brandName,
     jt.dc,
@@ -38,15 +41,7 @@ SELECT
     jt.productDate,
     jt.productDescriptionImage,
     jt.productInformationImage,
-    jt.productName,
-    jt.count,
-    jt.delType,
-    jt.allergyInfo,
-    jt.seller,
-    jt.unit,
-    jt.weight,
-    jt.notes,
-    jt.upk
+    jt.productName
 FROM JSON_TABLE(
     CAST(
         LOAD_FILE('C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/foodData.json')
@@ -65,20 +60,9 @@ FROM JSON_TABLE(
         productDate VARCHAR(20) PATH '$.productDate',
         productDescriptionImage VARCHAR(255) PATH '$.productDescriptionImage',
         productInformationImage VARCHAR(255) PATH '$.productInformationImage',
-        productName VARCHAR(200) PATH '$.productName',
-        count int PATH '$.count',
-        delType int PATH '$.delType',
-        allergyInfo VARCHAR(255) PATH '$.allergyInfo',
-        seller VARCHAR(255) PATH '$.seller',
-        unit VARCHAR(255) PATH '$.unit',
-        weight VARCHAR(255) PATH '$.weight',
-        notes VARCHAR(255) PATH '$.notes',
-        upk bigint PATH '$.upk'
+        productName VARCHAR(200) PATH '$.productName'
     )
 ) AS jt;
-
-desc product;
-
 
 select * from users;
 select * from product;
@@ -108,7 +92,7 @@ FROM JSON_TABLE(
 
 
 
-
+SET SQL_SAFE_UPDATES = 0;
 delete from product;
 select * from product;
 select * from users;
@@ -432,7 +416,7 @@ select * from users;
 select * from cart;
 desc cart;
 INSERT INTO cart ( added_at, qty, ppk, upk) VALUES("2025-10-10", 2, 2,1);
-select * from delivery;
+
 
 -- delivery 테이블 생성ppkadded_at
 CREATE TABLE delivery (
@@ -450,9 +434,7 @@ ALTER TABLE product
 ADD CONSTRAINT fk_product_del_type
 FOREIGN KEY (del_type)
 REFERENCES delivery(del_type);
-select * from product;
 
-update product set del_type = 1 ;
 -- product detail용 view
 create view view_product_detail
 as 
@@ -461,25 +443,21 @@ FROM product p, delivery d
 WHERE p.del_type = d.del_type;
 
 select * from view_product_detail;
-drop view view_product_detail;
-
-select * from product;
-desc product;
-
-create table product_recipe(
-	id 		int		auto_increment primary key,
-    ppk 	Long	not null,
-    description	text,
-    added_at	timestamp
-);
-desc cart;
-
-select * from reviews;
-
-update reviews set images = "[""/images/reviewImages/review1.png"", ""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png"",""/images/reviewImages/review2.png""]"
-where id = 1;
-
--- 20251106 이승수 추가 : product의 upk 항목 추가로 인한 설정.(users id를 외래키로 사용)
-update product set upk = 1;
 
 select * from cart;
+desc cart;
+select * from product;
+
+update product set upk = 1;
+show tables;
+select * from view_product_detail;
+
+
+desc view_product_detail;
+
+drop view view_product_detail;
+
+select * from cart;
+select * from users;
+select * from users where user_id = "asdf";
+select count(*) from users;

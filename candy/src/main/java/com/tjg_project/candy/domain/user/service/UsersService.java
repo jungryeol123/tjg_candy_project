@@ -7,4 +7,5 @@ public interface UsersService {
     Users login(String id, String password);
     String findUserId(String query);
     String findPassword(String id, String query);
+    boolean idcheck(Users users);
 }
