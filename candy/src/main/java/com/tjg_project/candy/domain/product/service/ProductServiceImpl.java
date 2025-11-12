@@ -7,7 +7,6 @@ import com.tjg_project.candy.domain.product.repository.ProductDetailViewReposito
 import com.tjg_project.candy.domain.product.repository.ProductQnARepository;
 import com.tjg_project.candy.domain.product.repository.ProductRepository;
 import com.tjg_project.candy.domain.product.repository.ProductReviewRepository;
-import com.tjg_project.candy.global.common.ProductImageType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -25,6 +24,11 @@ import java.util.UUID;
 
 @Service
 public class ProductServiceImpl implements ProductService {
+
+    // 상품, 속성, 이미지 구분
+    public final static int PRODUCT_IMAGES = 1;
+    public final static int PRODUCT_INFORMATION = 2;
+    public final static int PRODUCT_DESCRIPTION = 3;
 
     // 파일 업로드(application.yml의 file)
     @Value("${file.upload-dir}")
@@ -131,11 +135,9 @@ public class ProductServiceImpl implements ProductService {
         String filename = UUID.randomUUID() + "_" + originalFilename;
         // 파일명 변경
         String uploadFileDir = uploadDir;
-        // 상품 타입 추출
-        ProductImageType type = ProductImageType.fromCode(idx);
 
         // 상품, 속성, 이미지 구분
-        switch (type) {
+        switch (idx) {
             case PRODUCT_IMAGES:
                 // 상품 이미지 저장 장소
                 uploadFileDir += "/productImages";
