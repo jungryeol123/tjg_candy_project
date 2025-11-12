@@ -22,10 +22,13 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.tjg_project.candy.global.common.Constants.*;
-
 @Service
 public class ProductServiceImpl implements ProductService {
+
+    // 상품, 속성, 이미지 구분
+    public final static int PRODUCT_IMAGES = 1;
+    public final static int PRODUCT_INFORMATION = 2;
+    public final static int PRODUCT_DESCRIPTION = 3;
 
     // 파일 업로드(application.yml의 file)
     @Value("${file.upload-dir}")
