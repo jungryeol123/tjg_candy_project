@@ -72,29 +72,12 @@ public class AuthController {
                 .body(Map.of("accessToken", accessToken));
     }
 
-//    /**
-//     * ✅ AccessToken 재발급
-//     */
-//    @PostMapping("/refresh")
-//    public ResponseEntity<?> refresh(@CookieValue(value = "refresh_token", required = false) String token) {
-//        if (token == null)
-//            return ResponseEntity.status(401).body(Map.of("error", "No refresh token"));
-//
-//        Optional<RefreshToken> refresh = authService.verifyToken(token);
-//        if (refresh.isEmpty())
-//            return ResponseEntity.status(401).body(Map.of("error", "Invalid or expired refresh token"));
-//
-//        Long userId = refresh.get().getUserId();
-//        String newAccessToken = jwtUtil.generateAccessToken(userId);
-//
-//        return ResponseEntity.ok(Map.of("accessToken", newAccessToken));
-//    }
 
     @PostMapping("/refresh")
     public ResponseEntity<?> refresh(
             @CookieValue(value = "refresh_token", required = false) String token,
             @CookieValue(value = "XSRF-TOKEN", required = false) String csrfCookie,
-            @RequestHeader(value = "X-XSRF-Token", required = false) String csrfHeader,
+            @RequestHeader(value = "X-XSRF-TOKEN", required = false) String csrfHeader,
             HttpServletRequest request
     ) {
 
@@ -104,6 +87,7 @@ public class AuthController {
         // ✅ Origin 검증 (CORS 허용 도메인만 통과)
         String origin = request.getHeader("Origin");
         String referer = request.getHeader("Referer");
+        System.out.println("origin"+ origin);
         if (origin == null && !origin.equals("http://localhost:3000")) {
             return ResponseEntity.status(403).body(Map.of("error", "Invalid origin"));
         }
@@ -136,8 +120,20 @@ public class AuthController {
                 .maxAge(7 * 24 * 60 * 60)
                 .build();
 
+        // ✅ 새로운 CSRF 토큰 생성 (이게 중요)
+        String newCsrf = UUID.randomUUID().toString();
+        ResponseCookie csrfCookieNew = ResponseCookie.from("XSRF-TOKEN", newCsrf)
+                .httpOnly(false)
+                .secure(false)
+                .path("/")
+                .sameSite("Lax")
+                .maxAge(7 * 24 * 60 * 60)
+                .build();
+
+
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .header(HttpHeaders.SET_COOKIE, csrfCookieNew.toString())
                 .body(Map.of("accessToken", newAccessToken));
     }
 
