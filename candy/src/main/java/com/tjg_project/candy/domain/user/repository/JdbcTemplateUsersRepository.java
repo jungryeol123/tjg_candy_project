@@ -17,10 +17,11 @@ public class JdbcTemplateUsersRepository implements UsersRepository{
 
     @Override
     public boolean signup(Users users) {
-        String sql = "insert into users(birthday, email, gender, name, password, phone, provider, user_id, address, recommendation) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "insert into users(birthday, email, gender, name, password, phone, provider, user_id, address, recommendation, zonecode) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         Object[] param = {
                 users.getBirthday(), users.getEmail(), users.getGender(), users.getName(), users.getPassword(),
-                users.getPhone(), users.getProvider(), users.getUserId(), users.getAddress(), users.getRecommendation()
+                users.getPhone(), users.getProvider(), users.getUserId(), users.getAddress(), users.getRecommendation(),
+                users.getZonecode()
         };
         boolean result = false;
 

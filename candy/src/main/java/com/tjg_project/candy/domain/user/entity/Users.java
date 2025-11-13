@@ -41,4 +41,7 @@ public class Users {
 
     @Column(length = 100)
     private String recommendation;
+
+    @Column(length = 5)
+    private String zonecode;
 }
