@@ -39,7 +39,10 @@ public class SecurityConfig {
                         .authenticationEntryPoint((req, res, e) -> res.setStatus(HttpServletResponse.SC_UNAUTHORIZED))
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/", "/login", "/product/**", "/notice/**", "/member/**", "/orders/**", "/payment/**", "/delivery/**", "/auth/**", "/oauth2/**", "/csrf", "/cart/**").permitAll().anyRequest().authenticated())
+                .authorizeHttpRequests(auth ->
+                        auth.requestMatchers("/", "/login", "/product/**", "/notice/**", "/member/**",
+                                "/orders/**", "/payment/**", "/delivery/**", "/auth/**", "/oauth2/**", "/csrf",
+                                "/cart/**", "/category/**").permitAll().anyRequest().authenticated())
                 .oauth2Login(oauth -> oauth     // ✅ OAuth2 로그인 활성화
                         .successHandler(customOAuth2SuccessHandler)// 로그인 성공 후 리다이렉트 URL
                 )
