@@ -26,9 +26,9 @@ import java.util.UUID;
 public class ProductServiceImpl implements ProductService {
 
     // 상품, 속성, 이미지 구분
-    public final static int PRODUCT_IMAGES = 1;
-    public final static int PRODUCT_INFORMATION = 2;
-    public final static int PRODUCT_DESCRIPTION = 3;
+    private final static int PRODUCT_IMAGES = 1;
+    private final static int PRODUCT_INFORMATION = 2;
+    private final static int PRODUCT_DESCRIPTION = 3;
 
     // 파일 업로드(application.yml의 file)
     @Value("${file.upload-dir}")
@@ -107,6 +107,7 @@ public class ProductServiceImpl implements ProductService {
         findProduct.setSeller(product.getSeller());
         findProduct.setUnit(product.getUnit());
         findProduct.setWeight(product.getWeight());
+        findProduct.setCategorySub(product.getCategorySub());
 
         // 이미지 정보 설정
         for (int idx = 0; idx < files.size(); idx++) {
@@ -157,6 +158,8 @@ public class ProductServiceImpl implements ProductService {
                 // 상세 이미지 정보 설정
                 product.setProductDescriptionImage(filename);
                 break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + idx);
         }
 
         // 파일을 저장할 디렉토리 취득

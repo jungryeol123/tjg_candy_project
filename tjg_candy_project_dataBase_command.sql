@@ -454,11 +454,17 @@ select * from product;
 
 update product set del_type = 1 ;
 -- product detail용 view
+-- 20251113 이승수 view_product_detail 업데이트
 create view view_product_detail
 as 
-SELECT p.*, d.del_name, d.del_description
-FROM product p, delivery d
-WHERE p.del_type = d.del_type;
+SELECT p.*, d.del_name, d.del_description, cm.id as category_main_id
+FROM product p, delivery d, category_main cm, category_sub cs
+WHERE p.del_type = d.del_type
+AND cm.id = cs.main_id
+AND cs.id = p.category_sub_id;
+
+select * from product;
+select * from category_sub;
 
 select * from view_product_detail;
 drop view view_product_detail;
@@ -482,4 +488,51 @@ where id = 1;
 -- 20251106 이승수 추가 : product의 upk 항목 추가로 인한 설정.(users id를 외래키로 사용)
 update product set upk = 1;
 
-select * from cart;
+-- 20251113 이승수 추가 : category_main, category_sub 테이블 생성 및 데이터
+-- 대분류
+INSERT INTO category_main (name, display_order, is_used) VALUES
+('신선식품', 1, true),('가공식품', 2, true),('간편식/즉석식품', 3, true),('음료/유제품', 4, true),('과자/베이커리', 5, true),('건강식품', 6, true),('주류/전통주', 7, true);
+
+-- 중분류
+INSERT INTO category_sub (main_id, name, display_order, is_used) VALUES
+-- 신선식품 1~5
+(1, '정육', 1, true),(1, '수산물', 2, true),(1, '과일', 3, true),(1, '채소', 4, true),(1, '계란', 5, true),
+-- 가공식품 6~9
+(2, '라면/면류', 1, true),(2, '통조림/즉석조리', 2, true),(2, '조미료/양념', 3, true),(2, '소스/드레싱', 4, true),
+-- 간편식/즉석식품 10~13
+(3, '냉동식품', 1, true),(3, '도시락/볶음밥', 2, true),(3, '국/탕/찌개', 3, true),(3, '죽/스프', 4, true),
+-- 음료/유제품 14~18
+(4, '생수/탄산수', 1, true),(4, '커피/차', 2, true),(4, '주스/에이드', 3, true),(4, '우유/요거트', 4, true),(4, '치즈/버터', 5, true),
+-- 과자/베이커리 19~22
+(5, '스낵/쿠키', 1, true),(5, '초콜릿/젤리', 2, true),(5, '빵/케이크', 3, true),(5, '베이킹재료', 4, true),
+-- 건강식품 23~25
+(6, '견과류', 1, true),(6, '건과일', 2, true),(6, '홍삼/인삼', 3, true),(6, '비타민/영양제', 4, true),
+-- 주류/전통주 27~30
+(7, '맥주', 1, true),(7, '와인', 2, true),(7, '소주/증류주', 3, true),(7, '전통주', 4, true);
+
+SELECT id, brand_name, category_sub_id FROM product;
+UPDATE product SET category_sub_id = 10 WHERE id = 1;
+UPDATE product SET category_sub_id = 1 WHERE id = 2;
+UPDATE product SET category_sub_id = 9 WHERE id = 3;
+UPDATE product SET category_sub_id = 19 WHERE id = 4;
+UPDATE product SET category_sub_id = 13 WHERE id = 5;
+UPDATE product SET category_sub_id = 10 WHERE id = 6;
+UPDATE product SET category_sub_id = 17 WHERE id = 7;
+UPDATE product SET category_sub_id = 3 WHERE id = 8;
+UPDATE product SET category_sub_id = 17 WHERE id = 9;
+UPDATE product SET category_sub_id = 6 WHERE id = 10;
+UPDATE product SET category_sub_id = 1 WHERE id = 11;
+UPDATE product SET category_sub_id = 17 WHERE id = 12;
+UPDATE product SET category_sub_id = 8 WHERE id = 13;
+UPDATE product SET category_sub_id = 21 WHERE id = 14;
+UPDATE product SET category_sub_id = 4 WHERE id = 15;
+UPDATE product SET category_sub_id = 5 WHERE id = 16;
+UPDATE product SET category_sub_id = 15 WHERE id = 17;
+UPDATE product SET category_sub_id = 4 WHERE id = 18;
+UPDATE product SET category_sub_id = 14 WHERE id = 19;
+UPDATE product SET category_sub_id = 4 WHERE id = 20;
+
+select * from category_sub;
+select * from product;
+
+select * from view_product_detail;

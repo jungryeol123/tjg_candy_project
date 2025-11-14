@@ -1,6 +1,8 @@
 package com.tjg_project.candy.domain.product.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.tjg_project.candy.domain.category.entity.CategorySub;
 import com.tjg_project.candy.domain.user.entity.Users;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -15,8 +17,8 @@ import java.time.LocalDate;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true) // JSON데이터에 product클래스에 없는 항목은 무시하고 존재하는 항목들만 설정
 @Table(name = "product")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Product {
 
     @Id
@@ -81,4 +83,10 @@ public class Product {
     @JoinColumn(name = "upk", nullable = false)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Users user;
+
+    // 카테고리 중분류 연결
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_sub_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private CategorySub categorySub;
 }
