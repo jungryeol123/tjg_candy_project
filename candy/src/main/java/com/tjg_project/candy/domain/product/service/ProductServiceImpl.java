@@ -27,9 +27,9 @@ import java.util.UUID;
 public class ProductServiceImpl implements ProductService {
 
     // 상품, 속성, 이미지 구분
-    private final static int PRODUCT_IMAGES = 1;
-    private final static int PRODUCT_INFORMATION = 2;
-    private final static int PRODUCT_DESCRIPTION = 3;
+    private final static int PRODUCT_IMAGES = 0;
+    private final static int PRODUCT_INFORMATION = 1;
+    private final static int PRODUCT_DESCRIPTION = 2;
 
     // 파일 업로드(application.yml의 file)
     @Value("${file.upload-dir}")
@@ -76,7 +76,8 @@ public class ProductServiceImpl implements ProductService {
     public Product saveProduct(Product product, List<MultipartFile> files) {
         // 이미지 정보 설정
         for (int i = 0; i < files.size(); i++) {
-            setImages(product, files.get(i), i);
+            MultipartFile file = files.get(i);
+            setImages(product, file, i);
         }
 
         // 핫딜 정보 설정(DC값이 설정되있으면 true 아니면 false)
