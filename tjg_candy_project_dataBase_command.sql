@@ -498,9 +498,14 @@ WHERE p.del_type = d.del_type
 AND cm.id = cs.main_id
 AND cs.id = p.category_sub_id;
 
+select * from product;
+
 -- 대분류
 INSERT INTO category_main (name, display_order, is_used) VALUES
 ('신선식품', 1, true),('가공식품', 2, true),('간편식/즉석식품', 3, true),('음료/유제품', 4, true),('과자/베이커리', 5, true),('건강식품', 6, true),('주류/전통주', 7, true);
+
+update category_main set name = "간편식/즉석식품" where id =3;
+select * from category_main;
 
 -- 중분류
 INSERT INTO category_sub (main_id, name, display_order, is_used) VALUES
@@ -538,4 +543,4 @@ UPDATE product SET category_sub_id = 5 WHERE id = 16;
 UPDATE product SET category_sub_id = 15 WHERE id = 17;
 UPDATE product SET category_sub_id = 4 WHERE id = 18;
 UPDATE product SET category_sub_id = 14 WHERE id = 19;
-UPDATE product SET category_sub_id = 4 WHERE id = 20;
+UPDATE product SET category_sub_id = 17 WHERE id = 20;

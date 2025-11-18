@@ -9,6 +9,7 @@ import com.tjg_project.candy.domain.product.repository.ProductRepository;
 import com.tjg_project.candy.domain.product.repository.ProductReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -126,6 +127,17 @@ public class ProductServiceImpl implements ProductService {
 
         // product테이블에 등록
         return productRepository.save(findProduct);
+    }
+
+    @Override
+    // 상품 정보 삭제
+    public boolean deleteProduct(Long id) {
+        try{
+            productRepository.deleteById(id) ;
+            return true;
+        } catch (EmptyResultDataAccessException e) {
+            return false;
+        }
     }
 
     // 이미지 정보 설정

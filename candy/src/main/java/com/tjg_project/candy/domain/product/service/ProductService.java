@@ -18,4 +18,5 @@ public interface ProductService {
     Optional<ProductDetailView> getProductDetail(Long id);
     Product saveProduct(Product product, List<MultipartFile> files);
     Product updateProduct(Product product, List<MultipartFile> files);
+    boolean deleteProduct(Long id);
 }

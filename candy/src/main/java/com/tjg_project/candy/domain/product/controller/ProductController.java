@@ -72,6 +72,12 @@ public class ProductController {
         return productService.updateProduct(product, files);
     }
 
+    // 상품 정보 삭제
+    @GetMapping("/productDelete")
+    public boolean deleteProduct(@RequestParam("id") Long id) {
+        return productService.deleteProduct(id);
+    }
+
 //    @GetMapping("/productList/time")
 //    public List<Product>  getProductListTime(@RequestParam(required = false, defaultValue = "time") String keyword) {
 //        return productService.getProductList(keyword);
