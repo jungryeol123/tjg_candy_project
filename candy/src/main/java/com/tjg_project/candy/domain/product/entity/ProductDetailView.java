@@ -40,7 +40,10 @@ public class ProductDetailView {
     private String seller; // 판매자 정보
     private String allergyInfo; // 알레르기 정보
     private String notes; // 안내 사항
+
+    // category_sub table
     private Long categorySubId; // 카테고리 중분류
+    // category_main table
     private Long categoryMainId; // 카테고리 대분류
 
     // delivery table
