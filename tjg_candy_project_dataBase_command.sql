@@ -486,6 +486,7 @@ update product set upk = 1;
 
 -- 20251113 이승수 추가 : category_main, category_sub 테이블 생성 및 데이터
 -- 20251113 이승수 view_product_detail 업데이트
+set sql_safe_updates = 0;
 drop view view_product_detail;
 create view view_product_detail
 as 
@@ -496,7 +497,7 @@ AND cm.id = cs.main_id
 AND cs.id = p.category_sub_id;
 
 select * from product;
-
+update product set category_sub_id = 20 ;
 -- 대분류
 INSERT INTO category_main (name, display_order, is_used) VALUES
 ('신선식품', 1, true),('가공식품', 2, true),('간편식/즉석식품', 3, true),('음료/유제품', 4, true),('과자/베이커리', 5, true),('건강식품', 6, true),('주류/전통주', 7, true);
