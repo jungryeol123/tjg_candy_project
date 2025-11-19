@@ -5,6 +5,7 @@ import com.tjg_project.candy.global.util.JwtFilter;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -38,13 +39,23 @@ public class SecurityConfig {
                         // ✅ 302 대신 401로 응답
                         .authenticationEntryPoint((req, res, e) -> res.setStatus(HttpServletResponse.SC_UNAUTHORIZED))
                 )
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/", "/login", "/product/**", "/notice/**", "/member/**",
-                                "/orders/**", "/payment/**", "/delivery/**", "/auth/**", "/oauth2/**", "/csrf",
-                                "/cart/**", "/category/**").permitAll().anyRequest().authenticated())
-                .oauth2Login(oauth -> oauth     // ✅ OAuth2 로그인 활성화
-                        .successHandler(customOAuth2SuccessHandler)// 로그인 성공 후 리다이렉트 URL
+                // ✅ 권한 설정
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers(
+                                "/", "/login",
+                                "/auth/**", "/oauth2/**",
+                                "/product/**", "/notice/**",
+                                "/member/**", "coupon/**",
+                                "/orders/**", "/payment/**",
+                                "/delivery/**", "/csrf"
+                        ).permitAll()
+                        .anyRequest().authenticated()
+                )
+
+                // ✅ OAuth2 로그인 설정
+                .oauth2Login(oauth -> oauth
+                        .successHandler(customOAuth2SuccessHandler)
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
