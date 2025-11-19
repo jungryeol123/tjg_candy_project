@@ -11,10 +11,10 @@ CandyApplication {
 
 	public static void main(String[] args) throws IOException {
 		SpringApplication.run(CandyApplication.class, args);
-        Logger rootLogger = Logger.getLogger("");
-        FileHandler fh = new FileHandler("app.log", true);
-        fh.setFormatter(new SimpleFormatter());
-        rootLogger.addHandler(fh);
+//        Logger rootLogger = Logger.getLogger("");
+//        FileHandler fh = new FileHandler("app.log", true);
+//        fh.setFormatter(new SimpleFormatter());
+//        rootLogger.addHandler(fh);
 	}
 
 }
