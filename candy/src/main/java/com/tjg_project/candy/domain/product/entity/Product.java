@@ -59,6 +59,7 @@ public class Product {
 
     private boolean isMemberSpecial;
 
+    @Column(name = "`delType`")
     private int delType;
 
     @Column(length = 255)

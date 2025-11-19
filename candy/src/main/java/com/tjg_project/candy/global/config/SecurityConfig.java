@@ -71,6 +71,7 @@ import com.tjg_project.candy.global.util.JwtFilter;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -126,11 +127,12 @@ public class SecurityConfig {
                 )
                 // ✅ 권한 설정
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers(
                                 "/", "/login",
                                 "/auth/**", "/oauth2/**",
                                 "/product/**", "/notice/**",
-                                "/member/**",
+                                "/member/**", "coupon/**",
                                 "/orders/**", "/payment/**",
                                 "/delivery/**", "/csrf"
                         ).permitAll()
