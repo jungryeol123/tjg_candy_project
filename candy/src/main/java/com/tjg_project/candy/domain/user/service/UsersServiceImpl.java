@@ -28,6 +28,18 @@ public class UsersServiceImpl implements UsersService {
         users.setPassword(encodePwd);
         return usersRepository.signup(users);
     }
+
+    @Override
+    public boolean idcheck (Users users) {
+        String param = users.getUserId();
+
+        if(users.getRecommendation() != null) {
+            param = users.getRecommendation();
+        }
+
+        return usersRepository.idcheck(param);
+    }
+
     @Override
     public Users login(String id, String password) {
         Users users = usersRepository.findById(id);

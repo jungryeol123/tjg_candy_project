@@ -17,10 +17,11 @@ public class JdbcTemplateUsersRepository implements UsersRepository{
 
     @Override
     public boolean signup(Users users) {
-        String sql = "insert into users(birthday, email, gender, name, password, phone, provider, user_id, address) values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "insert into users(birthday, email, gender, name, password, phone, provider, user_id, address, recommendation, zonecode) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         Object[] param = {
                 users.getBirthday(), users.getEmail(), users.getGender(), users.getName(), users.getPassword(),
-                users.getPhone(), users.getProvider(), users.getUserId(), users.getAddress()
+                users.getPhone(), users.getProvider(), users.getUserId(), users.getAddress(), users.getRecommendation(),
+                users.getZonecode()
         };
         boolean result = false;
 
@@ -31,6 +32,20 @@ public class JdbcTemplateUsersRepository implements UsersRepository{
         }
         return result;
     }
+
+    @Override
+    public boolean idcheck(String id) {
+        String sql = "select count(*) from users where user_id = ?";
+
+        Long rows = jdbcTemplate.queryForObject(sql, long.class , id);
+
+        if(rows == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     @Override
     public Users findById(String id) {
         String sql = "SELECT * FROM users WHERE user_id = ?";

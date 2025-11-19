@@ -19,6 +19,10 @@ public class UserController {
     public boolean signup (@RequestBody Users users) {
         return usersService.signup(users);
     }
+
+    @PostMapping("/idcheck")
+    public boolean idcheck (@RequestBody Users users) { return usersService.idcheck(users); }
+
     // 로그인
     @PostMapping("/login")
     public Users login(@RequestBody Users users) {

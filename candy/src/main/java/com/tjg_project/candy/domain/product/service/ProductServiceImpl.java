@@ -9,6 +9,7 @@ import com.tjg_project.candy.domain.product.repository.ProductRepository;
 import com.tjg_project.candy.domain.product.repository.ProductReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,10 +23,13 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.tjg_project.candy.global.common.Constants.*;
-
 @Service
 public class ProductServiceImpl implements ProductService {
+
+    // 상품, 속성, 이미지 구분
+    private final static int PRODUCT_IMAGES = 0;
+    private final static int PRODUCT_INFORMATION = 1;
+    private final static int PRODUCT_DESCRIPTION = 2;
 
     // 파일 업로드(application.yml의 file)
     @Value("${file.upload-dir}")
@@ -72,7 +76,8 @@ public class ProductServiceImpl implements ProductService {
     public Product saveProduct(Product product, List<MultipartFile> files) {
         // 이미지 정보 설정
         for (int i = 0; i < files.size(); i++) {
-            setImages(product, files.get(i), i);
+            MultipartFile file = files.get(i);
+            setImages(product, file, i);
         }
 
         // 핫딜 정보 설정(DC값이 설정되있으면 true 아니면 false)
@@ -104,6 +109,7 @@ public class ProductServiceImpl implements ProductService {
         findProduct.setSeller(product.getSeller());
         findProduct.setUnit(product.getUnit());
         findProduct.setWeight(product.getWeight());
+        findProduct.setCategorySub(product.getCategorySub());
 
         // 이미지 정보 설정
         for (int idx = 0; idx < files.size(); idx++) {
@@ -122,6 +128,17 @@ public class ProductServiceImpl implements ProductService {
 
         // product테이블에 등록
         return productRepository.save(findProduct);
+    }
+
+    @Override
+    // 상품 정보 삭제
+    public boolean deleteProduct(Long id) {
+        try{
+            productRepository.deleteById(id) ;
+            return true;
+        } catch (EmptyResultDataAccessException e) {
+            return false;
+        }
     }
 
     // 이미지 정보 설정
@@ -154,6 +171,8 @@ public class ProductServiceImpl implements ProductService {
                 // 상세 이미지 정보 설정
                 product.setProductDescriptionImage(filename);
                 break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + idx);
         }
 
         // 파일을 저장할 디렉토리 취득
