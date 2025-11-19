@@ -183,7 +183,6 @@ REFERENCES users(id)
 ON UPDATE CASCADE
 ON DELETE CASCADE;
 
-
 ALTER TABLE orders
 ADD CONSTRAINT fk_orders_product
 FOREIGN KEY (ppk)
@@ -208,7 +207,6 @@ FOREIGN KEY (ppk)
 REFERENCES product(id)
 ON UPDATE CASCADE
 ON DELETE CASCADE;
-
 
 ALTER TABLE product_qna
 ADD CONSTRAINT fk_product_qna_product
@@ -473,7 +471,6 @@ desc product;
 
 create table product_recipe(
 	id 		int		auto_increment primary key,
-    ppk 	Long	not null,
     description	text,
     added_at	timestamp
 );
@@ -544,3 +541,14 @@ UPDATE product SET category_sub_id = 15 WHERE id = 17;
 UPDATE product SET category_sub_id = 4 WHERE id = 18;
 UPDATE product SET category_sub_id = 14 WHERE id = 19;
 UPDATE product SET category_sub_id = 17 WHERE id = 20;
+
+-- 20251119 이승수 추가 cart테이블 foregin key 설정
+-- product테이블에서 상품이 지워졌을경우 cart테이블에서 삭제
+ALTER TABLE cart
+DROP FOREIGN KEY FKi5rep9miokyv1vywdoq4lepid; -- jpa에서 자동으로 만들어준 foreign key
+
+ALTER TABLE cart
+ADD CONSTRAINT fk_cart_ppk
+FOREIGN KEY (ppk) REFERENCES product(id)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
