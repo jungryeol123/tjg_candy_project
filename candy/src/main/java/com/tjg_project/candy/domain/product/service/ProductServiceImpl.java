@@ -3,6 +3,7 @@ package com.tjg_project.candy.domain.product.service;
 import com.tjg_project.candy.domain.order.repository.OrderDetailRepository;
 import com.tjg_project.candy.domain.product.entity.Product;
 import com.tjg_project.candy.domain.product.entity.ProductDetailView;
+import com.tjg_project.candy.domain.product.entity.ProductQnA;
 import com.tjg_project.candy.domain.product.repository.ProductDetailViewRepository;
 import com.tjg_project.candy.domain.product.repository.ProductQnARepository;
 import com.tjg_project.candy.domain.product.repository.ProductRepository;
@@ -139,6 +140,12 @@ public class ProductServiceImpl implements ProductService {
         } catch (EmptyResultDataAccessException e) {
             return false;
         }
+    }
+
+    @Override
+    public ProductQnA addProductQnA(ProductQnA qna) {
+        qna.setStatus("답변대기");
+        return productQnARepository.save(qna);
     }
 
     // 이미지 정보 설정

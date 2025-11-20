@@ -560,3 +560,8 @@ VALUES
 (1, 1, 30),
 (2, 1, 50),
 (3, 1, 60);
+
+select * from product_qna;
+
+delete from product_qna where id > 30;
+desc product_qna;
