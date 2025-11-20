@@ -8,6 +8,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface RecipeRepository extends JpaRepository<Recipe, Long> {
-    @Query(value = "SELECT * FROM recipe ORDER BY RAND() LIMIT :limit", nativeQuery = true)
-    List<Recipe> findRandomRecipes(@Param("limit") int limit);
+
+    List<Recipe> findBySubCategoryId(Long subId);
 }

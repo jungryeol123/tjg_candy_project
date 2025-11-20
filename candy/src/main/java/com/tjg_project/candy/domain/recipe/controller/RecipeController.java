@@ -1,25 +1,52 @@
 package com.tjg_project.candy.domain.recipe.controller;
 
+import com.tjg_project.candy.domain.recipe.dto.RecipeReviewRequestDto;
 import com.tjg_project.candy.domain.recipe.entity.Recipe;
 import com.tjg_project.candy.domain.recipe.repository.RecipeRepository;
+import com.tjg_project.candy.domain.recipe.service.RecipeService;
+import com.tjg_project.candy.global.util.JwtUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/recipes")
+@RequestMapping("/recipe")
 @RequiredArgsConstructor
 public class RecipeController {
 
-    private final RecipeRepository recipeRepository;
-
-    @GetMapping("/today")
-    public ResponseEntity<?> getTodayRecipes() {
-        List<Recipe> list = recipeRepository.findRandomRecipes(10);
-        return ResponseEntity.ok(list);
+    private final RecipeService recipeService;
+    private final JwtUtil jwtUtil;
+    @GetMapping("/list")
+    public ResponseEntity<?> getRecipeList(@RequestParam Long subId) {
+        return ResponseEntity.ok(recipeService.getRecipeList(subId));
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getRecipeDetail(@PathVariable Long id) {
+        return ResponseEntity.ok(recipeService.getRecipeDetail(id));
+    }
+
+    @PostMapping("/{id}/review")
+    public ResponseEntity<?> writeReview(
+            @PathVariable Long id,
+            @RequestBody RecipeReviewRequestDto dto,
+            @RequestHeader("Authorization") String authHeader
+    ) {
+        // 🔥 토큰에서 Bearer 제거
+        String token = authHeader.substring(7);
+        System.out.println("token"+token);
+        // 🔥 JwtUtil 사용해서 유저 ID 파싱
+        Long userId = jwtUtil.extractUserId(token);
+
+        // 🔥 저장 로직 호출
+        recipeService.saveReview(id, userId, dto);
+
+        return ResponseEntity.ok("리뷰 작성 완료");
+    }
+
+
 }
