@@ -498,6 +498,7 @@ AND cs.id = p.category_sub_id;
 
 select * from product;
 update product set category_sub_id = 20 ;
+select * from category_main;
 -- 대분류
 INSERT INTO category_main (name, display_order, is_used) VALUES
 ('신선식품', 1, true),('가공식품', 2, true),('간편식/즉석식품', 3, true),('음료/유제품', 4, true),('과자/베이커리', 5, true),('건강식품', 6, true),('주류/전통주', 7, true);
@@ -521,7 +522,7 @@ INSERT INTO category_sub (main_id, name, display_order, is_used) VALUES
 (6, '견과류', 1, true),(6, '건과일', 2, true),(6, '홍삼/인삼', 3, true),(6, '비타민/영양제', 4, true),
 -- 주류/전통주 27~30
 (7, '맥주', 1, true),(7, '와인', 2, true),(7, '소주/증류주', 3, true),(7, '전통주', 4, true);
-
+select * from product;
 UPDATE product SET category_sub_id = 10 WHERE id = 1;
 UPDATE product SET category_sub_id = 1 WHERE id = 2;
 UPDATE product SET category_sub_id = 9 WHERE id = 3;
@@ -565,3 +566,106 @@ select * from product_qna;
 
 delete from product_qna where id > 30;
 desc product_qna;
+
+desc recipe;
+
+
+INSERT INTO recipe (
+  title,
+  image_url,
+  cook_time,
+  summary,
+  rating,
+  review_count,
+  difficulty,
+  ingredients,
+  steps,
+  tips,
+  youtube_url,
+  sub_category_id,
+  created_at
+)
+SELECT
+  jt.title,
+  jt.imageUrl,
+  jt.cookTime,
+  jt.summary,
+  jt.rating,
+  jt.reviewCount,
+  jt.difficulty,
+
+  -- JSON 배열 → TEXT 문자열
+  JSON_UNQUOTE(JSON_EXTRACT(jt.ingredients, '$')),
+  JSON_UNQUOTE(JSON_EXTRACT(jt.steps, '$')),
+
+  jt.tips,
+  jt.youtubeUrl,
+  jt.subCategoryId,
+  NOW()
+FROM JSON_TABLE(
+  CAST(
+    LOAD_FILE('C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/recipe.json')
+      AS CHAR CHARACTER SET utf8mb4
+  ),
+  '$[*]'
+  COLUMNS (
+    title VARCHAR(255) PATH '$.title',
+    imageUrl VARCHAR(255) PATH '$.imageUrl',
+    cookTime INT PATH '$.cookTime',
+    summary VARCHAR(300) PATH '$.summary',
+
+    rating DOUBLE PATH '$.rating',
+    reviewCount INT PATH '$.reviewCount',
+    difficulty VARCHAR(20) PATH '$.difficulty',
+
+    ingredients JSON PATH '$.ingredients',
+    steps JSON PATH '$.steps',
+
+    tips TEXT PATH '$.tips',
+    youtubeUrl VARCHAR(500) PATH '$.youtubeUrl',
+
+    subCategoryId INT PATH '$.subCategoryId'
+  )
+) AS jt;
+
+
+
+
+select * from recipe;
+show tables;
+select * from recipe_review;
+show tables;
+select * from product;
+
+INSERT INTO recipe_review (
+    recipe_id,
+    user_id,
+    rating,
+    content,
+    created_at
+)
+SELECT
+    jt.recipeId,
+    jt.userId,
+    jt.rating,
+    jt.content,
+    jt.createdAt
+FROM JSON_TABLE(
+    CAST(
+        LOAD_FILE('C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/recipeReview.json')
+            AS CHAR CHARACTER SET utf8mb4
+    ),
+    '$[*]'
+    COLUMNS (
+        recipeId INT PATH '$.recipeId',
+        userId INT PATH '$.userId',
+        rating DOUBLE PATH '$.rating',
+        content TEXT PATH '$.content',
+        createdAt DATETIME PATH '$.createdAt'
+    )
+) AS jt;
+desc recipe;
+SET FOREIGN_KEY_CHECKS = 0;
+drop table recipe;
+SET FOREIGN_KEY_CHECKS = 1;
+select * from users;
