@@ -58,4 +58,8 @@ public class Order {
         orderDetails.add(detail);
         detail.setOrder(this);
     }
+    @PrePersist
+    protected  void onCreate() {
+        this.odate = LocalDateTime.now();
+    }
 }

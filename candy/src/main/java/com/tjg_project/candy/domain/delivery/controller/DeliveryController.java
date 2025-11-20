@@ -18,7 +18,7 @@ public class DeliveryController {
     private DeliveryService deliveryService;
 
     @GetMapping("/deliveryList")
-    public List<Delivery>  getDeliveryList() {
+    public List<Delivery> getDeliveryList() {
         return deliveryService.getDeliveryList();
     }
 

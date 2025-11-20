@@ -79,6 +79,11 @@ public class ProductController {
         return productService.deleteProduct(id);
     }
 
+    // 상품 QnA 등록
+    @PostMapping("/addQnA")
+    public ProductQnA addQnA(@RequestBody ProductQnA qna) {
+        return productService.addProductQnA(qna);
+    }
 //    @GetMapping("/productList/time")
 //    public List<Product>  getProductListTime(@RequestParam(required = false, defaultValue = "time") String keyword) {
 //        return productService.getProductList(keyword);
