@@ -553,3 +553,10 @@ ADD CONSTRAINT fk_cart_ppk
 FOREIGN KEY (ppk) REFERENCES product(id)
 ON DELETE CASCADE
 ON UPDATE CASCADE;
+
+-- coupon 테이블 insert
+INSERT INTO coupon (coupon_id, coupon_qty, coupon_dc_rate)
+VALUES
+(1, 1, 30),
+(2, 1, 50),
+(3, 1, 60);
