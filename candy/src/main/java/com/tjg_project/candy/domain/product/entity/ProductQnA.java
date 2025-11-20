@@ -3,8 +3,7 @@ package com.tjg_project.candy.domain.product.entity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
-
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -25,7 +24,7 @@ public class ProductQnA {
     @Column(nullable = false)
     private Long upk;
 
-    private LocalDate date = LocalDate.now();
+    private LocalDateTime date = LocalDateTime.now();
 
     @Column(length = 50)
     private String status;
