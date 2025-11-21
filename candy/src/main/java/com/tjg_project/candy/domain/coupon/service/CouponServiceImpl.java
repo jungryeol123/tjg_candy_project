@@ -40,6 +40,7 @@ public class CouponServiceImpl implements CouponService {
                 .users(users)
                 .coupon(coupon)
                 .qty(1)
+                .isUsed(false)
                 .build();
 
         userCouponRepository.save(newCoupon);
@@ -65,5 +66,13 @@ public class CouponServiceImpl implements CouponService {
     public List<UserCoupon> getUserCoupons(Long userId) {
         System.out.println("service******************************" + userId);
         return userCouponRepository.findAllWithCouponByUserId(userId);
+    }
+
+    @Transactional
+    @Override
+    public boolean updateCoupon(Long id) {
+        int rows = userCouponRepository.updateIsUsedById(id);
+        System.out.println(rows);
+        return false;
     }
 }

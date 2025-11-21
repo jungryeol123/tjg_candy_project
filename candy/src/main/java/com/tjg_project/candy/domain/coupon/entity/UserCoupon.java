@@ -33,4 +33,7 @@ public class UserCoupon {
 
     @Column(name = "qty")
     private int qty;
+
+    @Column(nullable = false)
+    private Boolean isUsed = false;
 }

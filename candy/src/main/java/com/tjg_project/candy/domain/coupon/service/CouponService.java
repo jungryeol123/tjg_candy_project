@@ -11,4 +11,6 @@ public interface CouponService {
     boolean deleteUserCoupon(Long userId, Long couponId);
 
     List<UserCoupon> getUserCoupons(Long userId);
+
+    boolean updateCoupon(Long id);
 }
