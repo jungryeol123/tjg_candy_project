@@ -569,7 +569,7 @@ desc product_qna;
 
 desc recipe;
 
-
+select * from recipe;
 INSERT INTO recipe (
   title,
   image_url,
@@ -629,8 +629,6 @@ FROM JSON_TABLE(
 ) AS jt;
 
 
-
-
 select * from recipe;
 show tables;
 select * from recipe_review;
@@ -665,7 +663,11 @@ FROM JSON_TABLE(
     )
 ) AS jt;
 desc recipe;
+
+-- 외래키 제약을 일시적으로 무시
 SET FOREIGN_KEY_CHECKS = 0;
 drop table recipe;
+-- 외래키 제약 활성화
 SET FOREIGN_KEY_CHECKS = 1;
+
 select * from users;
