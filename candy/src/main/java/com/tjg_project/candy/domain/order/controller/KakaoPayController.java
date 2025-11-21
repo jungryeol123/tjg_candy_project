@@ -1,6 +1,7 @@
 package com.tjg_project.candy.domain.order.controller;
 
 
+import com.tjg_project.candy.domain.coupon.service.CouponService;
 import com.tjg_project.candy.domain.order.dto.KakaoApproveResponse;
 import com.tjg_project.candy.domain.order.entity.KakaoPay;
 import com.tjg_project.candy.domain.order.dto.KakaoReadyResponse;
@@ -23,12 +24,14 @@ public class KakaoPayController {
 
     private final KakaoPayService kakaoPayService;
     private  final OrderService orderService;
+    private final CouponService couponService;
     private KakaoPay payInfo = null; //kakaoPay DTO 클래스를 전역으로 선언
 
     @Autowired
-    public KakaoPayController(KakaoPayService kakaoPayService, OrderService orderService) {
+    public KakaoPayController(KakaoPayService kakaoPayService, OrderService orderService, CouponService couponService) {
         this.kakaoPayService = kakaoPayService;
         this.orderService = orderService;
+        this.couponService = couponService;
     }
 
     @PostMapping("/kakao/ready")
@@ -42,6 +45,7 @@ public class KakaoPayController {
     public ResponseEntity<Void> success(@RequestParam String orderId, @RequestParam("pg_token") String pgToken) {
         KakaoApproveResponse approve = kakaoPayService.approve(orderId, pgToken);
         orderService.saveOrder(approve,payInfo);
+        couponService.updateCoupon(payInfo.getCouponId());
 
         URI redirect = URI.create("http://localhost:3000/payResult?orderId=" + orderId + "&status=success");
         HttpHeaders headers = new HttpHeaders();
