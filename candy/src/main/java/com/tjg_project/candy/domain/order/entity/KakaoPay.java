@@ -19,6 +19,7 @@ public class KakaoPay {
     private PaymentInfo paymentInfo;
     private List<Long> cidList;
     private Long couponId;
+    private Long pid;
 
     @Data
     public static class Receiver {

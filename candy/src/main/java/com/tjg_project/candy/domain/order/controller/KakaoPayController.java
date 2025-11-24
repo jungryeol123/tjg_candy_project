@@ -7,6 +7,7 @@ import com.tjg_project.candy.domain.order.entity.KakaoPay;
 import com.tjg_project.candy.domain.order.dto.KakaoReadyResponse;
 import com.tjg_project.candy.domain.order.service.KakaoPayService;
 import com.tjg_project.candy.domain.order.service.OrderService;
+import com.tjg_project.candy.domain.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,15 +24,17 @@ import java.util.UUID;
 public class KakaoPayController {
 
     private final KakaoPayService kakaoPayService;
-    private  final OrderService orderService;
+    private final OrderService orderService;
     private final CouponService couponService;
+    private final ProductService productService;
     private KakaoPay payInfo = null; //kakaoPay DTO 클래스를 전역으로 선언
 
     @Autowired
-    public KakaoPayController(KakaoPayService kakaoPayService, OrderService orderService, CouponService couponService) {
+    public KakaoPayController(KakaoPayService kakaoPayService, OrderService orderService, CouponService couponService, ProductService productService) {
         this.kakaoPayService = kakaoPayService;
         this.orderService = orderService;
         this.couponService = couponService;
+        this.productService = productService;
     }
 
     @PostMapping("/kakao/ready")
@@ -46,6 +49,10 @@ public class KakaoPayController {
         KakaoApproveResponse approve = kakaoPayService.approve(orderId, pgToken);
         orderService.saveOrder(approve,payInfo);
         couponService.updateCoupon(payInfo.getCouponId());
+
+        Long qty = Long.parseLong(payInfo.getQty());
+
+        productService.updateCount(payInfo.getPid(), qty);
 
         URI redirect = URI.create("http://localhost:3000/payResult?orderId=" + orderId + "&status=success");
         HttpHeaders headers = new HttpHeaders();
