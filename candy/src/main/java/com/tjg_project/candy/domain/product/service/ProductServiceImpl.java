@@ -194,4 +194,14 @@ public class ProductServiceImpl implements ProductService {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public boolean updateCount(Long id, Long qty) {
+        boolean result = false;
+        int row = productRepository.decreaseCount(id, qty);
+        if(row == 1){
+            result = true;
+        }
+        return result;
+    }
 }

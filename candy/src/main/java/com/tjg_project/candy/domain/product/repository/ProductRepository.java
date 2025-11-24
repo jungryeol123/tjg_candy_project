@@ -39,4 +39,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     LIMIT 10
 """, nativeQuery = true)
     List<Product> findProductBestList();
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Product p SET p.count = p.count - :qty WHERE p.id = :id")
+    public int decreaseCount(@Param("id") Long id, @Param("qty") Long qty);
 }

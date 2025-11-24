@@ -20,4 +20,5 @@ public interface ProductService {
     Product updateProduct(Product product, List<MultipartFile> files);
     boolean deleteProduct(Long id);
     ProductQnA addProductQnA(ProductQnA qna);
+    boolean updateCount(Long id, Long qty);
 }
