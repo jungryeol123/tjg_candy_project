@@ -1,5 +1,6 @@
 package com.tjg_project.candy.domain.order.repository;
 
+import com.tjg_project.candy.domain.order.dto.DailySalesDto;
 import com.tjg_project.candy.domain.order.entity.OrderDetail;
 import com.tjg_project.candy.domain.product.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,4 +22,18 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> 
         ON p.id = od_sum.ppk
         """, nativeQuery = true)
     List<Product> findBestSellingProducts();
+
+    @Query("""
+        SELECT new com.tjg_project.candy.domain.order.dto.DailySalesDto(
+                                          o.odate,
+                                          SUM(od.qty)
+                                      )
+                                      FROM OrderDetail od
+                                      JOIN od.order o
+                                      WHERE od.ppk = :ppk
+                                      GROUP BY o.odate
+                                      ORDER BY o.odate
+            
+    """)
+    List<DailySalesDto> findDailySalesByProduct(Long ppk);
 }
