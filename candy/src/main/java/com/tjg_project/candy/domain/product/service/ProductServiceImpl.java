@@ -115,11 +115,7 @@ public class ProductServiceImpl implements ProductService {
         // 이미지 정보 설정
         for (int idx = 0; idx < files.size(); idx++) {
             MultipartFile file = files.get(idx);
-
-            // 이미지 파일이 존재 할경우(신규 등록)
-            if (file != null && !file.isEmpty()) {
-                setImages(findProduct, file, idx);
-            }
+            setImages(findProduct, file, idx);
         }
 
         // 핫딜 정보 설정(DC값이 설정되있으면 true 아니면 false)
@@ -150,6 +146,11 @@ public class ProductServiceImpl implements ProductService {
 
     // 이미지 정보 설정
     public void setImages(Product product, MultipartFile file, int idx){
+        // 파일이 null이거나 비어있으면 처리하지 않음
+        if (file == null || file.isEmpty()) {
+            return;
+        }
+
         // 파일명 취득(업로드시 파일명)
         String originalFilename = file.getOriginalFilename();
         // 파일명 중복방지 UUID_기존파일명
