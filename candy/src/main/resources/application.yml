@@ -92,3 +92,6 @@ naver:
 
 jwt:
   secret: ${JWT_SECRET:MySuperSecretkeyForJwtGeneration123456}
+
+openai:
+  api-key: ${OPENAI_API_KEY}
