@@ -23,45 +23,46 @@ public class ForecastExcelController {
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet("Forecast");
 
-        // ---------- Header ----------
         Row header = sheet.createRow(0);
-        header.createCell(0).setCellValue("날짜");
-        header.createCell(1).setCellValue("예측값");
+        header.createCell(0).setCellValue("구분");
+        header.createCell(1).setCellValue("날짜");
+        header.createCell(2).setCellValue("예측값");
 
-        // ---------- Rows ----------
         int rowNum = 1;
         for (ForecastExcelRow r : req.getRows()) {
             Row row = sheet.createRow(rowNum++);
-            row.createCell(0).setCellValue(r.getDate());
-            row.createCell(1).setCellValue(r.getValue());
+
+            row.createCell(0).setCellValue(r.getType());
+            row.createCell(1).setCellValue(r.getDate());
+            row.createCell(2).setCellValue(r.getValue());
         }
 
-        // ---------- Chart ----------
+        // -------- 차트 영역 --------
         XSSFDrawing draw = sheet.createDrawingPatriarch();
         XSSFClientAnchor anchor = new XSSFClientAnchor(
                 0, 0, 0, 0,
-                3, 1, 15, 20
+                4, 1, 20, 25
         );
 
         XSSFChart chart = draw.createChart(anchor);
         chart.setTitleText("판매량 예측");
 
-        XDDFCategoryAxis bottomAxis = chart.createCategoryAxis(AxisPosition.BOTTOM);
-        XDDFValueAxis leftAxis = chart.createValueAxis(AxisPosition.LEFT);
+        XDDFCategoryAxis xAxis = chart.createCategoryAxis(AxisPosition.BOTTOM);
+        XDDFValueAxis yAxis = chart.createValueAxis(AxisPosition.LEFT);
 
         var dates = XDDFDataSourcesFactory.fromStringCellRange(sheet,
-                new CellRangeAddress(1, rowNum - 1, 0, 0));
-        var values = XDDFDataSourcesFactory.fromNumericCellRange(sheet,
                 new CellRangeAddress(1, rowNum - 1, 1, 1));
+        var values = XDDFDataSourcesFactory.fromNumericCellRange(sheet,
+                new CellRangeAddress(1, rowNum - 1, 2, 2));
 
         XDDFLineChartData data = (XDDFLineChartData) chart.createData(
-                ChartTypes.LINE, bottomAxis, leftAxis);
+                ChartTypes.LINE, xAxis, yAxis);
 
         var series = (XDDFLineChartData.Series) data.addSeries(dates, values);
         series.setTitle("예측값", null);
+
         chart.plot(data);
 
-        // ---------- Output ----------
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         workbook.write(bos);
         workbook.close();
@@ -75,5 +76,4 @@ public class ForecastExcelController {
     static class ForecastRequest {
         private List<ForecastExcelRow> rows;
     }
-
 }

@@ -45,6 +45,10 @@ public class Order {
 
     private LocalDateTime odate = LocalDateTime.now();
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "delivery_status", length = 20)
+    private DeliveryStatus deliveryStatus;   // null 허용
+
     @Column(length = 50)
     private String tid; // 카카오 TID
 
