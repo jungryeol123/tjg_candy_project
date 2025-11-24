@@ -18,4 +18,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("SELECT DISTINCT o FROM Order o LEFT JOIN FETCH o.orderDetails WHERE o.upk = :upk ORDER BY o.odate DESC")
     List<Order> findAllWithDetailsByUpk(@Param("upk") Long upk);
 
+    Order findTop1ByUpkOrderByOdateDesc(Long upk);
+
 }

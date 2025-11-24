@@ -38,6 +38,7 @@ public class OrderServiceImpl implements OrderService {
                 .orderCode(kakaoPay.getOrderId())
 //                .userId(kakaoPay.getUserId())
                 .upk(kakaoPay.getId())
+                .deliveryStatus(DeliveryStatus.READY)
                 .totalAmount(kakaoPay.getPaymentInfo().getTotalAmount())
                 .shippingFee(kakaoPay.getPaymentInfo().getShippingFee())
                 .discountAmount(kakaoPay.getPaymentInfo().getDiscountAmount())
