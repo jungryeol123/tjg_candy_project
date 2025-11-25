@@ -19,64 +19,136 @@ public class PricingAnalyticsService {
     private final OrderDetailRepository orderDetailRepository;
     private final ProductRepository productRepository;
 
-    // 개별 상품
+    // -------------------------------
+    // ⭐ 단일 상품 분석
+    // -------------------------------
     public ProductPricingStatsDto getStats(Long ppk) {
 
         Product product = productRepository.findById(ppk)
                 .orElseThrow(() -> new RuntimeException("상품 없음"));
 
-        long clicks = userViewLogRepository.countViewsByProduct(ppk);
+        long clicks = userViewLogRepository.sumViewsByProduct(ppk);
         long orders = Optional.ofNullable(orderDetailRepository.countOrdersByProduct(ppk))
                 .orElse(0L);
 
         double conversionRate = (clicks == 0) ? 0 : (orders * 100.0 / clicks);
 
         int currentPrice = product.getPrice();
-        int aiLowerPrice = (int)(currentPrice * 0.95); // 5% 할인 가정
 
-        double aiClickRate = conversionRate + 10;
-        double aiConversionRate = conversionRate + 5;
+        // 1) 가격 민감도
+        double priceSensitivity = conversionRate / currentPrice;
+
+        // 2) AI 추천 가격(5% 할인)
+        double discountRate = 0.05;
+        int aiLowerPrice = (int) (currentPrice * (1 - discountRate));
+
+        // 3) 할인 시 예측 전환율
+        double predictedConversionRate =
+                conversionRate * (1 + priceSensitivity * discountRate * 1000);
+
+        // 4) 클릭률 증가율
+        double aiClickRate =
+                predictedConversionRate + (clicks * priceSensitivity * 0.1);
+
+        // 5) 예측 구매수
+        double predictedOrders = clicks * (predictedConversionRate / 100.0);
+
+        // 6) 현재 매출
+        double currentRevenue = orders * currentPrice;
+
+        // 7) 예측 매출
+        double predictedRevenue = predictedOrders * aiLowerPrice;
+
+        // 8) 매출 증가량
+        double revenueGain = predictedRevenue - currentRevenue;
+
+        // 9) 매출 증가율
+        double revenueGainPercent = currentRevenue == 0 ? 0 :
+                (revenueGain / currentRevenue) * 100;
+
+        // 10) 가격 탄력성 PED
+        double PED = priceSensitivity * 100;
+
+        // 11) 최적 가격 (매출 최대점)
+        double optimalPrice = (PED == -1) ? currentPrice :
+                (PED / (PED + 1)) * currentPrice;
 
         return new ProductPricingStatsDto(
                 product.getId(),
-                product.getPrice(),
+                product.getProductName(),
+                currentPrice,
                 clicks,
                 orders,
                 conversionRate,
                 aiLowerPrice,
+                predictedConversionRate,
                 aiClickRate,
-                aiConversionRate
+                priceSensitivity,
+                predictedOrders,
+                currentRevenue,
+                predictedRevenue,
+                revenueGain,
+                revenueGainPercent,
+                PED,
+                optimalPrice
         );
     }
 
-    // ⭐ 전체 상품
+    // -------------------------------
+    // ⭐ 전체 상품 분석
+    // -------------------------------
     public List<ProductPricingStatsDto> getAllStats() {
 
-        return productRepository.findAll().stream()
-                .map(p -> {
-                    long clicks = userViewLogRepository.countViewsByProduct(p.getId());
-                    long orders = Optional.ofNullable(orderDetailRepository.countOrdersByProduct(p.getId()))
-                            .orElse(0L);
+        return productRepository.findAll().stream().map(product -> {
 
-                    double conversionRate = (clicks == 0) ? 0 : (orders * 100.0 / clicks);
+            long clicks = userViewLogRepository.sumViewsByProduct(product.getId());
+            long orders = Optional.ofNullable(orderDetailRepository.countOrdersByProduct(product.getId()))
+                    .orElse(0L);
 
-                    int currentPrice = p.getPrice();
-                    int aiLowerPrice = (int)(currentPrice * 0.95);
+            double conversionRate = (clicks == 0) ? 0 : (orders * 100.0 / clicks);
+            int currentPrice = product.getPrice();
 
-                    double aiClickRate = conversionRate + 10;
-                    double aiConversionRate = conversionRate + 5;
+            double priceSensitivity = conversionRate / currentPrice;
+            double discountRate = 0.05;
+            int aiLowerPrice = (int) (currentPrice * (1 - discountRate));
 
-                    return new ProductPricingStatsDto(
-                            p.getId(),
-                            currentPrice,
-                            clicks,
-                            orders,
-                            conversionRate,
-                            aiLowerPrice,
-                            aiClickRate,
-                            aiConversionRate
-                    );
-                })
-                .toList();
+            double predictedConversionRate =
+                    conversionRate * (1 + priceSensitivity * discountRate * 1000);
+
+            double aiClickRate =
+                    predictedConversionRate + (clicks * priceSensitivity * 0.1);
+
+            double predictedOrders = clicks * (predictedConversionRate / 100.0);
+            double currentRevenue = orders * currentPrice;
+            double predictedRevenue = predictedOrders * aiLowerPrice;
+
+            double revenueGain = predictedRevenue - currentRevenue;
+            double revenueGainPercent = currentRevenue == 0 ? 0 :
+                    (revenueGain / currentRevenue) * 100;
+
+            double PED = priceSensitivity * 100;
+            double optimalPrice = (PED == -1) ? currentPrice :
+                    (PED / (PED + 1)) * currentPrice;
+
+            return new ProductPricingStatsDto(
+                    product.getId(),
+                    product.getProductName(),
+                    currentPrice,
+                    clicks,
+                    orders,
+                    conversionRate,
+                    aiLowerPrice,
+                    predictedConversionRate,
+                    aiClickRate,
+                    priceSensitivity,
+                    predictedOrders,
+                    currentRevenue,
+                    predictedRevenue,
+                    revenueGain,
+                    revenueGainPercent,
+                    PED,
+                    optimalPrice
+            );
+        }).toList();
     }
 }
