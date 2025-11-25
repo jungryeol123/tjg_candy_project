@@ -45,6 +45,10 @@ public class Order {
 
     private LocalDateTime odate = LocalDateTime.now();
 
+    private LocalDateTime shippingAt;   // 배송 출발 시간
+    private LocalDateTime deliveredAt;  // 배송 완료 시간
+    private LocalDateTime eta;          // 도착 예정 시간
+
     @Enumerated(EnumType.STRING)
     @Column(name = "delivery_status", length = 20)
     private DeliveryStatus deliveryStatus;   // null 허용
