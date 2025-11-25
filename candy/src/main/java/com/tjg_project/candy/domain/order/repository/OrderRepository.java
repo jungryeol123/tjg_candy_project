@@ -16,6 +16,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     // 주문 내역에서 삭제
     Optional<Order> findByOrderCode(String orderCode);
 
+   
     // ✅ 주문 + 상세(OrderDetail) 함께 조회 (지연 로딩 방지)
     @Query("SELECT DISTINCT o FROM Order o LEFT JOIN FETCH o.orderDetails WHERE o.upk = :upk ORDER BY o.odate DESC")
     List<Order> findAllWithDetailsByUpk(@Param("upk") Long upk);
