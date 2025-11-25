@@ -5,6 +5,7 @@ import com.tjg_project.candy.domain.order.entity.OrderDetail;
 import com.tjg_project.candy.domain.product.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -36,4 +37,8 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> 
             
     """)
     List<DailySalesDto> findDailySalesByProduct(Long ppk);
+
+
+    @Query("SELECT SUM(od.qty) FROM OrderDetail od WHERE od.ppk = :ppk")
+    Long countOrdersByProduct(@Param("ppk") Long ppk);
 }
