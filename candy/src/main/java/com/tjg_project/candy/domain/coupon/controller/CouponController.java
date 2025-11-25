@@ -77,4 +77,16 @@ public class CouponController {
         if (deleted) return ResponseEntity.ok("deleted");
         else return ResponseEntity.status(400).body("not found");
     }
+
+    /** 🔹 5) 주문내역 삭제  */
+    @DeleteMapping("/delete/{userId}/{orderCode}")
+    public ResponseEntity<?> deleteOrder(
+        @PathVariable Long userId,
+        @PathVariable String orderCode
+    ) {
+        boolean deleted = couponService.deleteOrder(userId, orderCode);
+
+        if(deleted) return ResponseEntity.ok("deleted");
+        else return ResponseEntity.status(404).body("not found");
+    }
 }

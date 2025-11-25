@@ -14,8 +14,9 @@ import java.util.Collections;
 @RequiredArgsConstructor
 public class OpenAiService {
 
-    @Value("${openai.api-key}")
-    private String apiKey;
+//    @Value("${openai.api-key}")
+//    private String apiKey;
+    String apikey = "1234";
 
     private final RestTemplate restTemplate = new RestTemplate();
 
@@ -30,7 +31,7 @@ public class OpenAiService {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("Authorization", "Bearer " + apiKey);
+        headers.set("Authorization", "Bearer " + apikey);
 
         HttpEntity<OpenAiRequest> entity = new HttpEntity<>(request, headers);
 
