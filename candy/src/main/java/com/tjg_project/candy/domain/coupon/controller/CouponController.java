@@ -67,7 +67,7 @@ public class CouponController {
     }
 
     /** 🔹 4) 쿠폰 삭제  */
-    @DeleteMapping("/delete/{userId}/{couponId}")
+    @DeleteMapping("/deleteCoupon/{userId}/{couponId}")
     public ResponseEntity<?> deleteCoupon(
             @PathVariable Long userId,
             @PathVariable Long couponId
@@ -78,15 +78,4 @@ public class CouponController {
         else return ResponseEntity.status(400).body("not found");
     }
 
-    /** 🔹 5) 주문내역 삭제  */
-    @DeleteMapping("/delete/{userId}/{orderCode}")
-    public ResponseEntity<?> deleteOrder(
-        @PathVariable Long userId,
-        @PathVariable String orderCode
-    ) {
-        boolean deleted = couponService.deleteOrder(userId, orderCode);
-
-        if(deleted) return ResponseEntity.ok("deleted");
-        else return ResponseEntity.status(404).body("not found");
-    }
 }

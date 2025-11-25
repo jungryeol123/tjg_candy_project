@@ -65,24 +65,6 @@ public class CouponServiceImpl implements CouponService {
                 .map(uc -> { userCouponRepository.delete(uc); return true; })
                 .orElse(false);
     }
-    @Override
-    @Transactional
-    public boolean deleteOrder(Long userId, String orderCode) {
-
-        Users users = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("사용자 없음"));
-
-        Order order = orderRepository.findByOrderCode(orderCode)
-                .orElseThrow(() -> new IllegalArgumentException("주문 내역 없음"));
-        System.out.println("🧪 order.upk = " + order.getUpk());
-        System.out.println("🧪 users.id = " + users.getId());
-
-        if (!order.getUpk().equals(users.getId())) {
-            throw new IllegalArgumentException("본인의 주문이 아닙니다.");
-        }
-        orderRepository.delete(order);
-        return true;
-    }
 
     @Override
     public List<UserCoupon> getUserCoupons(Long userId) {

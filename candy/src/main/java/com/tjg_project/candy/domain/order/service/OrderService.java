@@ -9,7 +9,8 @@ import com.tjg_project.candy.domain.order.entity.Order;
 import java.util.List;
 
 public interface OrderService {
-     Order saveOrder(NaverApproveResponse approve, NaverPay naverPay);
-     Order saveOrder(KakaoApproveResponse approve, KakaoPay kakaoPay);
-     List<Order> getOrdersByUser(Long id);
+    Order saveOrder(NaverApproveResponse approve, NaverPay naverPay);
+    Order saveOrder(KakaoApproveResponse approve, KakaoPay kakaoPay);
+    List<Order> getOrdersByUser(Long id);
+    boolean deleteOrder(Long userId, String orderCode);
 }

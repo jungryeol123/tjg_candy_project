@@ -10,8 +10,6 @@ public interface CouponService {
 
     boolean deleteUserCoupon(Long userId, Long couponId);
 
-    boolean deleteOrder(Long userId, String orderCode);
-
     List<UserCoupon> getUserCoupons(Long userId);
 
     boolean updateCoupon(Long id);
