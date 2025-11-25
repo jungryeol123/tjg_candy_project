@@ -19,6 +19,6 @@ public interface UserViewLogRepository extends JpaRepository<UserViewLog, Long> 
 
     Optional<UserViewLog> findByUpkAndPpk(Long upk, Long ppk);
 
-    @Query("SELECT COUNT(l) FROM UserViewLog l WHERE l.ppk = :ppk")
-    long countViewsByProduct(@Param("ppk") Long ppk);
+    @Query("SELECT COALESCE(SUM(l.qty), 0) FROM UserViewLog l WHERE l.ppk = :ppk")
+    Long sumViewsByProduct(@Param("ppk") Long ppk);
 }
