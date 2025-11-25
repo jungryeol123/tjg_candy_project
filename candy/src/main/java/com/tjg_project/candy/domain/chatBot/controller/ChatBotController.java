@@ -50,9 +50,9 @@ public class ChatBotController {
     // ===============================
     private ChatResponse handleOrderStatus(Long upk) {
 
-        List<Order> orders = chatOrderService.getOrders(upk);
+        Order orders = chatOrderService.getLatestOrder(upk);
 
-        if (orders.isEmpty())
+        if (orders == null)
             return new ChatResponse("고객님의 주문 내역이 없습니다.", null);
 
         return new ChatResponse("고객님의 주문 내역입니다.", orders);
