@@ -18,7 +18,7 @@ public class ChatOrderService {
         return orderRepository.findByUpk(upk);
     }
 
-    public List<Order> getLimit1Orders(Long upk) {return  orderRepository.findTop1ByUpk(upk);}
+    public Order getLimit1Orders(Long upk) {return  orderRepository.findTop1ByUpk(upk);}
     // 최근 주문 1개 가져오기
     public Order getLatestOrder(Long upk) {
         return orderRepository.findTop1ByUpkOrderByOdateDesc(upk);

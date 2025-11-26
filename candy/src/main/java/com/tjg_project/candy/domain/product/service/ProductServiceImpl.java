@@ -1,5 +1,6 @@
 package com.tjg_project.candy.domain.product.service;
 
+import com.tjg_project.candy.domain.order.entity.KakaoPay;
 import com.tjg_project.candy.domain.order.repository.OrderDetailRepository;
 import com.tjg_project.candy.domain.product.entity.Product;
 import com.tjg_project.candy.domain.product.entity.ProductDetailView;
@@ -19,10 +20,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -196,10 +194,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public boolean updateCount(Long id, Long qty) {
+    public boolean updateCount(List<KakaoPay.ProductInfo> productInfo) {
         boolean result = false;
-        int row = productRepository.decreaseCount(id, qty);
-        if(row == 1){
+        List<Integer> row = new ArrayList<>();
+        productInfo.forEach(info -> row.add(productRepository.decreaseCount(info.getPid(), info.getQty())));
+        if(row.size() != 0){
             result = true;
         }
         return result;

@@ -18,4 +18,7 @@ public interface UserViewLogRepository extends JpaRepository<UserViewLog, Long> 
     List<Long> findRecentSubCategories(@Param("upk") Long upk);
 
     Optional<UserViewLog> findByUpkAndPpk(Long upk, Long ppk);
+
+    @Query("SELECT COALESCE(SUM(l.qty), 0) FROM UserViewLog l WHERE l.ppk = :ppk")
+    Long sumViewsByProduct(@Param("ppk") Long ppk);
 }

@@ -5,6 +5,8 @@ import com.tjg_project.candy.domain.order.dto.NaverApproveResponse;
 import com.tjg_project.candy.domain.order.entity.*;
 import com.tjg_project.candy.domain.order.repository.CartRepository;
 import com.tjg_project.candy.domain.order.repository.OrderRepository;
+import com.tjg_project.candy.domain.user.entity.Users;
+import com.tjg_project.candy.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +19,7 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final CartRepository cartRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public Order saveOrder(KakaoApproveResponse approve, KakaoPay kakaoPay) {
@@ -133,6 +136,24 @@ public class OrderServiceImpl implements OrderService {
         cartRepository.deleteAll(cartItems);
 
         return savedOrder;
+    }
+    @Override
+    @Transactional
+    public boolean deleteOrder(Long userId, String orderCode) {
+
+        Users users = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("사용자 없음"));
+
+        Order order = orderRepository.findByOrderCode(orderCode)
+                .orElseThrow(() -> new IllegalArgumentException("주문 내역 없음"));
+        System.out.println("🧪 order.upk = " + order.getUpk());
+        System.out.println("🧪 users.id = " + users.getId());
+
+        if (!order.getUpk().equals(users.getId())) {
+            throw new IllegalArgumentException("본인의 주문이 아닙니다.");
+        }
+        orderRepository.delete(order);
+        return true;
     }
 }
 

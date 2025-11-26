@@ -4,6 +4,8 @@ import com.tjg_project.candy.domain.coupon.entity.Coupon;
 import com.tjg_project.candy.domain.coupon.entity.UserCoupon;
 import com.tjg_project.candy.domain.coupon.repository.CouponRepository;
 import com.tjg_project.candy.domain.coupon.repository.UserCouponRepository;
+import com.tjg_project.candy.domain.order.entity.Order;
+import com.tjg_project.candy.domain.order.repository.OrderRepository;
 import com.tjg_project.candy.domain.user.entity.Users;
 import com.tjg_project.candy.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +22,7 @@ public class CouponServiceImpl implements CouponService {
     private final UserRepository userRepository;
     private final CouponRepository couponRepository;
     private final UserCouponRepository userCouponRepository;
+    private final OrderRepository orderRepository;
 
     @Override
     @Transactional
