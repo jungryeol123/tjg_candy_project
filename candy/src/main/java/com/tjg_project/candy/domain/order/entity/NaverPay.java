@@ -16,6 +16,8 @@ public class NaverPay {
     private KakaoPay.Receiver receiver;
     private KakaoPay.PaymentInfo paymentInfo;
     private List<Long> cidList;
+    private Long couponId;
+    private List<KakaoPay.ProductInfo> productInfo;
 
     @Data
     public static class Receiver {
