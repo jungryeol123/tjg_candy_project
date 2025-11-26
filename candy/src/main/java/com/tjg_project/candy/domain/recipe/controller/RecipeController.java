@@ -2,6 +2,7 @@ package com.tjg_project.candy.domain.recipe.controller;
 
 import com.tjg_project.candy.domain.recipe.dto.RecipeReviewRequestDto;
 import com.tjg_project.candy.domain.recipe.entity.Recipe;
+import com.tjg_project.candy.domain.recipe.entity.RecipeReview;
 import com.tjg_project.candy.domain.recipe.repository.RecipeRepository;
 import com.tjg_project.candy.domain.recipe.service.RecipeService;
 import com.tjg_project.candy.global.util.JwtUtil;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/recipe")
@@ -43,9 +45,9 @@ public class RecipeController {
         Long userId = jwtUtil.extractUserId(token);
 
         // 🔥 저장 로직 호출
-        recipeService.saveReview(id, userId, dto);
+        RecipeReview recipeReview = recipeService.saveReview(id, userId, dto);
 
-        return ResponseEntity.ok("리뷰 작성 완료");
+        return ResponseEntity.ok(Map.of("recipeReview", recipeReview));
     }
 
 
