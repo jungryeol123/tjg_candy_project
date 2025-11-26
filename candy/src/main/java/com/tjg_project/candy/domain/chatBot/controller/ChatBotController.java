@@ -25,7 +25,7 @@ public class ChatBotController {
     public ChatResponse ask(@RequestBody ChatRequest req) {
 
         String intent = intentService.classify(req.getMessage());
-
+        System.out.println("req"+req.getUpk());
         switch (intent) {
 
             case "ORDER_STATUS":
