@@ -19,7 +19,7 @@ public class KakaoPay {
     private PaymentInfo paymentInfo;
     private List<Long> cidList;
     private Long couponId;
-    private Long pid;
+    private List<ProductInfo> productInfo;
 
     @Data
     public static class Receiver {
@@ -36,6 +36,12 @@ public class KakaoPay {
         private int shippingFee;
         private int discountAmount;
         private int totalAmount;
+    }
+
+    @Data
+    public static class ProductInfo {
+        private Long pid;
+        private Long qty;
     }
 
 }//KakaoPay dto

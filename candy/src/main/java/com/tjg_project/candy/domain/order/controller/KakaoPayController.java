@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import org.springframework.http.*;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -50,9 +51,9 @@ public class KakaoPayController {
         orderService.saveOrder(approve,payInfo);
         couponService.updateCoupon(payInfo.getCouponId());
 
-        Long qty = Long.parseLong(payInfo.getQty());
+        List<KakaoPay.ProductInfo> productInfo = payInfo.getProductInfo();
 
-        productService.updateCount(payInfo.getPid(), qty);
+        productService.updateCount(productInfo);
 
         URI redirect = URI.create("http://localhost:3000/payResult?orderId=" + orderId + "&status=success");
         HttpHeaders headers = new HttpHeaders();

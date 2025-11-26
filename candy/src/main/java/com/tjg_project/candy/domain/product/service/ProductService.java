@@ -1,5 +1,6 @@
 package com.tjg_project.candy.domain.product.service;
 
+import com.tjg_project.candy.domain.order.entity.KakaoPay;
 import com.tjg_project.candy.domain.product.entity.Product;
 import com.tjg_project.candy.domain.product.entity.ProductDetailView;
 import com.tjg_project.candy.domain.product.entity.ProductQnA;
@@ -20,5 +21,5 @@ public interface ProductService {
     Product updateProduct(Product product, List<MultipartFile> files);
     boolean deleteProduct(Long id);
     ProductQnA addProductQnA(ProductQnA qna);
-    boolean updateCount(Long id, Long qty);
+    boolean updateCount(List<KakaoPay.ProductInfo> productInfo);
 }
