@@ -17,4 +17,6 @@ public interface ProductReviewRepository extends JpaRepository<ProductReview, Lo
             select r.id, r.content, r.date, r.images, r.is_best, r.likes, r.ppk, r.product_name, r.tags, r.title, r.upk, u.name from reviews r, users u where r.upk = u.id
             """, nativeQuery = true)
     List<Map<String, Object>> findAllReviewWithUserName();
+
+    List<ProductReview> findByPpk(Long ppk);
 }
