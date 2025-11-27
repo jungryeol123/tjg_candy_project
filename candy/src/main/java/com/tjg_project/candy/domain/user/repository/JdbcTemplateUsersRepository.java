@@ -17,16 +17,17 @@ public class JdbcTemplateUsersRepository implements UsersRepository{
 
     @Override
     public boolean signup(Users users) {
+        boolean result = false;
         String sql = "insert into users(birthday, email, gender, name, password, phone, provider, user_id, address, recommendation, zonecode) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
         Object[] param = {
                 users.getBirthday(), users.getEmail(), users.getGender(), users.getName(), users.getPassword(),
                 users.getPhone(), users.getProvider(), users.getUserId(), users.getAddress(), users.getRecommendation(),
                 users.getZonecode()
         };
-        boolean result = false;
 
         int rows = jdbcTemplate.update(sql, param);
-//        System.out.println(rows);
+
         if(rows == 1) {
             result = true;
         }
@@ -39,20 +40,15 @@ public class JdbcTemplateUsersRepository implements UsersRepository{
 
         Long rows = jdbcTemplate.queryForObject(sql, long.class , id);
 
-        if(rows == 0) {
-            return false;
-        } else {
-            return true;
-        }
+        return rows != null && rows != 0;
     }
 
     @Override
     public Users findById(String id) {
         String sql = "SELECT * FROM users WHERE user_id = ?";
+
         try {
-            Users a =  jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Users.class), id);
-            System.out.println("a ----" + a);
-            return a;
+            return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Users.class), id);
         } catch (Exception e) {
             return null;
         }
@@ -61,6 +57,7 @@ public class JdbcTemplateUsersRepository implements UsersRepository{
     @Override
     public Users findByEmailOrPhone(String query) {
         String sql = "SELECT * FROM users WHERE email = ? OR phone = ?";
+
         try {
             return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Users.class), query, query);
         } catch (Exception e) {
@@ -71,6 +68,7 @@ public class JdbcTemplateUsersRepository implements UsersRepository{
     @Override
     public Users findByIdAndEmailOrPhone(String id, String query) {
         String sql = "SELECT * FROM users WHERE user_id = ? AND (email = ? OR phone = ?)";
+
         try {
             return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Users.class), id, query, query);
         } catch (Exception e) {
@@ -87,6 +85,4 @@ public class JdbcTemplateUsersRepository implements UsersRepository{
             return null;
         }
     }
-
-
 }

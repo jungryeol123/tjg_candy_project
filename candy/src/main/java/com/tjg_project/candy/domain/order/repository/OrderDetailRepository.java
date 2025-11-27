@@ -34,10 +34,8 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> 
                                       WHERE od.ppk = :ppk
                                       GROUP BY o.odate
                                       ORDER BY o.odate
-            
     """)
     List<DailySalesDto> findDailySalesByProduct(Long ppk);
-
 
     @Query("SELECT SUM(od.qty) FROM OrderDetail od WHERE od.ppk = :ppk")
     Long countOrdersByProduct(@Param("ppk") Long ppk);

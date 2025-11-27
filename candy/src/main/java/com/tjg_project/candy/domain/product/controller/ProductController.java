@@ -1,13 +1,10 @@
 package com.tjg_project.candy.domain.product.controller;
 
-
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tjg_project.candy.domain.product.entity.Product;
 import com.tjg_project.candy.domain.product.entity.ProductDetailView;
 import com.tjg_project.candy.domain.product.entity.ProductQnA;
-import com.tjg_project.candy.domain.product.entity.ProductReview;
 import com.tjg_project.candy.domain.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +23,6 @@ public class ProductController {
 
     @GetMapping("/productList")
     public List<Product>  getProductList() {
-
         return productService.getProductList();
     }
 
@@ -54,7 +50,8 @@ public class ProductController {
     // 상품 정보 등록
     @PostMapping("/productAdd")
     public Product saveProduct(@RequestParam("product") String productJson,
-                               @RequestPart("files") List<MultipartFile> files) throws JsonProcessingException {
+                               @RequestPart("files") List<MultipartFile> files)
+            throws JsonProcessingException {
         // product JSON 데이터 매핑작업
         ObjectMapper mapper = new ObjectMapper();
         Product product = mapper.readValue(productJson, Product.class);
@@ -65,7 +62,8 @@ public class ProductController {
     // 상품 정보 수정
     @PostMapping("/productUpdate")
     public Product updateProduct(@RequestParam("product") String productJson,
-                                 @RequestPart("files") List<MultipartFile> files) throws JsonProcessingException {
+                                 @RequestPart("files") List<MultipartFile> files)
+            throws JsonProcessingException {
         // product JSON 데이터 매핑작업
         ObjectMapper mapper = new ObjectMapper();
         Product product = mapper.readValue(productJson, Product.class);
@@ -84,9 +82,4 @@ public class ProductController {
     public ProductQnA addQnA(@RequestBody ProductQnA qna) {
         return productService.addProductQnA(qna);
     }
-//    @GetMapping("/productList/time")
-//    public List<Product>  getProductListTime(@RequestParam(required = false, defaultValue = "time") String keyword) {
-//        return productService.getProductList(keyword);
-//    }
-
 }

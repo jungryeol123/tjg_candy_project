@@ -21,12 +21,13 @@ public class UserController {
     }
 
     @PostMapping("/idcheck")
-    public boolean idcheck (@RequestBody Users users) { return usersService.idcheck(users); }
+    public boolean idcheck (@RequestBody Users users) {
+        return usersService.idcheck(users);
+    }
 
     // 로그인
     @PostMapping("/login")
     public Users login(@RequestBody Users users) {
-        System.out.println("controller---------------------"+users.getUserId());
         return usersService.login(users.getUserId(), users.getPassword());
     }
 

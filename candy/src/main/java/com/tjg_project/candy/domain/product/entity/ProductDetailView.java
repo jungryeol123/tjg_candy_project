@@ -8,7 +8,6 @@ import net.jcip.annotations.Immutable;
 
 import java.time.LocalDate;
 
-
 @Entity
 @Getter // getter생성
 @Setter // setter생성

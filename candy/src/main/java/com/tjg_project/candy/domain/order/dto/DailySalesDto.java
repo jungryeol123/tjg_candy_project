@@ -1,6 +1,5 @@
 package com.tjg_project.candy.domain.order.dto;
 
-
 import java.time.LocalDateTime;
 
 public class DailySalesDto {

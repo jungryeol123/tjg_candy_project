@@ -32,7 +32,4 @@ public class UserViewLogController {
         Long subCat = userViewLogService.getRecentSubCategory(upk);
         return ResponseEntity.ok(Map.of("recentSubCategory", subCat));
     }
-
-
-
 }

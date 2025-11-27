@@ -106,7 +106,6 @@ public class ConversionExcelController {
                 .body(bos.toByteArray());
     }
 
-
     @Data
     static class ConversionRequest {
         private List<ConversionExcelRow> rows;

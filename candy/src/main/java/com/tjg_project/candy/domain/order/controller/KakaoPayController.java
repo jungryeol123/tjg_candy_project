@@ -61,7 +61,6 @@ public class KakaoPayController {
         return new ResponseEntity<>(headers, HttpStatus.FOUND);
     }
 
-
     /**
      * ✅ 결제 취소 콜백
      */

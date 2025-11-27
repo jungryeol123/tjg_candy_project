@@ -8,19 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/login")
 public class UsersController {
 
-
     @PostMapping
     public String login() {
         return "안녕!!";
     }
-
 }
-
-
-//import org.springframework.security.core.Authentication;
-//
-//@GetMapping("/me")
-//public String getMyEmail(Authentication authentication) {
-//    String email = (String) authentication.getPrincipal();
-//    return email;
-//}

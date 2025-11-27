@@ -1,7 +1,6 @@
 package com.tjg_project.candy.domain.analytics.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.theokanning.openai.client.OpenAiApi;
 import com.tjg_project.candy.domain.analytics.dto.ReviewAnalysisDto;
 import com.tjg_project.candy.domain.openai.service.OpenAiService;
 import com.tjg_project.candy.domain.product.entity.ProductReview;

@@ -26,6 +26,7 @@ public class AuthController {
     private final AuthService authService;
     private final UsersService usersService;
     private final Set<String> allowedOrigins = Set.of("http://localhost:3000");
+
     @Autowired
     public AuthController(JwtUtil jwtUtil, AuthService authService, UsersService usersService) {
         this.jwtUtil = jwtUtil;
@@ -72,7 +73,6 @@ public class AuthController {
                 .body(Map.of("accessToken", accessToken));
     }
 
-
     @PostMapping("/refresh")
     public ResponseEntity<?> refresh(
             @CookieValue(value = "refresh_token", required = false) String token,
@@ -80,7 +80,6 @@ public class AuthController {
             @RequestHeader(value = "X-XSRF-TOKEN", required = false) String csrfHeader,
             HttpServletRequest request
     ) {
-
         System.out.println("refresh_token" + token);
         System.out.println("XSRF-TOKEN"+ csrfCookie);
         System.out.println("X-XSRF-Token"+csrfHeader);
@@ -130,15 +129,11 @@ public class AuthController {
                 .maxAge(7 * 24 * 60 * 60)
                 .build();
 
-
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
                 .header(HttpHeaders.SET_COOKIE, csrfCookieNew.toString())
                 .body(Map.of("accessToken", newAccessToken));
     }
-
-
-
 
     /**
      * ✅ 로그아웃 처리

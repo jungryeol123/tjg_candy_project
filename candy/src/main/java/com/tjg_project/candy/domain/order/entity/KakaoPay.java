@@ -1,8 +1,5 @@
 package com.tjg_project.candy.domain.order.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Data;
 
 import java.util.List;
@@ -10,7 +7,6 @@ import java.util.List;
 @Data
 public class KakaoPay {
     private String orderId;
-    //    private String userId;
     private Long id;
     private String itemName;
     private String qty;
@@ -43,6 +39,5 @@ public class KakaoPay {
         private Long pid;
         private Long qty;
     }
-
 }//KakaoPay dto
 

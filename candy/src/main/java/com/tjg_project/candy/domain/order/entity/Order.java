@@ -1,7 +1,6 @@
 package com.tjg_project.candy.domain.order.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.tjg_project.candy.domain.user.entity.Users;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,15 +20,6 @@ public class Order {
 
     @Column(name = "order_code", nullable = false, unique = true, length = 50)
     private String orderCode; // UUID
-
-//    @Column(nullable = false)
-//    private String userId;
-
-//    // ✅ 수정 후
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "upk", nullable = false)
-//    private Users user;
-
     private Long upk;
 
     private int totalAmount;
@@ -44,7 +34,6 @@ public class Order {
     private String memo;
 
     private LocalDateTime odate = LocalDateTime.now();
-
     private LocalDateTime shippingAt;   // 배송 출발 시간
     private LocalDateTime deliveredAt;  // 배송 완료 시간
     private LocalDateTime eta;          // 도착 예정 시간

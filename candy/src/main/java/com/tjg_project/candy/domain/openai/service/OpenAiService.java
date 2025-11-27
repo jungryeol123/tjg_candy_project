@@ -16,7 +16,6 @@ public class OpenAiService {
 
     @Value("${openai.api-key}")
     private String apiKey;
-//    String apikey = "1234";
 
     private final RestTemplate restTemplate = new RestTemplate();
 
