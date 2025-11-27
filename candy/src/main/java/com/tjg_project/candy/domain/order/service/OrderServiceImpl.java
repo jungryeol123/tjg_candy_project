@@ -86,6 +86,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = Order.builder()
                 .orderCode(naverPay.getOrderId())
                 .upk(naverPay.getId())
+                .deliveryStatus(DeliveryStatus.READY)
                 .totalAmount(naverPay.getPaymentInfo().getTotalAmount())
                 .shippingFee(naverPay.getPaymentInfo().getShippingFee())
                 .discountAmount(naverPay.getPaymentInfo().getDiscountAmount())
