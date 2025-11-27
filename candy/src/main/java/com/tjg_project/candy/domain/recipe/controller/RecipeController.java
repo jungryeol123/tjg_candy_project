@@ -1,18 +1,13 @@
 package com.tjg_project.candy.domain.recipe.controller;
 
 import com.tjg_project.candy.domain.recipe.dto.RecipeReviewRequestDto;
-import com.tjg_project.candy.domain.recipe.entity.Recipe;
 import com.tjg_project.candy.domain.recipe.entity.RecipeReview;
-import com.tjg_project.candy.domain.recipe.repository.RecipeRepository;
 import com.tjg_project.candy.domain.recipe.service.RecipeService;
 import com.tjg_project.candy.global.util.JwtUtil;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -22,6 +17,7 @@ public class RecipeController {
 
     private final RecipeService recipeService;
     private final JwtUtil jwtUtil;
+
     @GetMapping("/list")
     public ResponseEntity<?> getRecipeList(@RequestParam Long subId) {
         return ResponseEntity.ok(recipeService.getRecipeList(subId));
@@ -49,6 +45,4 @@ public class RecipeController {
 
         return ResponseEntity.ok(Map.of("recipeReview", recipeReview));
     }
-
-
 }

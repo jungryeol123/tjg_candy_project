@@ -30,7 +30,6 @@ public class CartController {
         System.out.println("cartopen");
         System.out.println(cart.getUser().getId());
         return cartService.cartList(cart.getUser().getId());
-
     }
 
     // qty 업데이트

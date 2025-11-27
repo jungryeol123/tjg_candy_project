@@ -23,13 +23,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional
     public Order saveOrder(KakaoApproveResponse approve, KakaoPay kakaoPay) {
-
-//        // ✅ 1. cidList로 cart 항목 조회
-//        List<Cart> cartItems = cartRepository.findByCidIn(kakaoPay.getCidList());
-//        if (cartItems.isEmpty()) {
-//            throw new IllegalArgumentException("결제할 장바구니 항목이 없습니다.");
-//        }
-
         // ✅ 1. Cart + Product 함께 조회 (N+1 방지)
         List<Cart> cartItems = cartRepository.findAllWithProductByCidIn(kakaoPay.getCidList());
         if (cartItems.isEmpty()) {
@@ -39,7 +32,6 @@ public class OrderServiceImpl implements OrderService {
         // ✅ 2. Order 엔티티 생성
         Order order = Order.builder()
                 .orderCode(kakaoPay.getOrderId())
-//                .userId(kakaoPay.getUserId())
                 .upk(kakaoPay.getId())
                 .deliveryStatus(DeliveryStatus.READY)
                 .totalAmount(kakaoPay.getPaymentInfo().getTotalAmount())
@@ -82,17 +74,8 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findAllWithDetailsByUpk(userId);
     }
 
-
-
     @Transactional
     public Order saveOrder(NaverApproveResponse approve, NaverPay naverPay) {
-
-//        // ✅ 1. cidList로 cart 항목 조회
-//        List<Cart> cartItems = cartRepository.findByCidIn(kakaoPay.getCidList());
-//        if (cartItems.isEmpty()) {
-//            throw new IllegalArgumentException("결제할 장바구니 항목이 없습니다.");
-//        }
-
         // ✅ 1. Cart + Product 함께 조회 (N+1 방지)
         List<Cart> cartItems = cartRepository.findAllWithProductByCidIn(naverPay.getCidList());
         if (cartItems.isEmpty()) {
@@ -102,7 +85,6 @@ public class OrderServiceImpl implements OrderService {
         // ✅ 2. Order 엔티티 생성
         Order order = Order.builder()
                 .orderCode(naverPay.getOrderId())
-//                .userId(kakaoPay.getUserId())
                 .upk(naverPay.getId())
                 .totalAmount(naverPay.getPaymentInfo().getTotalAmount())
                 .shippingFee(naverPay.getPaymentInfo().getShippingFee())
@@ -137,10 +119,10 @@ public class OrderServiceImpl implements OrderService {
 
         return savedOrder;
     }
+
     @Override
     @Transactional
     public boolean deleteOrder(Long userId, String orderCode) {
-
         Users users = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("사용자 없음"));
 
@@ -156,5 +138,3 @@ public class OrderServiceImpl implements OrderService {
         return true;
     }
 }
-
-

@@ -29,7 +29,6 @@ public class RecipeService {
                 .collect(Collectors.toList());
     }
 
-
     public RecipeDetailResponseDto getRecipeDetail(Long id) {
         Recipe r = recipeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Not found"));
@@ -57,8 +56,5 @@ public class RecipeService {
 
         return recipeReviewRepository.save(review);
     }
-
-
-
 }
 

@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
-
 @RestController
 @RequestMapping("/orders")
 public class OrderController {
@@ -26,8 +24,8 @@ public class OrderController {
     @DeleteMapping("/deleteOrder/{userId}/{orderCode}")
     public ResponseEntity<?> deleteOrder(
             @PathVariable Long userId,
-            @PathVariable String orderCode
-    ) {
+            @PathVariable String orderCode) {
+
         boolean deleted = orderService.deleteOrder(userId, orderCode);
 
         if(deleted) return ResponseEntity.ok("deleted");

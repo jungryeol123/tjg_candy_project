@@ -10,8 +10,8 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "user_view_log")
 @Data
+@Table(name = "user_view_log")
 public class UserViewLog {
 
     @Id

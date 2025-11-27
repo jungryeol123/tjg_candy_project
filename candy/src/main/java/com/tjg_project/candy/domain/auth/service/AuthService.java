@@ -19,7 +19,6 @@ public class AuthService {
         this.refreshTokenRepository = refreshTokenRepository;
     }
 
-
     public RefreshToken createRefreshToken(Long userId) {
         String rawToken = UUID.randomUUID().toString();
         String hashedToken = DigestUtils.sha256Hex(rawToken);

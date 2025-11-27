@@ -1,15 +1,12 @@
 package com.tjg_project.candy.domain.product.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.tjg_project.candy.domain.category.entity.CategorySub;
 import com.tjg_project.candy.domain.user.entity.Users;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Generated;
-import org.hibernate.annotations.GenerationTime;
 
 import java.time.LocalDate;
 
@@ -25,8 +22,8 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // PK
 
-    @Column(length = 20, nullable = false, unique = true)
-    @Generated(GenerationTime.INSERT)
+    @Column(length = 20, nullable = false, unique = true,
+            insertable = false, updatable = false)
     private String pid; // 상품 코드
 
     @Column(length = 255)

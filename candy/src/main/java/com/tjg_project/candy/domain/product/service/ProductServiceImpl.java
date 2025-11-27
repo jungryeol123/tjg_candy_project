@@ -197,8 +197,10 @@ public class ProductServiceImpl implements ProductService {
     public boolean updateCount(List<KakaoPay.ProductInfo> productInfo) {
         boolean result = false;
         List<Integer> row = new ArrayList<>();
-        productInfo.forEach(info -> row.add(productRepository.decreaseCount(info.getPid(), info.getQty())));
-        if(row.size() != 0){
+        productInfo.forEach(info
+                -> row.add(productRepository.decreaseCount(info.getPid(), info.getQty())));
+
+        if(!row.isEmpty()){
             result = true;
         }
         return result;

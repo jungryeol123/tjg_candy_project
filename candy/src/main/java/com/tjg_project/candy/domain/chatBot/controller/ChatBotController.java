@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/chatbot")
@@ -26,7 +25,8 @@ public class ChatBotController {
 
         String intent = intentService.classify(req.getMessage());
         System.out.println("req"+req.getUpk());
-        switch (intent) {
+
+        switch(intent) {
 
             case "ORDER_STATUS":
                 return handleOrderStatus(req.getUpk());

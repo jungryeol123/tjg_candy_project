@@ -4,11 +4,9 @@ import lombok.Data;
 
 import java.util.List;
 
-
 @Data
 public class NaverPay {
     private String orderId;
-    //    private String userId;
     private Long id;
     private String itemName;
     private String qty;
