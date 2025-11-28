@@ -671,3 +671,13 @@ drop table recipe;
 SET FOREIGN_KEY_CHECKS = 1;
 
 select * from users;
+
+-- 광고데이터 삽입
+INSERT INTO advertise (adv_image_banner, adv_image_inline, adv_link, adv_name)
+VALUES
+( null, '/images/advertiseimages/Adv1.png','https://www.hitejinro.com/brand/view.asp?brandcd2=E08','하이트진로'),
+( null, '/images/advertiseimages/Adv2.png','https://www.oliveyoung.co.kr/store/main/main.do?oy=0','올리브영'),
+( null, '/images/advertiseimages/Adv3.png','https://ohou.se/search/index?query=%EC%BA%94%EB%93%A4&search_affect_type=Typing','오늘의집'),
+('/images/advertiseimages/BannerAdv1.png', null, 'https://www.oliveyoung.co.kr/store/main/main.do?oy=0', '올리브영'),
+('/images/advertiseimages/BannerAdv2.png', null, 'https://www.oliveyoung.co.kr/store/main/main.do?oy=0', '올리브영'),
+('/images/advertiseimages/BannerAdv3.png', null, 'https://www.coupang.com/np/search?component=&q=%EC%98%81%EC%96%91%EC%A0%9C&traceId=miiakjcm&channel=user', '쿠팡');
