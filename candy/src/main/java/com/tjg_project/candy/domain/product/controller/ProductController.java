@@ -55,7 +55,6 @@ public class ProductController {
         // product JSON 데이터 매핑작업
         ObjectMapper mapper = new ObjectMapper();
         Product product = mapper.readValue(productJson, Product.class);
-
         return productService.saveProduct(product, files);
     }
 

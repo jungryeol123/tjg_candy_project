@@ -20,7 +20,6 @@ public class UserViewLogController {
         Long upk = body.get("upk");
         Long ppk = body.get("ppk");
         Long subCategoryId = body.get("categorySubId");
-        System.out.println("categorySubId"+subCategoryId);
         userViewLogService.saveViewLog(upk, ppk, subCategoryId);
 
         return ResponseEntity.ok("saved");

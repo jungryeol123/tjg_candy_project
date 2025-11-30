@@ -24,7 +24,6 @@ public class ForecastController {
     @GetMapping("/predict/{ppk}")
     public ForecastResponseDto runForecast(@PathVariable Long ppk) {
         try {
-            System.out.println("예측통과함!!!!!");
             return forecastService.runForecast(ppk);
         } catch (Exception e) {
             throw new RuntimeException("AI 예측 실패: " + e.getMessage());
