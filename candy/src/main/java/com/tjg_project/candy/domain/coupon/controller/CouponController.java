@@ -24,7 +24,6 @@ public class CouponController {
             @PathVariable Long couponId,
             @RequestBody Map<String, Long> body
     ) {
-        System.out.println("🔥 받은 body = " + body);
         if (body == null || !body.containsKey("userId")) {
             return ResponseEntity.badRequest().body(
                     Map.of("status", "fail", "message", "userId가 필요합니다.")

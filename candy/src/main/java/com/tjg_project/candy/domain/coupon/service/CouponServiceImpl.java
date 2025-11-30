@@ -27,7 +27,6 @@ public class CouponServiceImpl implements CouponService {
     @Override
     @Transactional
     public boolean issueCouponToUser(Long userId, Long couponId) {
-        System.out.println("🔥 issueCouponToUser userId=" + userId + ", couponId=" + couponId);
 
         Users users = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
