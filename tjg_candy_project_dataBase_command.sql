@@ -671,7 +671,7 @@ drop table recipe;
 SET FOREIGN_KEY_CHECKS = 1;
 
 select * from users;
-
+show tables;
 -- 광고데이터 삽입
 INSERT INTO advertise (adv_image_banner, adv_image_inline, adv_link, adv_name)
 VALUES
@@ -681,3 +681,7 @@ VALUES
 ('/images/advertiseimages/BannerAdv1.png', null, 'https://www.oliveyoung.co.kr/store/main/main.do?oy=0', '올리브영'),
 ('/images/advertiseimages/BannerAdv2.png', null, 'https://www.oliveyoung.co.kr/store/main/main.do?oy=0', '올리브영'),
 ('/images/advertiseimages/BannerAdv3.png', null, 'https://www.coupang.com/np/search?component=&q=%EC%98%81%EC%96%91%EC%A0%9C&traceId=miiakjcm&channel=user', '쿠팡');
+
+
+use candy;
+update users set role = "ADMIN" where user_id = "test";
