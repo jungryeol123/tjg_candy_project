@@ -70,7 +70,9 @@ public class AuthController {
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
                 .header(HttpHeaders.SET_COOKIE, csrfCookie.toString())
-                .body(Map.of("accessToken", accessToken));
+                .body(Map.of("accessToken", accessToken,
+                        "role", us.getRole()
+                ));
     }
 
     @PostMapping("/refresh")
@@ -80,9 +82,7 @@ public class AuthController {
             @RequestHeader(value = "X-XSRF-TOKEN", required = false) String csrfHeader,
             HttpServletRequest request
     ) {
-        System.out.println("refresh_token" + token);
-        System.out.println("XSRF-TOKEN"+ csrfCookie);
-        System.out.println("X-XSRF-Token"+csrfHeader);
+
         // ✅ Origin 검증 (CORS 허용 도메인만 통과)
         String origin = request.getHeader("Origin");
         String referer = request.getHeader("Referer");
@@ -132,7 +132,8 @@ public class AuthController {
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
                 .header(HttpHeaders.SET_COOKIE, csrfCookieNew.toString())
-                .body(Map.of("accessToken", newAccessToken));
+                .body(Map.of("accessToken", newAccessToken
+                        ));
     }
 
     /**

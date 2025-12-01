@@ -12,6 +12,9 @@ public class Users {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // PK
 
+    @Column(length = 5, nullable = true)
+    private String role;
+
     @Column(name = "user_id", length = 50, nullable = false, unique = true)
     private String userId; // 로그인 아이디
 
