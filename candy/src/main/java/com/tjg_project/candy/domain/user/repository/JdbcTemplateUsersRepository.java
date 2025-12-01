@@ -18,7 +18,7 @@ public class JdbcTemplateUsersRepository implements UsersRepository{
     @Override
     public boolean signup(Users users) {
         boolean result = false;
-        String sql = "insert into users(birthday, email, gender, name, password, phone, provider, user_id, address, recommendation, zonecode) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "insert into users(birthday, email, gender, name, password, phone, provider, user_id, address, recommendation, zonecode, role) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'USER')";
 
         Object[] param = {
                 users.getBirthday(), users.getEmail(), users.getGender(), users.getName(), users.getPassword(),
