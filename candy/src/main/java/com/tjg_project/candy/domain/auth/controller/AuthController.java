@@ -86,7 +86,6 @@ public class AuthController {
         // ✅ Origin 검증 (CORS 허용 도메인만 통과)
         String origin = request.getHeader("Origin");
         String referer = request.getHeader("Referer");
-        System.out.println("origin"+ origin);
         if (origin == null && !origin.equals("http://localhost:3000")) {
             return ResponseEntity.status(403).body(Map.of("error", "Invalid origin"));
         }
@@ -141,7 +140,6 @@ public class AuthController {
      */
     @PostMapping("/logout")
     public ResponseEntity<?> logout(@CookieValue(value = "refresh_token", required = false) String token) {
-        System.out.println("✅ verifyToken() token = " + token);
         if (token != null) {
             authService.verifyToken(token).ifPresent(t -> authService.deleteByUserId(t.getUserId()));
         }

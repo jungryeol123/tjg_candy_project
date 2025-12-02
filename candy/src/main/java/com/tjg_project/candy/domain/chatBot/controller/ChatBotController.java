@@ -22,9 +22,7 @@ public class ChatBotController {
 
     @PostMapping("/ask")
     public ChatResponse ask(@RequestBody ChatRequest req) {
-
         String intent = intentService.classify(req.getMessage());
-        System.out.println("req"+req.getUpk());
 
         switch(intent) {
 

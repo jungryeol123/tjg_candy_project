@@ -26,9 +26,6 @@ public class CartController {
     // 장바구니 가져오기
     @PostMapping("/cartList")
     public List<Cart> cartList(@RequestBody Cart cart) {
-
-        System.out.println("cartopen");
-        System.out.println(cart.getUser().getId());
         return cartService.cartList(cart.getUser().getId());
     }
 

@@ -36,13 +36,11 @@ public class JwtFilter extends OncePerRequestFilter {
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
-            System.out.println("🧩 Incoming JWT: " + token);
 
             try {
                 // ✅ 토큰 유효성 검증
                 if (jwtUtil.validateToken(token)) {
                     Long userId = jwtUtil.extractUserId(token);
-                    System.out.println("토큰에서 추출된 userId: " + userId);
 
                     UsernamePasswordAuthenticationToken authentication =
                             new UsernamePasswordAuthenticationToken(userId, null, null);
