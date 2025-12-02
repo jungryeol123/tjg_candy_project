@@ -67,7 +67,6 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     public List<UserCoupon> getUserCoupons(Long userId) {
-        System.out.println("service******************************" + userId);
         return userCouponRepository.findAllWithCouponByUserId(userId);
     }
 
@@ -75,7 +74,6 @@ public class CouponServiceImpl implements CouponService {
     @Override
     public boolean updateCoupon(Long id) {
         int rows = userCouponRepository.updateIsUsedById(id);
-        System.out.println(rows);
         return false;
     }
 }

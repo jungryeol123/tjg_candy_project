@@ -60,8 +60,6 @@ public class ReviewAnalysisService {
 
         String raw = openAiService.ask(prompt);
 
-        System.out.println("GPT 응답(JSON): " + raw);
-
         ReviewAnalysisDto dto;
 
         try {

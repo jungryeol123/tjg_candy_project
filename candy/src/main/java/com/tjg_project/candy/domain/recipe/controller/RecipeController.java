@@ -36,7 +36,6 @@ public class RecipeController {
     ) {
         // 🔥 토큰에서 Bearer 제거
         String token = authHeader.substring(7);
-        System.out.println("token"+token);
         // 🔥 JwtUtil 사용해서 유저 ID 파싱
         Long userId = jwtUtil.extractUserId(token);
 

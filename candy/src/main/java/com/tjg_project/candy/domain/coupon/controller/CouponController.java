@@ -45,9 +45,7 @@ public class CouponController {
     /** 🔹 2) 마이페이지에서 쓸 전체 쿠폰 정보 (UserCoupon 전체) */
     @GetMapping("/my/{userId}")
     public ResponseEntity<?> getUserCoupons(@PathVariable Long userId) {
-        System.out.println("mypage userID-------?" + userId);
         List<UserCoupon> coupons = couponService.getUserCoupons(userId);
-        System.out.println("coupons ****************************" + coupons);
         return ResponseEntity.ok(coupons);
     }
 

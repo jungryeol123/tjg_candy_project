@@ -45,8 +45,6 @@ public class UserViewLogService {
     public Long getRecentSubCategory(Long upk) {
         List<Long> list = userViewLogRepository.findRecentSubCategories(upk);
 
-        System.out.println("list : " + list);
-
         if (list.isEmpty()) return null;
         return list.get(0); // 최신 항목 1개
     }

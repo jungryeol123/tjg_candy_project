@@ -129,8 +129,6 @@ public class OrderServiceImpl implements OrderService {
 
         Order order = orderRepository.findByOrderCode(orderCode)
                 .orElseThrow(() -> new IllegalArgumentException("주문 내역 없음"));
-        System.out.println("🧪 order.upk = " + order.getUpk());
-        System.out.println("🧪 users.id = " + users.getId());
 
         if (!order.getUpk().equals(users.getId())) {
             throw new IllegalArgumentException("본인의 주문이 아닙니다.");
