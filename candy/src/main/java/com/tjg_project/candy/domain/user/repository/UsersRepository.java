@@ -7,6 +7,6 @@ public interface UsersRepository {
     boolean idcheck(String id);
     Users findById(String id);
     Users findByEmailOrPhone(String query); // 아이디 찾기용
-    Users findByIdAndEmailOrPhone(String id, String query); // 비밀번호 찾기용
+    Users findByEmail(String email, String query); // 비밀번호 찾기용
     Users findByName(String name);
 }

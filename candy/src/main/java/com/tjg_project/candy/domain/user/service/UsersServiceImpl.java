@@ -59,8 +59,8 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public String findPassword(String id, String query) {
-        Users member = usersRepository.findByIdAndEmailOrPhone(id, query);
+    public String findPassword(String email, String query) {
+        Users member = usersRepository.findByEmail(email, query);
         if (member != null) {
             return member.getPassword();
         }
