@@ -67,8 +67,8 @@ spring:
   mail:
     host: smtp.naver.com
     port: 465
-    username: 46823971@naver.com
-    password: "GHT6XFQWZRWZ"   # SMTP 애플리케이션 비밀번호
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
     properties:
       mail:
         smtp:
