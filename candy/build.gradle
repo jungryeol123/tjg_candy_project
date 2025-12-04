@@ -53,6 +53,9 @@ dependencies {
     implementation 'mysql:mysql-connector-java:8.0.33'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
+    // 이메일 전송
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    implementation 'com.sun.mail:jakarta.mail:2.0.1'
 
     //SHA-256 해시
     implementation 'commons-codec:commons-codec:1.16.0'

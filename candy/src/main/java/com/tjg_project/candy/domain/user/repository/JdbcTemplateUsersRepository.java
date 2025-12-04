@@ -66,11 +66,11 @@ public class JdbcTemplateUsersRepository implements UsersRepository{
     }
 
     @Override
-    public Users findByIdAndEmailOrPhone(String id, String query) {
+    public Users findByEmail(String email, String query) {
         String sql = "SELECT * FROM users WHERE user_id = ? AND (email = ? OR phone = ?)";
 
         try {
-            return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Users.class), id, query, query);
+            return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Users.class), email, query, query);
         } catch (Exception e) {
             return null;
         }

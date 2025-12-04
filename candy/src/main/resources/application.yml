@@ -61,6 +61,20 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
+  # ===================================
+  # ✅ 이메일 SMTP 설정
+  # ===================================
+  mail:
+    host: smtp.naver.com
+    port: 465
+    username: 46823971@naver.com
+    password: "GHT6XFQWZRWZ"   # SMTP 애플리케이션 비밀번호
+    properties:
+      mail:
+        smtp:
+          auth: true
+          ssl:
+            enable: true
 
 # ===============================
 # ✅ 파일 업로드 설정
