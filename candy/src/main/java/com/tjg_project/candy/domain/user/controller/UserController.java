@@ -38,10 +38,12 @@ public class UserController {
         return userId != null ? userId : "일치하는 아이디가 없습니다.";
     }
 
-    // 비밀번호 찾기
-    @GetMapping("/find-password")
-    public String findPassword(@RequestParam String id, @RequestParam String query) {
-        String password = usersService.findPassword(id, query);
-        return password != null ? password : "일치하는 회원이 없습니다.";
-    }
+
+//    // 비밀번호 찾기
+//    @GetMapping("/find-password")
+//    public String findPassword(@RequestParam String id, @RequestParam String query) {
+//        String password = usersService.findPassword(id, query);
+//        return password != null ? password : "일치하는 회원이 없습니다.";
+//    }
+
 }

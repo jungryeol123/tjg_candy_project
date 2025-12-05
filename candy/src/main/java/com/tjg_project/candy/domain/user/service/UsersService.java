@@ -6,6 +6,6 @@ public interface UsersService {
     boolean signup(Users users);
     Users login(String id, String password);
     String findUserId(String query);
-    String findPassword(String id, String query);
+//    String findPassword(String id, String query);
     boolean idcheck(Users users);
 }
