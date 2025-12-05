@@ -76,4 +76,9 @@ public class CouponServiceImpl implements CouponService {
         int rows = userCouponRepository.updateIsUsedById(id);
         return false;
     }
+
+    @Override
+    public List<Coupon> getCouponList() {
+        return couponRepository.findAll();
+    }
 }
