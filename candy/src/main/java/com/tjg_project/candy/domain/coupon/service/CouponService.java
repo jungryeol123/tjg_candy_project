@@ -1,5 +1,6 @@
 package com.tjg_project.candy.domain.coupon.service;
 
+import com.tjg_project.candy.domain.coupon.entity.Coupon;
 import com.tjg_project.candy.domain.coupon.entity.UserCoupon;
 
 import java.util.List;
@@ -13,4 +14,6 @@ public interface CouponService {
     List<UserCoupon> getUserCoupons(Long userId);
 
     boolean updateCoupon(Long id);
+
+    List<Coupon> getCouponList();
 }

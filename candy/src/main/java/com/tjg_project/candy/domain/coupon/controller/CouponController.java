@@ -1,5 +1,6 @@
 package com.tjg_project.candy.domain.coupon.controller;
 
+import com.tjg_project.candy.domain.coupon.entity.Coupon;
 import com.tjg_project.candy.domain.coupon.entity.UserCoupon;
 import com.tjg_project.candy.domain.coupon.repository.UserCouponRepository;
 import com.tjg_project.candy.domain.coupon.service.CouponService;
@@ -73,6 +74,12 @@ public class CouponController {
 
         if (deleted) return ResponseEntity.ok("deleted");
         else return ResponseEntity.status(400).body("not found");
+    }
+
+    /** 쿠폰리스트 불러오기 */
+    @GetMapping("/couponList")
+    public List<Coupon> couponList() {
+        return couponService.getCouponList();
     }
 
 }
