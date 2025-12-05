@@ -58,13 +58,13 @@ public class UsersServiceImpl implements UsersService {
         return null;
     }
 
-    @Override
-    public String findPassword(String email, String query) {
-        Users member = usersRepository.findByEmail(email, query);
-        if (member != null) {
-            return member.getPassword();
-        }
-        return null;
-    }
+//    @Override
+//    public String findPassword(String email, String query) {
+//        Users member = usersRepository.findByEmail(email, query);
+//        if (member != null) {
+//            return member.getPassword();
+//        }
+//        return null;
+//    }
 
 }

@@ -42,7 +42,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/", "/login", "/product/**", "/notice/**", "/member/**",
                                 "/orders/**", "/payment/**", "/delivery/**", "/auth/**", "/oauth2/**", "/csrf",
-                                "/view/**", "/category/**","/coupon/**","/recipe/**","/images/**","/api/forecast/**","/api/forecast/predict/**","/api/chatbot/**","/api/analytics/conversion/**","/excel/**","/api/admin/pricing/**","/api/admin/reviews/**","/advertise/**").permitAll().anyRequest().authenticated())
+                                "/view/**", "/category/**","/coupon/**","/recipe/**","/images/**","/api/forecast/**",
+                                "/api/forecast/predict/**","/api/chatbot/**","/api/analytics/conversion/**","/excel/**",
+                                "/api/admin/pricing/**","/api/admin/reviews/**","/advertise/**","/update/**").permitAll().anyRequest().authenticated())
                 .oauth2Login(oauth -> oauth     // ✅ OAuth2 로그인 활성화
                         .successHandler(customOAuth2SuccessHandler)// 로그인 성공 후 리다이렉트 URL
                 )
