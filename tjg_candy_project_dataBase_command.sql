@@ -21,9 +21,9 @@ DROP TRIGGER IF EXISTS before_insert_product;
 desc products;
 SHOW TABLES;
 drop table product;
+desc product;
 
-
-INSERT INTO PRODUCT(brand_name, dc, description, image_url, image_url_name, is_hot_deal, is_member_special, origin, price, product_date, product_description_image,
+INSERT INTO product(brand_name, dc, description, image_url, image_url_name, is_hot_deal, is_member_special, origin, price, product_date, product_description_image,
 product_information_image, product_name, count, delType, allergyInfo, seller, unit, weight, notes, upk)
 SELECT 
     jt.brandName,
@@ -665,12 +665,14 @@ FROM JSON_TABLE(
 desc recipe;
 
 -- 외래키 제약을 일시적으로 무시
+set sql_safe_updates = 0;
 SET FOREIGN_KEY_CHECKS = 0;
 drop table recipe;
 -- 외래키 제약 활성화
 SET FOREIGN_KEY_CHECKS = 1;
-
+use candy;
 select * from users;
+delete from advertise;
 show tables;
 -- 광고데이터 삽입
 INSERT INTO advertise (adv_image_banner, adv_image_inline, adv_link, adv_name)
@@ -682,6 +684,7 @@ VALUES
 ('/images/advertiseimages/BannerAdv2.png', null, 'https://www.oliveyoung.co.kr/store/main/main.do?oy=0', '올리브영'),
 ('/images/advertiseimages/BannerAdv3.png', null, 'https://www.coupang.com/np/search?component=&q=%EC%98%81%EC%96%91%EC%A0%9C&traceId=miiakjcm&channel=user', '쿠팡');
 
-
+show tables;
+select * from recipe;
 use candy;
 update users set role = "ADMIN" where user_id = "test";

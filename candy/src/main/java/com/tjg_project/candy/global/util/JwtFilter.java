@@ -32,36 +32,35 @@ public class JwtFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
 
+        // ✅ CORS preflight는 JWT 검사 대상 아님
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
 
             try {
-                // ✅ 토큰 유효성 검증
                 if (jwtUtil.validateToken(token)) {
                     Long userId = jwtUtil.extractUserId(token);
 
                     UsernamePasswordAuthenticationToken authentication =
                             new UsernamePasswordAuthenticationToken(userId, null, null);
-                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    authentication.setDetails(
+                            new WebAuthenticationDetailsSource().buildDetails(request)
+                    );
 
                     SecurityContextHolder.getContext().setAuthentication(authentication);
-                } else {
-                    System.out.println("⚠️ Invalid JWT → passing down filterChain (refresh expected)");
-                    // ❌ 여기서 return 금지! 그냥 아래로 흘려보내야 프론트 인터셉터가 401을 감지함
                 }
-
-            } catch (ExpiredJwtException e) {
-                System.out.println("⚠️ AccessToken expired → passing down filterChain (refresh expected)");
-                // ❌ 이 경우도 return 금지 (refresh 요청 트리거용)
-            } catch (JwtException | IllegalArgumentException e) {
-                System.out.println("⚠️ Malformed/Invalid JWT → passing down filterChain (refresh expected)");
-                // ❌ 여기서 return 금지
+            } catch (JwtException e) {
+                // 그냥 통과 (refresh는 프론트에서 처리)
             }
         }
 
-        // ✅ 무조건 다음 필터로 전달해야 프론트가 refresh 트리거 가능
         filterChain.doFilter(request, response);
     }
+
 }

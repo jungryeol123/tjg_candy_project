@@ -83,16 +83,16 @@ public class AuthController {
             HttpServletRequest request
     ) {
 
-        // ✅ Origin 검증 (CORS 허용 도메인만 통과)
-        String origin = request.getHeader("Origin");
-        String referer = request.getHeader("Referer");
-        if (origin == null && !origin.equals("http://localhost:3000")) {
-            return ResponseEntity.status(403).body(Map.of("error", "Invalid origin"));
-        }
-        if (referer == null || allowedOrigins.stream().noneMatch(referer::startsWith)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body("Invalid Referer or Missing Headers");
-        }
+//        // ✅ Origin 검증 (CORS 허용 도메인만 통과)
+//        String origin = request.getHeader("Origin");
+//        String referer = request.getHeader("Referer");
+//        if (origin == null && !origin.equals("http://localhost:3000")) {
+//            return ResponseEntity.status(403).body(Map.of("error", "Invalid origin"));
+//        }
+//        if (referer == null || allowedOrigins.stream().noneMatch(referer::startsWith)) {
+//            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+//                    .body("Invalid Referer or Missing Headers");
+//        }
 
         if (token == null)
             return ResponseEntity.status(401).body(Map.of("error", "No refresh token"));
