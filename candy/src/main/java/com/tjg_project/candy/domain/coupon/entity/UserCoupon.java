@@ -30,7 +30,7 @@ public class UserCoupon {
     @JoinColumn(name = "coupon_id", nullable = false)
 //    @JsonIgnore
     private Coupon coupon;
-
+a
     @Column(name = "qty")
     private int qty;
 
