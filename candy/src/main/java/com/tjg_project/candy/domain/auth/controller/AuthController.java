@@ -52,18 +52,18 @@ public class AuthController {
         // ✅ HttpOnly 쿠키에 RefreshToken 저장
         ResponseCookie cookie = ResponseCookie.from("refresh_token", refresh.getToken())
                 .httpOnly(true)
-                .secure(true) // 배포 시 true
+                .secure(false) // 배포 시 true
                 .path("/")
                 .maxAge(7 * 24 * 60 * 60)
-                .sameSite("None")
+                .sameSite("Lax")
                 .build();
 
         String csrfToken = UUID.randomUUID().toString();
         ResponseCookie csrfCookie = ResponseCookie.from("XSRF-TOKEN", csrfToken)
                 .httpOnly(false)  // JS가 읽을 수 있어야 함
-                .secure(true)    // 배포 시 true
+                .secure(false)    // 배포 시 true
                 .path("/")
-                .sameSite("None")
+                .sameSite("Lax")
                 .maxAge(7 * 24 * 60 * 60)
                 .build();
 
@@ -114,9 +114,9 @@ public class AuthController {
 
         ResponseCookie cookie = ResponseCookie.from("refresh_token", newRefresh.getToken())
                 .httpOnly(true)
-                .secure(true)
+                .secure(false)
                 .path("/")
-                .sameSite("None")
+                .sameSite("Lax")
                 .maxAge(7 * 24 * 60 * 60)
                 .build();
 
@@ -124,9 +124,9 @@ public class AuthController {
         String newCsrf = UUID.randomUUID().toString();
         ResponseCookie csrfCookieNew = ResponseCookie.from("XSRF-TOKEN", newCsrf)
                 .httpOnly(false)
-                .secure(true)
+                .secure(false)
                 .path("/")
-                .sameSite("None")
+                .sameSite("Lax")
                 .maxAge(7 * 24 * 60 * 60)
                 .build();
 
@@ -147,9 +147,9 @@ public class AuthController {
         }
         ResponseCookie expiredCookie = ResponseCookie.from("refresh_token", "")
                 .httpOnly(true)
-                .secure(true)
+                .secure(false)
                 .path("/")
-                .sameSite("None")
+                .sameSite("Lax")
                 .maxAge(0)
                 .build();
 

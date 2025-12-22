@@ -57,8 +57,8 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
         // ✅ RefreshToken을 HttpOnly 쿠키로 내려줌
         ResponseCookie cookie = ResponseCookie.from("refresh_token", refresh.getToken())
                 .httpOnly(true)
-                .secure(true) // ⚠️ HTTPS 환경에서는 true로 변경
-                .sameSite("None")
+                .secure(false) // ⚠️ HTTPS 환경에서는 true로 변경
+                .sameSite("Lax")
                 .path("/")
                 .maxAge(7 * 24 * 60 * 60)
                 .build();
