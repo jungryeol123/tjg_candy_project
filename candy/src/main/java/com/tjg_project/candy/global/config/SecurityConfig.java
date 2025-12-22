@@ -19,12 +19,19 @@ import java.util.List;
 
 @Configuration
 public class SecurityConfig {
+
     private final JwtFilter jwtFilter;
     private final CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
+    private final CorsProperties corsProperties;
 
-    public SecurityConfig(JwtFilter jwtFilter, CustomOAuth2SuccessHandler customOAuth2SuccessHandler) {
+    public SecurityConfig(
+            JwtFilter jwtFilter,
+            CustomOAuth2SuccessHandler customOAuth2SuccessHandler,
+            CorsProperties corsProperties
+    ) {
         this.jwtFilter = jwtFilter;
-        this.customOAuth2SuccessHandler = customOAuth2SuccessHandler; // ✅ 주입
+        this.customOAuth2SuccessHandler = customOAuth2SuccessHandler;
+        this.corsProperties = corsProperties;
     }
 
     @Bean
@@ -32,39 +39,67 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .formLogin(form -> form.disable())   // ✅ 기본 폼 로그인 끄기
+                .formLogin(form -> form.disable())
                 .httpBasic(basic -> basic.disable())
                 .exceptionHandling(ex -> ex
-                        // ✅ 302 대신 401로 응답
-                        .authenticationEntryPoint((req, res, e) -> res.setStatus(HttpServletResponse.SC_UNAUTHORIZED))
+                        .authenticationEntryPoint(
+                                (req, res, e) -> res.setStatus(HttpServletResponse.SC_UNAUTHORIZED)
+                        )
                 )
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
                 .authorizeHttpRequests(auth ->
-
                         auth
                                 .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
-
-                                .requestMatchers("/", "/login", "/product/**", "/notice/**", "/member/**",
-                                "/orders/**", "/payment/**", "/delivery/**", "/auth/**", "/oauth2/**", "/csrf",
-                                "/view/**", "/category/**","/coupon/**","/recipe/**","/images/**","/api/forecast/**",
-                                "/api/forecast/predict/**","/api/chatbot/**","/api/analytics/conversion/**","/excel/**",
-                                "/api/admin/pricing/**","/api/admin/reviews/**","/advertise/**","/update/**").permitAll().anyRequest().authenticated())
-                .oauth2Login(oauth -> oauth     // ✅ OAuth2 로그인 활성화
-                        .successHandler(customOAuth2SuccessHandler)// 로그인 성공 후 리다이렉트 URL
+                                .requestMatchers(
+                                        "/",
+                                        "/login",
+                                        "/product/**",
+                                        "/notice/**",
+                                        "/member/**",
+                                        "/orders/**",
+                                        "/payment/**",
+                                        "/delivery/**",
+                                        "/auth/**",
+                                        "/oauth2/**",
+                                        "/csrf",
+                                        "/view/**",
+                                        "/category/**",
+                                        "/coupon/**",
+                                        "/recipe/**",
+                                        "/images/**",
+                                        "/api/forecast/**",
+                                        "/api/forecast/predict/**",
+                                        "/api/chatbot/**",
+                                        "/api/analytics/conversion/**",
+                                        "/excel/**",
+                                        "/api/admin/pricing/**",
+                                        "/api/admin/reviews/**",
+                                        "/advertise/**",
+                                        "/update/**"
+                                ).permitAll()
+                                .anyRequest().authenticated()
+                )
+                .oauth2Login(oauth ->
+                        oauth.successHandler(customOAuth2SuccessHandler)
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
-    // ✅ CORS 허용 설정
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:3000", "https://localhost:3000", "http://127.0.0.1:3000")); // 프론트 도메인
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+
+        configuration.setAllowedOrigins(corsProperties.getAllowedOrigins());
+        configuration.setAllowedMethods(
+                List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")
+        );
         configuration.setAllowedHeaders(List.of("*"));
-        configuration.setAllowCredentials(true); // 쿠키/헤더 인증 허용
+        configuration.setAllowCredentials(true);
         configuration.setExposedHeaders(List.of("Authorization"));
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

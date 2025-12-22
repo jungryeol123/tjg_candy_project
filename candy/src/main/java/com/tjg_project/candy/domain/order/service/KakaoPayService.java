@@ -20,7 +20,7 @@ public class KakaoPayService {
     @Value("${kakao.pay.cid}") private String CID;
     @Value("${kakao.pay.ready-path}") private String READY_PATH;
     @Value("${kakao.pay.approve-path}") private String APPROVE_PATH;
-
+    @Value("${app.backend-url}")  private String backendUrl;
     private final RestTemplate restTemplate = new RestTemplate();
     private final ConcurrentHashMap<String, String> tidStore = new ConcurrentHashMap<>();
     String user_id = "test";
@@ -40,10 +40,15 @@ public class KakaoPayService {
         params.add("quantity", String.valueOf(kakaoPay.getQty()));
         params.add("total_amount", String.valueOf(kakaoPay.getTotalAmount()));
         params.add("tax_free_amount", "0");
-        params.add("approval_url", "http://localhost:8080/payment/qr/success?orderId=" + kakaoPay.getOrderId());
-        params.add("cancel_url", "http://localhost:8080/payment/qr/cancel?orderId=" + kakaoPay.getOrderId());
-        params.add("fail_url", "http://localhost:8080/payment/qr/fail?orderId=" + kakaoPay.getOrderId());
-
+        params.add("approval_url",
+                backendUrl + "/payment/qr/success?orderId=" + kakaoPay.getOrderId()
+        );
+        params.add("cancel_url",
+                backendUrl + "/payment/qr/cancel?orderId=" + kakaoPay.getOrderId()
+        );
+        params.add("fail_url",
+                backendUrl + "/payment/qr/fail?orderId=" + kakaoPay.getOrderId()
+        );
         HttpEntity<MultiValueMap<String, String>> body = new HttpEntity<>(params, getHeaders());
 
         String url = KAKAO_PAY_HOST + "/v1" + READY_PATH;

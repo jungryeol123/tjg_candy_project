@@ -9,6 +9,7 @@ import com.tjg_project.candy.domain.order.service.KakaoPayService;
 import com.tjg_project.candy.domain.order.service.OrderService;
 import com.tjg_project.candy.domain.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,9 @@ public class KakaoPayController {
     private final CouponService couponService;
     private final ProductService productService;
     private KakaoPay payInfo = null; //kakaoPay DTO 클래스를 전역으로 선언
+
+    @Value("${app.frontend-url}")
+    private String frontendUrl;
 
     @Autowired
     public KakaoPayController(KakaoPayService kakaoPayService, OrderService orderService, CouponService couponService, ProductService productService) {
@@ -55,7 +59,9 @@ public class KakaoPayController {
 
         productService.updateCount(productInfo);
 
-        URI redirect = URI.create("http://localhost:3000/payResult?orderId=" + orderId + "&status=success");
+        URI redirect = URI.create(
+                frontendUrl + "/payResult?orderId=" + orderId + "&status=success"
+        );
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(redirect);
         return new ResponseEntity<>(headers, HttpStatus.FOUND);

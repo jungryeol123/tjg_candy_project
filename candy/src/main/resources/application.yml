@@ -109,3 +109,12 @@ jwt:
 
 openai:
   api-key: ${OPENAI_API_KEY}
+
+app:
+  cors:
+    allowed-origins:
+      - http://localhost:3000
+      - https://candy-frontend-taupe.vercel.app
+
+  frontend-url: http://localhost:3000
+  backend-url: http://localhost:8080
