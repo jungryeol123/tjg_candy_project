@@ -53,18 +53,18 @@ public class AuthController {
         // ✅ HttpOnly 쿠키에 RefreshToken 저장
         ResponseCookie cookie = ResponseCookie.from("refresh_token", refresh.getToken())
                 .httpOnly(true)
-                .secure(false) // 배포 시 true
+                .secure(true) // 배포 시 true
                 .path("/")
                 .maxAge(7 * 24 * 60 * 60)
-                .sameSite("Lax")
+                .sameSite("None")
                 .build();
 
         String csrfToken = UUID.randomUUID().toString();
         ResponseCookie csrfCookie = ResponseCookie.from("XSRF-TOKEN", csrfToken)
                 .httpOnly(false)  // JS가 읽을 수 있어야 함
-                .secure(false)    // 배포 시 true
+                .secure(true)    // 배포 시 true
                 .path("/")
-                .sameSite("Lax")
+                .sameSite("None")
                 .maxAge(7 * 24 * 60 * 60)
                 .build();
 
@@ -115,9 +115,9 @@ public class AuthController {
 
         ResponseCookie cookie = ResponseCookie.from("refresh_token", newRefresh.getToken())
                 .httpOnly(true)
-                .secure(false)
+                .secure(true)
                 .path("/")
-                .sameSite("Lax")
+                .sameSite("None")
                 .maxAge(7 * 24 * 60 * 60)
                 .build();
 
@@ -125,9 +125,9 @@ public class AuthController {
         String newCsrf = UUID.randomUUID().toString();
         ResponseCookie csrfCookieNew = ResponseCookie.from("XSRF-TOKEN", newCsrf)
                 .httpOnly(false)
-                .secure(false)
+                .secure(true)
                 .path("/")
-                .sameSite("Lax")
+                .sameSite("None")
                 .maxAge(7 * 24 * 60 * 60)
                 .build();
 
@@ -165,9 +165,9 @@ public class AuthController {
         String csrfToken = UUID.randomUUID().toString();
         ResponseCookie csrfCookie = ResponseCookie.from("XSRF-TOKEN", csrfToken)
                 .httpOnly(false)  // JS가 읽을 수 있어야 함
-                .secure(false)    // 배포 시 true
+                .secure(true)    // 배포 시 true
                 .path("/")
-                .sameSite("Lax")
+                .sameSite("None")
                 .maxAge(7 * 24 * 60 * 60)
                 .build();
 
@@ -175,8 +175,8 @@ public class AuthController {
         // 5️⃣ RefreshToken 쿠키로 내려주기
         ResponseCookie cookie = ResponseCookie.from("refresh_token", refresh.getToken())
                 .httpOnly(true)
-                .secure(false)      // HTTPS 필수
-                .sameSite("Lax")  // 소셜 로그인 필수
+                .secure(true)      // HTTPS 필수
+                .sameSite("None")  // 소셜 로그인 필수
                 .path("/")
                 .maxAge(7 * 24 * 60 * 60)
                 .build();

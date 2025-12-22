@@ -6,7 +6,6 @@ plugins {
 
 group = 'com.tjg_project'
 version = '0.0.1-SNAPSHOT'
-description = 'Demo project for Spring Boot'
 
 java {
     toolchain {
@@ -19,54 +18,47 @@ repositories {
 }
 
 dependencies {
-    //spring security
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-
-    //기본기능
+    // 🌱 Web
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
-    //lombok
-    compileOnly("org.projectlombok:lombok:1.18.42")
-    annotationProcessor("org.projectlombok:lombok:1.18.42")
-
-    //spring security gradle
+    // 🔐 Security
     implementation 'org.springframework.boot:spring-boot-starter-security'
-
-    // ✅ JWT를 생성·검증하기 위한 기본 인터페이스(API) 제공
-    //  → Jwts.builder(), Claims, JwtParser 등 개발자가 사용하는 메서드 포함
-    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-
-    // ✅ JWT 암호화·서명·검증 등의 실제 구현 로직이 들어있는 모듈
-    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
-
-    // ✅ JWT 내부 JSON 데이터를 Jackson으로 변환하기 위한 어댑터
-    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
-
-    // ✅ Spring Data JPA 사용을 위한 스타터 패키지
-     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-
-    //MySQL JDBC driver
-    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
-    runtimeOnly 'mysql:mysql-connector-java:8.0.31'
-
-    // ✅ MySQL 데이터베이스와 연결하기 위한 JDBC 드라이버
-    implementation 'mysql:mysql-connector-java:8.0.33'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
-    // 이메일 전송
+    // 🗄️ JPA
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    // 🐬 MySQL
+    runtimeOnly 'com.mysql:mysql-connector-j'
+
+    // 🧾 JWT
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+    // ✉️ Mail
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     implementation 'com.sun.mail:jakarta.mail:2.0.1'
 
-    //SHA-256 해시
+    // 🧠 Lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // 🔐 Hash
     implementation 'commons-codec:commons-codec:1.16.0'
 
-    //    developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
-    implementation("com.theokanning.openai-gpt3-java:service:0.18.2")
-
+    // 📊 Excel
     implementation 'org.apache.poi:poi-ooxml:5.2.3'
+
+    // 🤖 OpenAI
+    implementation 'com.theokanning.openai-gpt3-java:service:0.18.2'
+
+    implementation platform('software.amazon.awssdk:bom:2.25.28')
+    // ✅ AWS S3
+    implementation 'software.amazon.awssdk:s3'
+
+    // 🧪 Test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 }
 

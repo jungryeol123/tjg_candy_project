@@ -17,9 +17,9 @@ public class CsrfController {
         String csrfToken = UUID.randomUUID().toString();
         ResponseCookie csrfCookie = ResponseCookie.from("XSRF-TOKEN", csrfToken)
                 .httpOnly(false)  // JS가 읽을 수 있어야 함
-                .secure(false)    // 배포 시 true
+                .secure(true)    // 배포 시 true
                 .path("/")
-                .sameSite("Lax")
+                .sameSite("None")
                 .maxAge(7 * 24 * 60 * 60)
                 .build();
 

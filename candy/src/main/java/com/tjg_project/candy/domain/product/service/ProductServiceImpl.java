@@ -9,6 +9,7 @@ import com.tjg_project.candy.domain.product.repository.ProductDetailViewReposito
 import com.tjg_project.candy.domain.product.repository.ProductQnARepository;
 import com.tjg_project.candy.domain.product.repository.ProductRepository;
 import com.tjg_project.candy.domain.product.repository.ProductReviewRepository;
+import com.tjg_project.candy.global.s3.S3Uploader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -44,7 +45,8 @@ public class ProductServiceImpl implements ProductService {
     private ProductDetailViewRepository productDetailViewRepository;
     @Autowired
     private OrderDetailRepository orderDetailRepository;
-
+    @Autowired
+    private S3Uploader s3Uploader;
     @Override
     public List<Product> getProductList() {
         return productRepository.findAll();
@@ -142,56 +144,93 @@ public class ProductServiceImpl implements ProductService {
         return productQnARepository.save(qna);
     }
 
-    // 이미지 정보 설정
-    public void setImages(Product product, MultipartFile file, int idx){
-        // 파일이 null이거나 비어있으면 처리하지 않음
+//    // 이미지 정보 설정
+//    public void setImages(Product product, MultipartFile file, int idx){
+//        // 파일이 null이거나 비어있으면 처리하지 않음
+//        if (file == null || file.isEmpty()) {
+//            return;
+//        }
+//
+//        // 파일명 취득(업로드시 파일명)
+//        String originalFilename = file.getOriginalFilename();
+//        // 파일명 중복방지 UUID_기존파일명
+//        String filename = UUID.randomUUID() + "_" + originalFilename;
+//        // 파일명 변경
+//        String uploadFileDir = uploadDir;
+//
+//        // 상품, 속성, 이미지 구분
+//        switch (idx) {
+//            case PRODUCT_IMAGES:
+//                // 상품 이미지 저장 장소
+//                uploadFileDir += "/productImages";
+//                // 상품 이미지 정보 설정
+//                product.setImageUrl(filename);
+//                product.setImageUrlName(originalFilename);
+//                break;
+//            case PRODUCT_INFORMATION:
+//                // 속성 이미지 저장 장소
+//                uploadFileDir += "/productInformation";
+//                // 속성 이미지 정보 설정
+//                product.setProductInformationImage(filename);
+//                break;
+//            case PRODUCT_DESCRIPTION:
+//                // 상세 이미지 저장 장소
+//                uploadFileDir += "/productDescription";
+//                // 상세 이미지 정보 설정
+//                product.setProductDescriptionImage(filename);
+//                break;
+//            default:
+//                throw new IllegalStateException("Unexpected value: " + idx);
+//        }
+//
+//        // 파일을 저장할 디렉토리 취득
+//        Path path = Paths.get(uploadFileDir, filename);
+//
+//        // 파일을 저장할 디렉토리가 없으면 생성 후 저장
+//        try {
+//            Files.createDirectories(path.getParent());
+//            Files.write(path, file.getBytes());
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+
+    public void setImages(Product product, MultipartFile file, int idx) {
+
         if (file == null || file.isEmpty()) {
             return;
         }
 
-        // 파일명 취득(업로드시 파일명)
         String originalFilename = file.getOriginalFilename();
-        // 파일명 중복방지 UUID_기존파일명
-        String filename = UUID.randomUUID() + "_" + originalFilename;
-        // 파일명 변경
-        String uploadFileDir = uploadDir;
+        String savedFileName = UUID.randomUUID() + "_" + originalFilename;
 
-        // 상품, 속성, 이미지 구분
+        String s3Dir;
+
         switch (idx) {
             case PRODUCT_IMAGES:
-                // 상품 이미지 저장 장소
-                uploadFileDir += "/productImages";
-                // 상품 이미지 정보 설정
-                product.setImageUrl(filename);
+                s3Dir = "productImages";
+                product.setImageUrl(savedFileName);
                 product.setImageUrlName(originalFilename);
                 break;
+
             case PRODUCT_INFORMATION:
-                // 속성 이미지 저장 장소
-                uploadFileDir += "/productInformation";
-                // 속성 이미지 정보 설정
-                product.setProductInformationImage(filename);
+                s3Dir = "productInformation";
+                product.setProductInformationImage(savedFileName);
                 break;
+
             case PRODUCT_DESCRIPTION:
-                // 상세 이미지 저장 장소
-                uploadFileDir += "/productDescription";
-                // 상세 이미지 정보 설정
-                product.setProductDescriptionImage(filename);
+                s3Dir = "productDescription";
+                product.setProductDescriptionImage(savedFileName);
                 break;
+
             default:
                 throw new IllegalStateException("Unexpected value: " + idx);
         }
 
-        // 파일을 저장할 디렉토리 취득
-        Path path = Paths.get(uploadFileDir, filename);
-
-        // 파일을 저장할 디렉토리가 없으면 생성 후 저장
-        try {
-            Files.createDirectories(path.getParent());
-            Files.write(path, file.getBytes());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        // ✅ 여기만 바뀜 (로컬 → S3)
+        s3Uploader.upload(file, s3Dir);
     }
+
 
     @Override
     public boolean updateCount(List<KakaoPay.ProductInfo> productInfo) {
