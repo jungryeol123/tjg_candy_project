@@ -6,6 +6,7 @@ import com.tjg_project.candy.domain.user.entity.Users;
 import com.tjg_project.candy.domain.user.service.UsersService;
 import com.tjg_project.candy.global.util.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -136,6 +137,55 @@ public class AuthController {
                 .body(Map.of("accessToken", newAccessToken
                         ));
     }
+
+    @PostMapping("/social-cookie")
+    public ResponseEntity<Void> issueSocialCookie(
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) {
+        // 1️⃣ Authorization 헤더 확인
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        String accessToken = authHeader.substring(7);
+
+        // 2️⃣ accessToken 유효성 검증 (중요)
+        if (!jwtUtil.validateToken(accessToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        // 3️⃣ userId 추출
+        Long userId = jwtUtil.extractUserId(accessToken);
+
+        // 4️⃣ RefreshToken 생성 + DB 저장
+        RefreshToken refresh = authService.createRefreshToken(userId);
+
+        String csrfToken = UUID.randomUUID().toString();
+        ResponseCookie csrfCookie = ResponseCookie.from("XSRF-TOKEN", csrfToken)
+                .httpOnly(false)  // JS가 읽을 수 있어야 함
+                .secure(false)    // 배포 시 true
+                .path("/")
+                .sameSite("Lax")
+                .maxAge(7 * 24 * 60 * 60)
+                .build();
+
+
+        // 5️⃣ RefreshToken 쿠키로 내려주기
+        ResponseCookie cookie = ResponseCookie.from("refresh_token", refresh.getToken())
+                .httpOnly(true)
+                .secure(false)      // HTTPS 필수
+                .sameSite("Lax")  // 소셜 로그인 필수
+                .path("/")
+                .maxAge(7 * 24 * 60 * 60)
+                .build();
+
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+        response.addHeader(HttpHeaders.SET_COOKIE, csrfCookie.toString());
+        return ResponseEntity.ok().build();
+    }
+
 
     /**
      * ✅ 로그아웃 처리

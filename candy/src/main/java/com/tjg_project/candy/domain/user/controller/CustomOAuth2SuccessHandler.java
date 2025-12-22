@@ -46,26 +46,10 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
         // ✅ 사용자 저장 또는 업데이트
         Long userId = oAuth2Service.saveOrUpdate(oAuth2User.getAttributes(), provider);
 
-        // ✅ AccessToken (10분)
+        // ✅ AccessToken만 발급
         String accessToken = jwtUtil.generateAccessToken(userId);
 
-        // ✅ RefreshToken (DB에 저장)
-        RefreshToken refresh = authService.createRefreshToken(userId);
-
-
-
-        // ✅ RefreshToken을 HttpOnly 쿠키로 내려줌
-        ResponseCookie cookie = ResponseCookie.from("refresh_token", refresh.getToken())
-                .httpOnly(true)
-                .secure(false) // ⚠️ HTTPS 환경에서는 true로 변경
-                .sameSite("Lax")
-                .path("/")
-                .maxAge(7 * 24 * 60 * 60)
-                .build();
-
-        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
-
-        // ✅ React로 리다이렉트 (AccessToken, provider, userId 전달)
+        // ✅ 프론트로 리다이렉트 (토큰만 전달)
         String redirectUrl = String.format(
                 "%s/oauth/success?accessToken=%s&provider=%s&userId=%d&success=%d",
                 frontendUrl, accessToken, provider, userId, 200
