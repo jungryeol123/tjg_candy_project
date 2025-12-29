@@ -4,6 +4,7 @@ import com.tjg_project.candy.domain.product.entity.Product;
 import com.tjg_project.candy.domain.product.entity.ProductQnA;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,4 +17,9 @@ public interface ProductQnARepository extends JpaRepository<ProductQnA, Long>{
             select pq.id,  pq.date, pq.is_private, pq.ppk, pq.status, pq.title, pq.upk, u.name as writer from  product_qna pq, users u where pq.upk = u.id
             """, nativeQuery = true)
     List<Map<String, Object>> findAllProductQnAWithUserName();
+
+    @Query(value = """
+            select * from product_qna where ppk = :ppk
+            """, nativeQuery = true)
+    List<ProductQnA> findByPpk(@Param("ppk") Long ppk);
 }

@@ -118,3 +118,8 @@ app:
 
   frontend-url: http://localhost:3000
   backend-url: http://localhost:8080
+
+cloud:
+  aws:
+    s3:
+      bucket: candy-images-storage

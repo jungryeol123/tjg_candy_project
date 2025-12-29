@@ -31,10 +31,17 @@ public class ProductController {
         return productService.getProductReviewList();
     }
 
-    @GetMapping("/productQnAList")
+    @GetMapping("/productAllQnAList")
     public List<Map<String, Object>>  getProductProductQnAList() {
-        return productService.getProductProductQnAList();
+        return productService.getProductProductAllQnAList();
     }
+
+    @GetMapping("/productQnAList")
+    public List<ProductQnA>  getProductProductQnAList(@RequestParam("ppk") Long ppk) {
+        return productService.getProductProductQnAList(ppk);
+    }
+
+
 
     @GetMapping("/productBestList")
     public List<Product>  getProductProductBestList() {

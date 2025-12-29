@@ -12,7 +12,8 @@ import java.util.Optional;
 
 public interface ProductService {
     List<Product> getProductProductBestList();
-    List<Map<String, Object>> getProductProductQnAList();
+    List<Map<String, Object>> getProductProductAllQnAList();
+    List<ProductQnA> getProductProductQnAList(Long ppk);
     List<Map<String, Object>> getProductReviewList();
     List<Product> getProductList();
     Optional<ProductDetailView> getProductDetail(Long id);
