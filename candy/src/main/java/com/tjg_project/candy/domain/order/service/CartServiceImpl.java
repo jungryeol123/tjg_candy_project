@@ -1,12 +1,16 @@
 package com.tjg_project.candy.domain.order.service;
 
 
+import com.tjg_project.candy.domain.order.dto.CartDto;
+import com.tjg_project.candy.domain.order.dto.UserDto;
 import com.tjg_project.candy.domain.order.entity.Cart;
 import com.tjg_project.candy.domain.order.repository.CartRepository;
+import com.tjg_project.candy.domain.user.entity.Users;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,8 +51,29 @@ public class CartServiceImpl  implements CartService {
     }
 
     @Override
-    public List<Cart> cartList (Long upk) {
-        return cartRepository.findByUser_Id(upk);
+    public List<CartDto> cartList (Long upk) {
+        List<CartDto> cartDtoList = new ArrayList<>();
+
+
+        List<Cart> cartList =cartRepository.findByUser_Id(upk);
+
+        for(Cart cart : cartList) {
+            CartDto cartDto = new CartDto();
+
+            UserDto userDto = new UserDto(
+                    cart.getUser().getName(),
+                    cart.getUser().getEmail(),
+                    cart.getUser().getPhone()
+            );
+
+            cartDto.setProduct(cart.getProduct());
+            cartDto.setQty(cart.getQty());
+            cartDto.setAddedAt(cart.getAddedAt());
+            cartDto.setCid(cart.getCid());
+            cartDto.setUser(userDto);
+            cartDtoList.add(cartDto);
+        }
+        return cartDtoList;
     }
 
     @Override

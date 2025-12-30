@@ -1,5 +1,6 @@
 package com.tjg_project.candy.domain.order.controller;
 
+import com.tjg_project.candy.domain.order.dto.CartDto;
 import com.tjg_project.candy.domain.order.entity.Cart;
 import com.tjg_project.candy.domain.order.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class CartController {
 
     // 장바구니 가져오기
     @PostMapping("/cartList")
-    public List<Cart> cartList(@RequestBody Cart cart) {
+    public List<CartDto> cartList(@RequestBody Cart cart) {
         return cartService.cartList(cart.getUser().getId());
     }
 

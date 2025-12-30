@@ -138,16 +138,6 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.save(findProduct);
     }
 
-//    @Override
-//    // 상품 정보 삭제
-//    public boolean deleteProduct(Long id) {
-//        try{
-//            productRepository.deleteById(id) ;
-//            return true;
-//        } catch (EmptyResultDataAccessException e) {
-//            return false;
-//        }
-//    }
 
     @Override
     @Transactional
