@@ -63,7 +63,8 @@ public class CartServiceImpl  implements CartService {
             UserDto userDto = new UserDto(
                     cart.getUser().getName(),
                     cart.getUser().getEmail(),
-                    cart.getUser().getPhone()
+                    cart.getUser().getPhone(),
+                    cart.getUser().getAddress()
             );
 
             cartDto.setProduct(cart.getProduct());
