@@ -1,4 +1,4 @@
-package com.tjg_project.candy.domain.order.dto;
+package com.tjg_project.candy.domain.analytics.dto;
 
 import java.util.List;
 

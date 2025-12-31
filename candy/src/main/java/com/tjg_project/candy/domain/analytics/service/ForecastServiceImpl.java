@@ -1,10 +1,10 @@
-package com.tjg_project.candy.domain.order.service;
+package com.tjg_project.candy.domain.analytics.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tjg_project.candy.domain.openai.service.OpenAiService;
-import com.tjg_project.candy.domain.order.dto.DailySalesDto;
-import com.tjg_project.candy.domain.order.dto.ForecastResponseDto;
+import com.tjg_project.candy.domain.analytics.dto.DailySalesDto;
+import com.tjg_project.candy.domain.analytics.dto.ForecastResponseDto;
 import com.tjg_project.candy.domain.order.repository.OrderDetailRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ForecastService {
+public class ForecastServiceImpl implements ForecastService {
 
     private final OrderDetailRepository orderDetailRepository;
     private final OpenAiService openAiService;

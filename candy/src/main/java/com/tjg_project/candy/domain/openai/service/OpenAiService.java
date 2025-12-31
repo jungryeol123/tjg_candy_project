@@ -36,7 +36,6 @@ public class OpenAiService {
 
         ResponseEntity<OpenAiResponse> response =
                 restTemplate.exchange(url, HttpMethod.POST, entity, OpenAiResponse.class);
-
         return response.getBody().getChoices().get(0).getMessage().getContent();
     }
 }

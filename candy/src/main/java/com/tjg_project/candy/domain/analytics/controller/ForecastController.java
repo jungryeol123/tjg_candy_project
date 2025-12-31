@@ -1,9 +1,9 @@
-package com.tjg_project.candy.domain.order.controller;
+package com.tjg_project.candy.domain.analytics.controller;
 
 
-import com.tjg_project.candy.domain.order.dto.DailySalesDto;
-import com.tjg_project.candy.domain.order.dto.ForecastResponseDto;
-import com.tjg_project.candy.domain.order.service.ForecastService;
+import com.tjg_project.candy.domain.analytics.dto.DailySalesDto;
+import com.tjg_project.candy.domain.analytics.dto.ForecastResponseDto;
+import com.tjg_project.candy.domain.analytics.service.ForecastServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,17 +14,17 @@ import java.util.List;
 @RequestMapping("/api/forecast")
 public class ForecastController {
 
-    private final ForecastService forecastService;
+    private final ForecastServiceImpl forecastServiceImpl;
 
     @GetMapping("/sales/{ppk}")
     public List<DailySalesDto> getSales(@PathVariable Long ppk) {
-        return forecastService.getDailySales(ppk);
+        return forecastServiceImpl.getDailySales(ppk);
     }
 
     @GetMapping("/predict/{ppk}")
     public ForecastResponseDto runForecast(@PathVariable Long ppk) {
         try {
-            return forecastService.runForecast(ppk);
+            return forecastServiceImpl.runForecast(ppk);
         } catch (Exception e) {
             throw new RuntimeException("AI 예측 실패: " + e.getMessage());
         }
