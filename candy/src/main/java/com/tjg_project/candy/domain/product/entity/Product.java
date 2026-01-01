@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -67,7 +68,7 @@ public class Product {
     private String productInformationImage;
 
     @Column(length = 30)
-    private LocalDate productDate;
+    private LocalDateTime productDate;
 
     private String seller; // 판매자 정보
 

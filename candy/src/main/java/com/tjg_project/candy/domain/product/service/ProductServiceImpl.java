@@ -24,6 +24,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -94,7 +95,7 @@ public class ProductServiceImpl implements ProductService {
         // 핫딜 정보 설정(DC값이 설정되있으면 true 아니면 false)
         product.setHotDeal(product.getDc() != 0);
         // 등록 날짜
-        product.setProductDate(LocalDate.now());
+        product.setProductDate(LocalDateTime.now());
 
         // product테이블에 등록
         return productRepository.save(product);
@@ -132,7 +133,7 @@ public class ProductServiceImpl implements ProductService {
         // 핫딜 정보 설정(DC값이 설정되있으면 true 아니면 false)
         findProduct.setHotDeal(product.getDc() != 0);
         // 등록 날짜
-        findProduct.setProductDate(LocalDate.now());
+        findProduct.setProductDate(LocalDateTime.now());
 
         // product테이블에 등록
         return productRepository.save(findProduct);
