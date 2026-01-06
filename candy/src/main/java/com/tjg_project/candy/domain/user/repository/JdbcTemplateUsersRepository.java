@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.List;
 
 @Repository
 public class JdbcTemplateUsersRepository implements UsersRepository{
@@ -55,15 +56,31 @@ public class JdbcTemplateUsersRepository implements UsersRepository{
     }
 
     @Override
-    public Users findByEmailOrPhone(String query) {
-        String sql = "SELECT * FROM users WHERE email = ? OR phone = ?";
+    public List<String> findUserIdsByEmailOrPhone(String query) {
+        String sql = """
+        SELECT user_id
+        FROM users
+        WHERE email = ? OR phone = ?
+    """;
 
-        try {
-            return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Users.class), query, query);
-        } catch (Exception e) {
-            return null;
-        }
+        return jdbcTemplate.query(
+                sql,
+                (rs, rowNum) -> rs.getString("user_id"),
+                query,
+                query
+        );
     }
+
+//    @Override
+//    public Users findByEmailOrPhone(String query) {
+//        String sql = "SELECT * FROM users WHERE email = ? OR phone = ?";
+//
+//        try {
+//            return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Users.class), query, query);
+//        } catch (Exception e) {
+//            return null;
+//        }
+//    }
 
     @Override
     public Users findByEmail(String email, String query) {

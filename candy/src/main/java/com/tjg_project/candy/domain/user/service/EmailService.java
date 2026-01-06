@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class EmailService {
+    public class EmailService {
 
     private final JavaMailSender mailSender;
 
@@ -19,8 +19,9 @@ public class EmailService {
         message.setText(text);
 
         // 🔥 네이버 SMTP는 반드시 FROM 주소를 명시해야 함
-        message.setFrom("46823971@naver.com"); // spring.mail.username 과 동일하게!
-
+//        message.setFrom("46823971@naver.com"); // spring.mail.username 과 동일하게!
+//        7BF211W6DU9Q
+        message.setFrom("dbsgywls447@naver.com");
         mailSender.send(message);
     }
     

@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -50,14 +51,9 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public String findUserId(String query) {
-        Users member = usersRepository.findByEmailOrPhone(query);
-        if (member != null) {
-            return member.getUserId();
-        }
-        return null;
+    public List<String> findUserId(String query) {
+        return usersRepository.findUserIdsByEmailOrPhone(query);
     }
-
 //    @Override
 //    public String findPassword(String email, String query) {
 //        Users member = usersRepository.findByEmail(email, query);

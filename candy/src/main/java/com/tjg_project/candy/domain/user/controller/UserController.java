@@ -5,6 +5,8 @@ import com.tjg_project.candy.domain.user.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/member")
 public class UserController {
@@ -32,10 +34,10 @@ public class UserController {
     }
 
     // 아이디 찾기
-    @GetMapping("/find-user-Id")
-    public String findUserId(@RequestParam String query) {
-        String userId = usersService.findUserId(query);
-        return userId != null ? userId : "일치하는 아이디가 없습니다.";
+    @GetMapping("/find-user-id")
+    public List<String> findUserId(@RequestParam String query) {
+        System.out.println("query = " + query);
+        return usersService.findUserId(query); // ✅ 항상 List 반환
     }
 
 
