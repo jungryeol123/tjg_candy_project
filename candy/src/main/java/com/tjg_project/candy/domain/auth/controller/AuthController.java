@@ -68,11 +68,17 @@ public class AuthController {
                 .maxAge(7 * 24 * 60 * 60)
                 .build();
 
-
+        ResponseCookie roleCookie = ResponseCookie.from("role", us.getRole())
+                .path("/")
+                .httpOnly(true)
+                .secure(true)
+                .sameSite("None")
+                .build();
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
                 .header(HttpHeaders.SET_COOKIE, csrfCookie.toString())
+                .header(HttpHeaders.SET_COOKIE, roleCookie.toString())
                 .body(Map.of("accessToken", accessToken,
                         "role", us.getRole()
                 ));
