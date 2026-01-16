@@ -203,14 +203,24 @@ public class AuthController {
         }
         ResponseCookie expiredCookie = ResponseCookie.from("refresh_token", "")
                 .httpOnly(true)
-                .secure(false)
+                .secure(true)
                 .path("/")
-                .sameSite("Lax")
+                .sameSite("None")
                 .maxAge(0)
                 .build();
 
+        ResponseCookie expiredRole = ResponseCookie.from("role", "")
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .sameSite("None")
+                .maxAge(0)
+                .build();
+
+
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, expiredCookie.toString())
+                .header(HttpHeaders.SET_COOKIE, expiredRole.toString())
                 .body(Map.of("message", "Logged out"));
     }
 }
